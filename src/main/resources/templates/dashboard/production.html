@@ -142,7 +142,7 @@
         }
 
         #monthly-completion {
-            height: 400px;
+            height: 360px;
         }
 
         #pass-rate {
@@ -206,6 +206,31 @@
             font-size: 60px;
         }
 
+        #monthly-pass-rate {
+            margin: 40px 0;
+        }
+
+        .progress-bar-row {
+            display: flex;
+        }
+
+        .progress {
+            width: 80%;
+            margin: 10px 0;
+        }
+
+        .progress-bar-left {
+            width: 10%;
+            align-self: center;
+            margin-right: 10px;
+        }
+
+        .progress-bar-right {
+            width: 10%;
+            align-self: center;
+            margin-left: 10px;
+        }
+
         @font-face {
             font-family: Pixer-Regular;
             src: url(/fonts/Pixer-Regular.woff);
@@ -229,7 +254,7 @@
             <div id="navbar-top">Top Navigation Bar</div>
             <div id="container-main">
                 <!--main content of the dashboard-->
-                <div class="row">
+                <div class="row" style="margin: 0"><!--add a style here to fix a bug caused by bootstrap row-->
                     <div class="col-3"></div>
                     <div class="col-6" id="display-area">
                         <div id="banner">
@@ -265,7 +290,24 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="monthly-pass-rate"></div>
+                        <div id="monthly-pass-rate">
+                            <div class="progress-bar-row">
+                                <div class="progress-bar-left">DEC</div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="progress-bar-right">70%</div>
+                            </div>
+                            <div class="progress-bar-row">
+                                <div class="progress-bar-left">NOV</div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="progress-bar-right">90%</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-3"></div>
                 </div>
