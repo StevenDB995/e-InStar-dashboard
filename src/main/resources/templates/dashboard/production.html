@@ -19,8 +19,10 @@
         }
 
         #container-left {
+            flex: 0 1 0;
             padding: 0;
             background: #064da5;
+            transition: width 0.5s;
         }
 
         #container-right {
@@ -34,6 +36,14 @@
             background: #d8d9d4;
         }
 
+        #container-left.collapsed #navbar-left {
+            text-align: center;
+        }
+
+        #container-left.expanded #navbar-left {
+            text-align: left;
+        }
+
         #navbar-left .nav-link {
             color: white;
         }
@@ -43,6 +53,19 @@
             font-weight: bold;
         }
 
+        .navbar-left-icon {
+            font-size: 24px;
+            display: inline;
+        }
+
+        #container-left.collapsed #navbar-left span.desc-text {
+            display: none;
+        }
+
+        #container-left.expanded #navbar-left span.desc-text {
+            margin-left: 10px;
+        }
+
         #navbar-top {
             background: #064da5;
             padding: 12px;
@@ -50,11 +73,31 @@
 
         #logo-container {
             text-align: center;
-            padding: 10px 0;
+            padding: 10px;
+            margin-bottom: 20px;
         }
 
         #logo {
-            width: 80px;
+            width: 50px;
+        }
+
+        #navbar-left-toggle {
+            text-align: center;
+            padding: 5px 10px;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #user-profile {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 40px;
+        }
+
+        #avatar {
+            width: 40px;
+            height: 40px;
         }
 
         #display-area {
@@ -248,14 +291,26 @@
 <body>
 <div class="container-fluid container-root">
     <div class="row container-root">
-        <div id="container-left" class="col-2"><!--TODO: responsive-->
+        <div id="container-left" class="col collapsed"><!--TODO: responsive-->
             <div id="logo-container">
-                <img th:src="@{/images/grey_logo.png}" alt="logo" id="logo"/>
+                <img th:src="@{/images/grey-logo.png}" alt="logo" id="logo"/>
+            </div>
+            <div id="navbar-left-toggle">
+                <i class="fad fa-angle-double-right"></i>
+            </div>
+            <div id="user-profile">
+                <img th:src="@{/images/avatar-default.jpg}" alt="avatar" id="avatar"/>
             </div>
             <nav id="navbar-left" class="nav flex-column">
-                <a class="nav-link active" href="#"><i class="fas fa-analytics"></i>&nbsp;&nbsp;Production</a>
-                <a class="nav-link" href="#"><i class="fas fa-truck-moving"></i>&nbsp;&nbsp;Logistics</a>
-                <a class="nav-link" href="#"><i class="fas fa-city"></i>&nbsp;&nbsp;Installation</a>
+                <a class="nav-link active" href="#">
+                    <i class="fas fa-analytics navbar-left-icon"></i><span class="desc-text">Production</span>
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="fas fa-truck-moving navbar-left-icon"></i><span class="desc-text">Logistics</span>
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="fas fa-city navbar-left-icon"></i><span class="desc-text">Installation</span>
+                </a>
             </nav>
         </div>
         <div id="container-right" class="col"><!--TODO: responsive-->
@@ -445,6 +500,16 @@
         width: '70%'
     }, {
         duration: 1000
+    });
+
+    $('#navbar-left-toggle').click(function () {
+        if ($('#container-left').hasClass('collapsed')) {
+            $('#container-left').removeClass('collapsed').addClass('expanded');
+            $('#navbar-left-toggle i').removeClass('fa-angle-double-right').addClass('fa-angle-double-left');
+        } else {
+            $('#container-left').removeClass('expanded').addClass('collapsed');
+            $('#navbar-left-toggle i').removeClass('fa-angle-double-left').addClass('fa-angle-double-right');
+        }
     });
 </script>
 </body>
