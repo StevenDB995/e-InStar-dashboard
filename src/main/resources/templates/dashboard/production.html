@@ -10,6 +10,7 @@
         html, body {
             width: 100%;
             height: 100%;
+            font-family: Poppins;
         }
 
         .container-root {
@@ -18,7 +19,7 @@
 
         #container-left {
             padding: 0;
-            background: #495cf6;
+            background: #064da5;
         }
 
         #container-right {
@@ -29,7 +30,7 @@
 
         #container-main {
             flex: 1 0 auto;
-            background: lightgray;
+            background: #d8d9d4;
         }
 
         #navbar-left .nav-link {
@@ -37,12 +38,11 @@
         }
 
         .active {
-            background: darkblue;
+            background: #033a7d;
         }
 
         #navbar-top {
-            background: url(/images/top-bar.jpg);
-            background-size: 100% 100%;
+            background: #064da5;
             padding: 12px;
         }
 
@@ -52,7 +52,7 @@
         }
 
         #logo {
-            width: 50%;
+            width: 80px;
         }
 
         #display-area {
@@ -66,7 +66,7 @@
             padding: 20px;
         }
 
-        #banner {
+        #heading {
             text-align: left;
         }
 
@@ -233,6 +233,11 @@
         }
 
         @font-face {
+            font-family: Poppins;
+            src: url(/fonts/poppins-v15-latin-regular.woff);
+        }
+
+        @font-face {
             font-family: Pixer-Regular;
             src: url(/fonts/Pixer-Regular.woff);
         }
@@ -243,7 +248,7 @@
     <div class="row container-root">
         <div id="container-left" class="col-2"><!--TODO: responsive-->
             <div id="logo-container">
-                <img th:src="@{/images/sample-logo.png}" alt="logo" id="logo"/>
+                <img th:src="@{/images/grey_logo.png}" alt="logo" id="logo"/>
             </div>
             <nav id="navbar-left" class="nav flex-column">
                 <a class="nav-link active" href="#"><i class="bi bi-graph-up"></i>&nbsp;&nbsp;Production</a>
@@ -258,7 +263,7 @@
                 <div class="row" style="margin: 0"><!--add a style here to fix a bug caused by bootstrap row-->
                     <div class="col-3"></div>
                     <div class="col-6" id="display-area">
-                        <div id="banner">
+                        <div id="heading">
                             <h3>PRODUCTION</h3>
                         </div>
                         <div id="completion-rate">
@@ -435,7 +440,7 @@
     }
 
     $('.progress-bar').attr('aria-valuenow', 70).animate({
-        width: '70%',
+        width: '70%'
     }, {
         duration: 1000
     });
