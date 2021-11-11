@@ -1,0 +1,176 @@
+#display-area {
+    margin: 20px 0;
+    text-align: center;
+    border-style: solid;
+    border-color: #6f6f6f;
+    border-width: 3px;
+    border-radius: 20px;
+    background: #eee;
+    padding: 20px;
+}
+
+#heading {
+    text-align: left;
+}
+
+#completion-rate {
+    height: 200px; /* specifying the height of the dom is necessary for the floating effect  */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+#completion-rate-graph {
+    align-self: center;
+}
+
+#completion-rate-caption {
+    padding-top: 10px;
+    font-family: Pixer-Regular;
+}
+
+#completion-rate-number {
+    padding-top: 10px;
+    font-family: Pixer-Regular;
+    font-size: 100px;
+    background: linear-gradient(#25d7bc 30%, #ddd 50%, #25d7bc 70%);
+    background-position-y: 60px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine-completion-rate-number 5s cubic-bezier(0.4, 0, 0, 1) infinite,
+    float-completion-rate-number 3s ease-in-out infinite alternate;
+}
+
+@keyframes shine-completion-rate-number {
+    0% {
+        background-position-y: 80px;
+    }
+    80%, 100% {
+        background-position-y: -80px;
+    }
+}
+
+@keyframes float-completion-rate-number {
+    0% {
+        padding-top: 10px;
+    }
+    100% {
+        padding-top: 0;
+    }
+}
+
+.box-icon-frame {
+    display: inline-block;
+    width: 20px;
+    text-align: left;
+}
+
+.box-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: cover;
+    object-position: 0 0;
+}
+
+@keyframes show-from-left {
+    from {
+        width: 0;
+    }
+    to {
+        width: 18px;
+    }
+}
+
+.box-icon.filled {
+    animation: 1s ease-in 0s 1 show-from-left;
+}
+
+#monthly-completion {
+    height: 360px;
+}
+
+#pass-rate {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-family: Pixer-Regular;
+}
+
+#pass, #fail {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 10px;
+    padding-top: 12px;
+    box-shadow: 4px 4px 4px gray;
+}
+
+#pass {
+    margin-left: 10%;
+    margin-right: 5%;
+    border-color: green;
+    color: green;
+    background: linear-gradient(315deg, transparent 35%, white 50%, transparent 65%) no-repeat;
+    background-position-x: -320px;
+    animation: shine-pass 5s ease-in-out infinite;
+}
+
+@keyframes shine-pass {
+    0% {
+        background-position-x: -320px;
+    }
+    50%, 100% {
+        background-position-x: 320px;
+    }
+}
+
+#fail {
+    margin-left: 5%;
+    margin-right: 10%;
+    border-color: red;
+    color: red;
+    animation: glow-fail 2s ease-in-out infinite alternate;
+    box-shadow: 4px 4px 4px gray, inset 0 0 20px red;
+}
+
+@keyframes glow-fail {
+    0% {
+        text-shadow: none;
+    }
+    100% {
+        text-shadow: 0 0 10px red;
+    }
+}
+
+#pass div:nth-child(1), #fail div:nth-child(1) {
+    font-size: 24px;
+}
+
+#pass-number, #fail-number {
+    font-size: 60px;
+}
+
+#monthly-pass-rate {
+    margin: 40px 0;
+}
+
+.progress-bar-row {
+    display: flex;
+}
+
+.progress {
+    width: 80%;
+    margin: 10px 0;
+    background: #ffc107;
+}
+
+.progress-bar-left {
+    width: 10%;
+    align-self: center;
+    margin-right: 10px;
+}
+
+.progress-bar-right {
+    width: 10%;
+    align-self: center;
+    margin-left: 10px;
+}
