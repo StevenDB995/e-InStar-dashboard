@@ -10,7 +10,7 @@
     <link th:href="@{/css/layout.css}" rel="stylesheet">
 </head>
 <body>
-<div class="container-root">
+<div id="container-root">
     <div id="container-left" class="collapsed"><!--TODO: responsive-->
         <div id="logo-container">
             <img th:src="@{/images/grey-logo.png}" alt="logo" id="logo"/>
@@ -48,7 +48,7 @@
                 Admin
             </div>
         </nav>
-        <div id="container-main" layout:fragment="content">
+        <div id="container-main" class="container-fluid" layout:fragment="content">
             <!--main content of the dashboard-->
         </div>
     </div>

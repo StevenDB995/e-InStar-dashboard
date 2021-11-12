@@ -26,7 +26,7 @@ body {
     flex-direction: column;
 }
 
-.container-root {
+#container-root {
     flex-grow: 1;
     display: flex;
 }
