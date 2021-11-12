@@ -59,13 +59,13 @@ right: top navigation bar and main container
     transition: margin-left .5s;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     #container-left {
         width: 0;
     }
 
     #container-right {
-        margin-left: 0!important; /* right container shall never shrink in mobile device view */
+        margin-left: 0 !important; /* right container shall never shrink in mobile device view */
     }
 }
 
@@ -185,7 +185,7 @@ right container: top navigation bar and main container
     display: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     #float-expand-btn {
         z-index: 1;
         position: fixed;
