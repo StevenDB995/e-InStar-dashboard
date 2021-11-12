@@ -7,7 +7,7 @@
     <link th:href="@{/css/production.css}" rel="stylesheet">
 </head>
 <body>
-<div layout:fragment="content">
+<th:block layout:fragment="content">
     <div class="row">
         <div class="col-xl-3"></div>
         <div class="col-xl-6"><!--TODO: responsive-->
@@ -60,7 +60,7 @@
         </div>
         <div class="col-xl-3"></div>
     </div>
-</div>
+</th:block>
 
 <th:block layout:fragment="script">
     <script th:src="@{/js/echarts.min.js}"></script>
@@ -68,7 +68,7 @@
         console.log([[${student}]]);
 
         /**
-         * -----------------------------------------------------------------------------------------------------------------
+         * -------------------------------------------------------------------------------------------------------------
          * block: completion rate
          */
         var completedModules = 532; // to be passed via model map from backend
@@ -86,7 +86,7 @@
         animateNumberDisplay($('#completion-rate-number span'), completionRate * 100, 1000, 1);
 
         /**
-         * -----------------------------------------------------------------------------------------------------------------
+         * -------------------------------------------------------------------------------------------------------------
          * block: monthly completion
          */
         var monthlyCompletionChart = echarts.init(document.getElementById('monthly-completion'));
@@ -159,7 +159,7 @@
         }).observe(document.getElementById('container-right'));
 
         /**
-         * -----------------------------------------------------------------------------------------------------------------
+         * -------------------------------------------------------------------------------------------------------------
          * block: pass rate
          */
         var passRate = 0.9; // to be passed via model map from backend
