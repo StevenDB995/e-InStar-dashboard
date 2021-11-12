@@ -11,48 +11,49 @@
     <link th:href="@{/css/layout.css}" rel="stylesheet">
 </head>
 <body>
-<div id="container-root">
-    <div id="container-left" class="collapsed"><!--TODO: responsive-->
-        <div id="logo-container">
-            <img th:src="@{/images/grey-logo.png}" alt="logo" id="logo"/>
-        </div>
-        <div id="toggle-container">
-            <div id="greeting">Welcome!</div>
-            <div id="navbar-left-toggle">
-                <i class="fas fa-angle-double-right"></i>
-            </div>
-        </div>
-        <div id="user-profile-left">
-            <img th:src="@{/images/avatar-default.jpg}" alt="avatar" id="avatar-left"/>
-            <div id="username-left">Admin</div>
-        </div>
-        <nav id="navbar-left" class="nav flex-column">
-            <a class="nav-link active" href="#">
-                <i class="bi bi-clipboard-data navbar-left-icon"></i><span class="desc-text">Production</span>
-            </a>
-            <a class="nav-link" href="#">
-                <i class="fas fa-truck-moving navbar-left-icon"></i><span class="desc-text">Logistics</span>
-            </a>
-            <a class="nav-link" href="#">
-                <i class="fas fa-city navbar-left-icon"></i><span class="desc-text">Installation</span>
-            </a>
-        </nav>
+<div id="container-left" class="collapsed"><!--TODO: responsive-->
+    <div id="logo-container">
+        <img th:src="@{/images/grey-logo.png}" alt="logo" id="logo"/>
     </div>
-    <div id="container-right">
-        <nav id="navbar-top" class="navbar">
-            <form class="d-flex">
-                <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn search"><i class="bi bi-search"></i></button>
-            </form>
-            <div id="user-profile-top">
-                <img th:src="@{/images/avatar-default.jpg}" alt="avatar" id="avatar-top"/>
-                Admin
-            </div>
-        </nav>
-        <div id="container-main" class="container-fluid">
-            <!--main content of the dashboard-->
-            <th:block layout:fragment="content"></th:block>
+    <div id="toggle-container">
+        <div id="greeting">Welcome!</div>
+        <div id="navbar-left-toggle">
+            <i class="fas fa-angle-double-right"></i>
         </div>
+    </div>
+    <div id="user-profile-left">
+        <img th:src="@{/images/avatar-default.jpg}" alt="avatar" id="avatar-left"/>
+        <div id="username-left">Admin</div>
+    </div>
+    <nav id="navbar-left" class="nav flex-column">
+        <a class="nav-link active" href="#">
+            <i class="bi bi-clipboard-data navbar-left-icon"></i><span class="desc-text">Production</span>
+        </a>
+        <a class="nav-link" href="#">
+            <i class="fas fa-truck-moving navbar-left-icon"></i><span class="desc-text">Logistics</span>
+        </a>
+        <a class="nav-link" href="#">
+            <i class="fas fa-city navbar-left-icon"></i><span class="desc-text">Installation</span>
+        </a>
+    </nav>
+</div>
+<div id="container-right">
+    <nav id="navbar-top" class="navbar">
+        <form class="d-flex">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn search"><i class="bi bi-search"></i></button>
+        </form>
+        <div id="user-profile-top">
+            <img th:src="@{/images/avatar-default.jpg}" alt="avatar" id="avatar-top"/>
+            Admin
+        </div>
+    </nav>
+    <div id="container-main" class="container-fluid">
+        <div id="float-expand-btn">
+            <i class="fas fa-angle-right"></i>
+        </div>
+        <!--main content of the dashboard-->
+        <th:block layout:fragment="content"></th:block>
     </div>
 </div>
 
