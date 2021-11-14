@@ -11,9 +11,8 @@ $('#navbar-left-toggle').click(function () {
         $('#navbar-left-toggle i').removeClass('fa-angle-double-left').addClass('fa-angle-double-right');
         $('#container-right').css('margin-left', '70px');
         // recover the float expand button in mobile device view after the collapse
-        if (window.innerWidth <= 767) {
-            $('#float-expand-btn').show();
-        }
+        // remove the .expanded class anyway when the collapse button is clicked
+        $('#float-expand-btn').removeClass('expanded');
     }
 });
 
@@ -22,5 +21,5 @@ $('#float-expand-btn').click(function () {
     if ($('#container-left').hasClass('collapsed')) {
         $('#navbar-left-toggle').click();
     }
-    $(this).hide();
+    $(this).addClass('expanded');
 });

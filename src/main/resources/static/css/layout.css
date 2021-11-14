@@ -200,6 +200,10 @@ right container: top navigation bar and main container
         justify-content: center;
         align-items: center;
     }
+
+    #float-expand-btn.expanded {
+        display: none;
+    }
 }
 
 /*
