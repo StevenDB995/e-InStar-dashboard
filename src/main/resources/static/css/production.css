@@ -13,13 +13,9 @@
     text-align: left;
 }
 
-#completion-rate {
-    height: 200px; /* specifying the height of the dom is necessary for the floating effect  */
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
 #completion-rate-graph {
+    padding-left: 0;
+    padding-right: 0;
     align-self: center;
 }
 
@@ -29,7 +25,13 @@
 }
 
 #completion-rate-number {
-    padding-top: 10px;
+    height: 180px; /* specifying the height of the dom is necessary for the floating animation  */
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-family: Pixer-Regular;
     font-size: 100px;
     background: linear-gradient(#25d7bc 30%, #ddd 50%, #25d7bc 70%);
@@ -51,10 +53,10 @@
 
 @keyframes float-completion-rate-number {
     0% {
-        padding-top: 10px;
+        padding-bottom: 0;
     }
     100% {
-        padding-top: 0;
+        padding-bottom: 16px;
     }
 }
 

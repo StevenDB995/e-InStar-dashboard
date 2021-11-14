@@ -16,19 +16,23 @@
                     <h3>PRODUCTION</h3>
                 </div>
                 <div id="completion-rate">
-                    <div id="completion-rate-graph">
-                        <div th:each="i : ${#numbers.sequence(0,4)}">
-                            <div th:each="j : ${#numbers.sequence(0,9)}" class="box-icon-frame">
-                                <img th:id="'box-icon-' + ${i*10 + j}" th:src="@{/images/box-0.png}"
-                                     class="box-icon"/>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div id="completion-rate-graph" class="col-md-6">
+                                <div th:each="i : ${#numbers.sequence(0,4)}">
+                                    <div th:each="j : ${#numbers.sequence(0,9)}" class="box-icon-frame">
+                                        <img th:id="'box-icon-' + ${i*10 + j}" th:src="@{/images/box-0.png}"
+                                             class="box-icon"/>
+                                    </div>
+                                </div>
+                                <div id="completion-rate-caption">
+                                    <span id="completed-modules"></span> of <span id="total-modules"></span> modules completed
+                                </div>
+                            </div>
+                            <div id="completion-rate-number" class="col-md-6">
+                                <span></span>%
                             </div>
                         </div>
-                        <div id="completion-rate-caption">
-                            <span id="completed-modules"></span> of <span id="total-modules"></span> modules completed
-                        </div>
-                    </div>
-                    <div id="completion-rate-number">
-                        <span></span>%
                     </div>
                 </div>
                 <div id="monthly-completion"></div>
@@ -84,6 +88,30 @@
         $('#total-modules').text(totalModules);
 
         animateNumberDisplay($('#completion-rate-number span'), completionRate * 100, 1000, 1);
+
+        new ResizeObserver(function () {
+            if ($('#completion-rate-graph').width() < 280) {
+                // shrink the box icon when the div width is less than 280px
+                $('.box-icon').css({
+                    width: '14px',
+                    height: '14px'
+                });
+                $('.box-icon-frame').css('width', '14px');
+            } else {
+                $('.box-icon').removeAttr('style');
+                $('.box-icon-frame').removeAttr('style');
+            }
+
+            // also adjust the font size of the number while the div width changes
+            var $completionRateNumber = $('#completion-rate-number');
+            if ($completionRateNumber.width() < 200) {
+                $completionRateNumber.css('font-size', '72px');
+            } else if ($completionRateNumber.width() < 280) {
+                $completionRateNumber.css('font-size', '80px');
+            } else {
+                $completionRateNumber.removeAttr('style');
+            }
+        }).observe(document.getElementById('completion-rate-graph'));
 
         /**
          * -------------------------------------------------------------------------------------------------------------
