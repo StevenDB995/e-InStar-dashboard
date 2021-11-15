@@ -184,6 +184,11 @@
         };
         monthlyCompletionChart.setOption(option);
 
+        // the variable resizeFlag is used to fix the animation loss caused by the function eChartsInstance.resize()
+        // the callback of ResizeObserver is called anyway when the object is first instantiated
+        // regardless of the size of the observed DOM
+        // therefore, we introduce the boolean variable resizeFlag to prevent the first call of eChartsInstance.resize()
+        var resizeFlag = false;
         new ResizeObserver(function () {
             if ($('#monthly-completion').width() < 480) {
                 // change the chart option and rerender the chart when the container width is less than 480px
@@ -202,7 +207,11 @@
                 monthlyCompletionChart.setOption(option);
             }
             // resize (or rerender) the chart
-            monthlyCompletionChart.resize();
+            if (resizeFlag) {
+                monthlyCompletionChart.resize();
+            } else {
+                resizeFlag = true;
+            }
         }).observe(document.getElementById('container-right'));
 
         /**
