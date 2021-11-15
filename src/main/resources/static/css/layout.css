@@ -200,6 +200,7 @@ right container: top navigation bar and main container
         border-radius: 24px;
         background: rgba(25, 157, 255, 0.5);
         color: white;
+        /* align child both horizontally and vertically center */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -220,7 +221,6 @@ top navigation bar
 
 #navbar-top input[type="search"] {
     height: 28px;
-    /*width: 260px;*/
     border-radius: 14px;
     border-width: 2px;
     border-color: #666b6f;

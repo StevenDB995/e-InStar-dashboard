@@ -18,7 +18,7 @@
                 <div id="completion-rate">
                     <div class="container-fluid">
                         <div class="row">
-                            <div id="completion-rate-graph" class="col-md-6">
+                            <div id="completion-rate-graph" class="col-md-6 order-md-1 order-2">
                                 <div th:each="i : ${#numbers.sequence(0,4)}">
                                     <div th:each="j : ${#numbers.sequence(0,9)}" class="box-icon-frame">
                                         <img th:id="'box-icon-' + ${i*10 + j}" th:src="@{/images/box-0.png}"
@@ -29,7 +29,7 @@
                                     <span id="completed-modules"></span> of <span id="total-modules"></span> modules completed
                                 </div>
                             </div>
-                            <div id="completion-rate-number" class="col-md-6">
+                            <div id="completion-rate-number" class="col-md-6 order-md-2 order-1">
                                 <span></span>%
                             </div>
                         </div>
@@ -118,7 +118,7 @@
          * block: monthly completion
          */
         var monthlyCompletionChart = echarts.init(document.getElementById('monthly-completion'));
-        monthlyCompletionChart.setOption({
+        var option = {
             grid: {
                 left: '15%'
             },
@@ -131,7 +131,7 @@
                 type: 'value',
                 name: 'No. of Modules',
                 nameLocation: 'middle',
-                nameGap: 50,
+                nameGap: 50, // default 15
                 nameTextStyle: {
                     fontStyle: 'bold',
                     fontSize: 14,
@@ -180,9 +180,27 @@
                     }
                 }
             ]
-        });
+        };
+        monthlyCompletionChart.setOption(option);
 
         new ResizeObserver(function () {
+            if ($('#monthly-completion').width() < 480) {
+                // change the chart option and rerender the chart when the container width is less than 480px
+                // edit chart option before resizing
+                monthlyCompletionChart.setOption({
+                    yAxis: {
+                        nameLocation: 'end',
+                        nameGap: 20,
+                        nameTextStyle: {
+                            fontSize: 12
+                        }
+                    }
+                });
+            } else {
+                // recover the original chart option
+                monthlyCompletionChart.setOption(option);
+            }
+            // resize (or rerender) the chart
             monthlyCompletionChart.resize();
         }).observe(document.getElementById('container-right'));
 

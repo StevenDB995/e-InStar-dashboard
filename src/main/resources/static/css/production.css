@@ -9,6 +9,12 @@
     padding: 20px;
 }
 
+@media (max-width: 575px) {
+    #display-area {
+        padding: 20px 10px;
+    }
+}
+
 #heading {
     text-align: left;
 }
@@ -105,27 +111,28 @@
 }
 
 #pass {
-    margin-left: 10%;
+    margin-left: 15%;
     margin-right: 5%;
     border-color: green;
     color: green;
-    background: linear-gradient(315deg, rgba(255, 255, 255, 0) 35%, white 50%, rgba(255, 255, 255, 0) 65%) no-repeat;
-    background-position-x: -320px;
+    background: linear-gradient(315deg, rgba(255, 255, 255, 0) 40%, white 50%, rgba(255, 255, 255, 0) 60%) no-repeat;
+    background-size: 200%;
+    background-position-x: -600px;
     animation: shine-pass 5s ease-in-out infinite;
 }
 
 @keyframes shine-pass {
     0% {
-        background-position-x: -320px;
+        background-position-x: -600px;
     }
-    50%, 100% {
-        background-position-x: 320px;
+    60%, 100% {
+        background-position-x: 600px;
     }
 }
 
 #fail {
     margin-left: 5%;
-    margin-right: 10%;
+    margin-right: 15%;
     border-color: red;
     color: red;
     animation: glow-fail 2s ease-in-out infinite alternate;
