@@ -26,18 +26,16 @@
 
 #completion-rate-number {
     height: 180px; /* specifying the height of the dom is necessary for the floating animation  */
+    margin-bottom: 10px;
     padding-left: 0;
     padding-right: 0;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-top: 10px;
     font-family: Pixer-Regular;
     font-size: 100px;
     background: linear-gradient(#25d7bc 30%, #ddd 50%, #25d7bc 70%);
-    background-position-y: 60px;
+    background-position-y: 80px;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0);
     animation: shine-completion-rate-number 5s cubic-bezier(0.4, 0, 0, 1) infinite,
     float-completion-rate-number 3s ease-in-out infinite alternate;
 }
@@ -53,10 +51,10 @@
 
 @keyframes float-completion-rate-number {
     0% {
-        padding-bottom: 0;
+        padding-top: 10px;
     }
     100% {
-        padding-bottom: 16px;
+        padding-top: 0;
     }
 }
 
