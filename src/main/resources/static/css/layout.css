@@ -186,6 +186,10 @@ right container: top navigation bar and main container
 }
 
 @media (max-width: 767px) {
+    #navbar-top {
+        padding: 8px 12px;
+    }
+
     #float-expand-btn {
         z-index: 1;
         position: fixed;
@@ -210,9 +214,13 @@ right container: top navigation bar and main container
 ------------------------------------------------------------------------------------------------------------------------
 top navigation bar
  */
+#logo-top {
+    display: none;
+}
+
 #navbar-top input[type="search"] {
     height: 28px;
-    width: 260px;
+    /*width: 260px;*/
     border-radius: 14px;
     border-width: 2px;
     border-color: #666b6f;
@@ -237,4 +245,15 @@ top navigation bar
 #avatar-top {
     width: 32px;
     margin-right: 8px;
+}
+
+@media (max-width: 767px) {
+    #logo-top {
+        display: initial;
+        width: 60px;
+    }
+
+    #user-profile-top {
+        display: none;
+    }
 }
