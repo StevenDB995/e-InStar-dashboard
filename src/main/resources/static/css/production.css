@@ -17,6 +17,7 @@
 
 #heading {
     text-align: left;
+    padding-left: 16px;
 }
 
 #completion-rate-graph {

@@ -109,6 +109,7 @@
             } else if ($completionRateNumber.width() < 280) {
                 $completionRateNumber.css('font-size', '80px');
             } else {
+                // it's necessary to remove the style attribute to recover the original font size
                 $completionRateNumber.removeAttr('style');
             }
         }).observe(document.getElementById('completion-rate-graph'));
