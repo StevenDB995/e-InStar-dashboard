@@ -1,21 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
 <head>
     <meta charset="UTF-8">
     <title>Test Page</title>
 </head>
 <body>
-<h1>Hello Spring!</h1>
-<h2>你好，Spring!</h2>
-<div th:object="${student}">
-    <label>Student name: </label><span th:text="*{name}"></span>
-    <br>
-    <label>Age: </label><span th:text="*{age}"></span>
-</div>
+<th:block layout:fragment="content">
+    <h1>Hello Spring!</h1>
+    <h2>你好，Spring!</h2>
+    <div th:object="${student}">
+        <label>Student name: </label><span th:text="*{name}"></span>
+        <br>
+        <label>Age: </label><span th:text="*{age}"></span>
+    </div>
+</th:block>
 
-<script th:inline="javascript">
-    console.log([[${student}]]);
-</script>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        console.log([[${student}]]);
+    </script>
+</th:block>
 </body>
 
 </html>

@@ -21,13 +21,16 @@ html, body {
     font-family: Poppins;
 }
 
+body.no-transition * {
+    transition: none !important;
+}
+
 /*
 ------------------------------------------------------------------------------------------------------------------------
 sub containers:
 left: left navigation bar
 right: top navigation bar and main container
  */
-
 #container-left {
     height: 100%;
     z-index: 1;
@@ -73,7 +76,7 @@ right: top navigation bar and main container
 ------------------------------------------------------------------------------------------------------------------------
 left container: navigation bar
  */
-#container-left.collapsed #navbar-left {
+#navbar-left {
     text-align: center;
 }
 
@@ -85,7 +88,7 @@ left container: navigation bar
     color: white;
 }
 
-.active {
+#navbar-left .nav-link.active {
     background: #0d99ff;
     font-weight: bold;
 }
@@ -95,11 +98,12 @@ left container: navigation bar
     display: inline;
 }
 
-#container-left.collapsed #navbar-left span.desc-text {
+#container-left #navbar-left span.desc-text {
     display: none;
 }
 
 #container-left.expanded #navbar-left span.desc-text {
+    display: inline;
     margin-left: 10px;
 }
 
@@ -123,11 +127,11 @@ left container: navigation bar
     padding: 5px 15px;
 }
 
-#container-left.collapsed #greeting {
+#greeting {
     display: none;
 }
 
-#greeting {
+#container-left.expanded #greeting {
     display: inline-block;
     font-size: 18px;
 }
@@ -158,11 +162,12 @@ left container: navigation bar
     transition: width .5s;
 }
 
-#container-left.collapsed #username-left {
+#username-left {
     display: none;
 }
 
-#username-left {
+#container-left.expanded #username-left {
+    display: block;
     padding-top: .5em;
 }
 
@@ -187,7 +192,7 @@ right container: top navigation bar and main container
 
 @media (max-width: 767px) {
     #navbar-top {
-        padding: 8px 12px;
+        padding: 6px 12px;
     }
 
     #float-expand-btn {
@@ -249,7 +254,7 @@ top navigation bar
 
 @media (max-width: 767px) {
     #logo-top {
-        display: initial;
+        display: inline-block;
         width: 60px;
     }
 

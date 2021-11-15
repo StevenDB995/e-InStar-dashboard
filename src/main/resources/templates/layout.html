@@ -9,8 +9,8 @@
     <link th:href="@{/fontawesome/css/all.min.css}" rel="stylesheet">
     <link th:href="@{/css/layout.css}" rel="stylesheet">
 </head>
-<body>
-<div id="container-left" class="collapsed">
+<body class="no-transition">
+<div id="container-left">
     <div id="logo-container">
         <img th:src="@{/images/grey-logo.png}" alt="logo" id="logo"/>
     </div>
@@ -25,13 +25,13 @@
         <div id="username-left">Admin</div>
     </div>
     <nav id="navbar-left" class="nav flex-column">
-        <a class="nav-link active" href="#">
+        <a id="production-link" class="nav-link" th:href="@{/dashboard/production}">
             <i class="bi bi-clipboard-data navbar-left-icon"></i><span class="desc-text">Production</span>
         </a>
-        <a class="nav-link" href="#">
+        <a id="logistics-link" class="nav-link" th:href="@{/}">
             <i class="fas fa-truck-moving navbar-left-icon"></i><span class="desc-text">Logistics</span>
         </a>
-        <a class="nav-link" href="#">
+        <a id="installation-link" class="nav-link" href="#">
             <i class="fas fa-city navbar-left-icon"></i><span class="desc-text">Installation</span>
         </a>
     </nav>
