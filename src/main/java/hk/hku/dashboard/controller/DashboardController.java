@@ -10,6 +10,11 @@ import java.util.Map;
 @Controller
 public class DashboardController {
 
+    @GetMapping("dashboard")
+    public String routeHome() {
+        return "dashboard/home";
+    }
+
     @GetMapping("dashboard/production")
     public String routeProduction(Model model) {
         Map<String, Object> student = new HashMap<>();
