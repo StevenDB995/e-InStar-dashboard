@@ -4,31 +4,82 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Home</title>
-    <style>
-        #container-main {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            gap: 32px 144px;
-            padding: 100px 200px;
-        }
-
-        .flex-item {
-            width: 544px;
-            height: 388px;
-            background: dodgerblue;
-        }
-    </style>
+    <link th:href="@{/css/home.css}" rel="stylesheet">
 </head>
 <body>
 <th:block layout:fragment="content">
-    <div class="flex-item">1</div>
-    <div class="flex-item">2</div>
-    <div class="flex-item">3</div>
-    <div class="flex-item">4</div>
-<!--    <div class="flex-item">5</div>-->
-<!--    <div class="flex-item">6</div>-->
+    <div class="container cards-container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card-box">
+                    <div class="card" id="overall">
+                        <div class="card-header">
+                            Featured
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Special title treatment</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional
+                                content.</p>
+                        </div>
+                        <div class="card-footer">
+                            Card footer
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card-box">
+                    <div class="card" id="production">
+                        <div class="card-header">
+                            Featured
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Special title treatment</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional
+                                content.</p>
+                        </div>
+                        <div class="card-footer">
+                            Card footer
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card-box">
+                    <div class="card" id="logistics">
+                        <div class="card-header">
+                            Featured
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Special title treatment</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional
+                                content.</p>
+                        </div>
+                        <div class="card-footer">
+                            Card footer
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card-box">
+                    <div class="card" id="installation">
+                        <div class="card-header">
+                            Featured
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Special title treatment</h5>
+                            <p class="card-text">With supporting text below as a natural lead-in to additional
+                                content.</p>
+                        </div>
+                        <div class="card-footer">
+                            Card footer
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </th:block>
 
 <th:block layout:fragment="script">

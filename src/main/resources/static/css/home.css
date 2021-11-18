@@ -1,0 +1,94 @@
+#container-main {
+    background: white;
+}
+
+.cards-container {
+    padding-top: 7%;
+    padding-bottom: 7%;
+}
+
+.card-box {
+    padding: 12px 48px;
+}
+
+@media (max-width: 1139px) {
+    .cards-container {
+        padding-top: 16px;
+        padding-bottom: 16px;
+    }
+}
+
+@media (max-width: 575px) {
+    .cards-container {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .card-box {
+        padding: 4px 12px;
+    }
+}
+
+.card {
+    color: white;
+}
+
+.card, .card > * {
+    border-width: 0;
+}
+
+.card-header {
+    padding: 24px;
+    font-weight: bold;
+}
+
+.card-body {
+    padding-top: 96px;
+    padding-bottom: 24px;
+    text-align: center;
+}
+
+@media (max-width: 479px) {
+    .card-body {
+        padding-top: 24px;
+        padding-bottom: 12px;
+    }
+}
+
+.card-footer {
+    padding-bottom: 16px;
+    text-align: center;
+    font-size: 14px;
+}
+
+#overall .card-header, #overall .card-body {
+    background: #7e96af;
+}
+
+#overall .card-footer {
+    background: #baccdf;
+}
+
+#production .card-header, #production .card-body {
+    background: #2e7bcd;
+}
+
+#production .card-footer {
+    background: #85c4fa;
+}
+
+#logistics .card-header, #logistics .card-body {
+    background: #ff88cc;
+}
+
+#logistics .card-footer {
+    background: #ffc2e5;
+}
+
+#installation .card-header, #installation .card-body {
+    background: #2ac0af;
+}
+
+#installation .card-footer {
+    background: #7ce3d7;
+}
