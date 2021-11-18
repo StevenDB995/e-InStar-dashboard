@@ -21,7 +21,8 @@ html, body {
     font-family: Poppins;
 }
 
-body.no-transition * {
+#container-left.no-transition,
+#container-left.no-transition * {
     transition: none !important;
 }
 
