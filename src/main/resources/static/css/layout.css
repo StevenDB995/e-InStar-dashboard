@@ -62,6 +62,10 @@ right: top navigation bar and main container
     transition: margin-left .5s;
 }
 
+#container-right.shrunk {
+    margin-left: 280px;
+}
+
 @media (max-width: 767px) {
     #container-left {
         width: 0;
@@ -142,8 +146,20 @@ left container: navigation bar
     cursor: pointer;
 }
 
+#navbar-left-toggle i.arrow-left {
+    display: none;
+}
+
 #container-left.expanded #navbar-left-toggle {
     float: right;
+}
+
+#container-left.expanded #navbar-left-toggle i.arrow-right {
+    display: none;
+}
+
+#container-left.expanded #navbar-left-toggle i.arrow-left {
+    display: inline-block;
 }
 
 #user-profile-left {
@@ -210,7 +226,7 @@ right container: top navigation bar and main container
         align-items: center;
     }
 
-    #float-expand-btn.expanded {
+    #float-expand-btn.hidden {
         display: none;
     }
 }
