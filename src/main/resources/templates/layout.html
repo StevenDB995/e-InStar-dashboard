@@ -25,6 +25,9 @@
         <div id="username-left">Admin</div>
     </div>
     <nav id="navbar-left" class="nav flex-column">
+        <a id="home-link" class="nav-link" th:href="@{/dashboard}">
+            <i class="fas fa-layer-group navbar-left-icon"></i><span class="desc-text">Home</span>
+        </a>
         <a id="production-link" class="nav-link" th:href="@{/dashboard/production}">
             <i class="bi bi-clipboard-data navbar-left-icon"></i><span class="desc-text">Production</span>
         </a>

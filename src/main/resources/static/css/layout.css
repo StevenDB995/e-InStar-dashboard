@@ -182,7 +182,6 @@ right container: top navigation bar and main container
 
 #container-main {
     flex-grow: 1;
-    background: #d8d9d4;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, .5) inset;
 }
 

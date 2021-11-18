@@ -7,6 +7,9 @@ $(function () {
 
     // set the link corresponding to current page active
     switch (window.location.pathname) {
+        case '/dashboard':
+            $('#home-link').addClass('active');
+            break;
         case '/dashboard/production':
             $('#production-link').addClass('active');
             break;

@@ -55,8 +55,13 @@
     }
 }
 
+.card-footer-link {
+    text-decoration: none;
+    color: white;
+}
+
 .card-footer {
-    padding-bottom: 16px;
+    padding-bottom: 24px;
     text-align: center;
     font-size: 14px;
 }
@@ -77,6 +82,14 @@
     background: #85c4fa;
 }
 
+#production .card-footer i.fas {
+    color: #2e7bcd;
+}
+
+#production .card-footer-link:hover {
+    color: #2e7bcd;
+}
+
 #logistics .card-header, #logistics .card-body {
     background: #ff88cc;
 }
@@ -85,10 +98,26 @@
     background: #ffc2e5;
 }
 
+#logistics .card-footer i.fas {
+    color: #ff88cc;
+}
+
+#logistics .card-footer-link:hover {
+    color: #ff88cc;
+}
+
 #installation .card-header, #installation .card-body {
     background: #2ac0af;
 }
 
 #installation .card-footer {
     background: #7ce3d7;
+}
+
+#installation .card-footer i.fas {
+    color: #2ac0af;
+}
+
+#installation .card-footer-link:hover {
+    color: #2ac0af;
 }
