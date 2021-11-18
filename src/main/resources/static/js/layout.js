@@ -44,6 +44,17 @@ $('#float-expand-btn').click(function () {
     expandLeftContainer();
 });
 
+// click anywhere except left container to collapse the left container in mobile view
+$('html').click(function (event) {
+    if (window.innerWidth < 768
+        && !document.getElementById('float-expand-btn').contains(event.target)
+        && $('#container-left').hasClass('expanded')
+        && document.getElementById('container-right').contains(event.target)) {
+        event.preventDefault();
+        collapseLeftContainer();
+    }
+});
+
 function expandLeftContainer() {
     $('#container-left').addClass('expanded');
     $('#container-right').addClass('shrunk');
