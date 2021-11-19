@@ -24,7 +24,7 @@ $(function () {
 $(window).on('load', function () {
     setTimeout(function () {
         // set up a delay for the recovery of transition
-        $('#container-left').removeClass('no-transition');
+        $('body').removeClass('no-transition');
     }, 1000);
 });
 
