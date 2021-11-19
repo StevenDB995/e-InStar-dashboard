@@ -60,6 +60,10 @@
     color: white;
 }
 
+.card-footer-link:hover {
+    color: white;
+}
+
 .card-footer {
     padding-bottom: 24px;
     text-align: center;
@@ -74,6 +78,10 @@
     background: #baccdf;
 }
 
+#overall .card-footer:hover {
+    background: rgba(186, 204, 223, 0.5);
+}
+
 #production .card-header, #production .card-body {
     background: #2e7bcd;
 }
@@ -86,8 +94,8 @@
     color: #2e7bcd;
 }
 
-#production .card-footer-link:hover {
-    color: #2e7bcd;
+#production .card-footer:hover {
+    background: rgba(133, 196, 250, 0.5);
 }
 
 #logistics .card-header, #logistics .card-body {
@@ -102,8 +110,8 @@
     color: #ff88cc;
 }
 
-#logistics .card-footer-link:hover {
-    color: #ff88cc;
+#logistics .card-footer:hover {
+    background: rgba(255, 194, 229, 0.5);
 }
 
 #installation .card-header, #installation .card-body {
@@ -118,6 +126,6 @@
     color: #2ac0af;
 }
 
-#installation .card-footer-link:hover {
-    color: #2ac0af;
+#installation .card-footer:hover {
+    background: rgba(124, 227, 215, 0.5);
 }
