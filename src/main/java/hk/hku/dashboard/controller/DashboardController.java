@@ -11,12 +11,17 @@ import java.util.Map;
 public class DashboardController {
 
     @GetMapping("dashboard")
-    public String routeHome() {
+    public String home() {
         return "dashboard/home";
     }
 
+    @GetMapping("dashboard/logistics")
+    public String logistics() {
+        return "dashboard/logistics";
+    }
+
     @GetMapping("dashboard/production")
-    public String routeProduction(Model model) {
+    public String production(Model model) {
         Map<String, Object> student = new HashMap<>();
         student.put("name", "David");
         student.put("age", 18);

@@ -13,8 +13,11 @@ $(function () {
         case '/dashboard/production':
             $('#production-link').addClass('active');
             break;
-        case '/':
+        case '/dashboard/logistics':
             $('#logistics-link').addClass('active');
+            break;
+        case '/':
+            $('#installation-link').addClass('active');
             break;
     }
 });

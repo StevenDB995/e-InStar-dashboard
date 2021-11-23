@@ -1,0 +1,111 @@
+#display-area {
+    padding: 16px 0;
+}
+
+#heading {
+    color: #6a6a6a;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 2px 0 2px #aaa;
+}
+
+#panel {
+    padding: 12px 4px 20px;
+    border-radius: 14px;
+    background: #027bd3;
+    color: white;
+}
+
+#panel-heading {
+    font-size: 21px;
+    margin-bottom: 8px;
+}
+
+#panel-heading strong {
+    letter-spacing: 1px;
+}
+
+#map {
+    height: 600px;
+    border-radius: 12px;
+}
+
+#map canvas {
+    /* must have the same border radius as #map div to ensure proper display of mapbox */
+    border-radius: 12px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: white;
+}
+
+.bubble-container {
+    display: flex;
+    justify-content: center;
+}
+
+.bubble {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 4px;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 3px;
+    border-color: white;
+    margin-top: 28px;
+    margin-bottom: 28px;
+}
+
+.bubble.mainland {
+    background: #d1452d;
+}
+
+.bubble.sea {
+    background: #f8c012;
+}
+
+.bubble.hk {
+    background: #8fc408;
+}
+
+.bubble .number {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.bubble img.transport-logo {
+    height: 42px;
+}
+
+.bubble .description-text {
+    text-align: center;
+    font-size: 12px;
+}
+
+@media (max-width: 1199px) {
+    .bubble {
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 575px) {
+    .bubble {
+        padding-top: 0;
+        width: 90px;
+        height: 90px;
+    }
+
+    .bubble .number {
+        font-size: 16px;
+    }
+
+    .bubble img.transport-logo {
+        height: 24px;
+    }
+
+    .bubble .description-text {
+        font-size: 8px;
+    }
+}

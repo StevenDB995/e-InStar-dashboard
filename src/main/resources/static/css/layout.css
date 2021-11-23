@@ -35,7 +35,7 @@ right: top navigation bar and main container
  */
 #container-left {
     height: 100%;
-    z-index: 1;
+    z-index: 10;
     position: fixed;
     overflow-y: scroll; /* for scenario where the device height is not enough for the content. This usually happens in the landscape view of a mobile device */
     width: 70px;

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Logistics Dashboard</title>
+    <link th:href="@{/css/logistics.css}" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css" rel="stylesheet">
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="container">
+        <div id="display-area">
+            <h3 id="heading">Logistics</h3>
+            <div id="panel">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div id="panel-heading">
+                            <strong>Tracking: </strong>All Modules in Transportation
+                        </div>
+                        <div class="col-xl-10 col-12">
+                            <div id="map"></div>
+                        </div>
+                        <div class="col-xl-2 col-12">
+                            <div class="row">
+                                <div class="bubble-container col-xl-12 col-4">
+                                    <div class="bubble mainland">
+                                        <div class="number">4</div>
+                                        <img th:src="@{/images/mainland-transport.png}" alt="transportation" class="transport-logo">
+                                        <div class="description-text">Factory to Gaoming Port</div>
+                                    </div>
+                                </div>
+                                <div class="bubble-container col-xl-12 col-4">
+                                    <div class="bubble sea">
+                                        <div class="number">32</div>
+                                        <img th:src="@{/images/sea-transport.png}" alt="transportation" class="transport-logo">
+                                        <div class="description-text">Sea freight</div>
+                                    </div>
+                                </div>
+                                <div class="bubble-container col-xl-12 col-4">
+                                    <div class="bubble hk">
+                                        <div class="number">5</div>
+                                        <img th:src="@{/images/hk-transport.png}" alt="transportation" class="transport-logo">
+                                        <div class="description-text">You Ma Tei Port to WCH site</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1Ijoic3RldmVuZGI5OTUiLCJhIjoiY2t3YmlyeWE4MWNhdjJvcW1ibW5vd2JtcyJ9.tGHXa1ClOlu6cVe-RSiH2Q';
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            center: [114.056824, 22.543206], // starting position [lng, lat]
+            zoom: 8 // starting zoom
+        });
+        map.addControl(new mapboxgl.FullscreenControl());
+        map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }));
+
+        // Create a default Marker and add it to the map.
+        const marker1 = new mapboxgl.Marker()
+            .setLngLat([114.129241, 22.281240])
+            .addTo(map);
+
+        const marker2 = new mapboxgl.Marker({ color: 'red' })
+            .setLngLat([113.798631, 22.732666])
+            .addTo(map);
+
+        map.on('click', function (event) {
+            var coordinates = event.lngLat;
+            console.log(`${coordinates.lng}, ${coordinates.lat}`);
+        });
+
+        new ResizeObserver(function () {
+            // resize the canvas of mapbox on change of the right container width
+            map.resize();
+        }).observe(document.getElementById('container-right'));
+    </script>
+</th:block>
+</body>
+</html>
