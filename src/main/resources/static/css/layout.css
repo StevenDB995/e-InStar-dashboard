@@ -241,7 +241,8 @@ top navigation bar
     display: none;
 }
 
-#navbar-top input[type="search"] {
+/* common css for search input in dashboards */
+input[type="search"] {
     height: 28px;
     border-radius: 14px;
     border-width: 2px;
@@ -252,7 +253,7 @@ top navigation bar
     font-size: 14px;
 }
 
-#navbar-top button.search {
+button.search {
     padding: 0 12px;
     color: #666b6f;
     font-size: 18px;
