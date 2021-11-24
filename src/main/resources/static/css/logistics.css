@@ -36,6 +36,8 @@ form#module-search input {
 
 #trace-graph .node > img {
     width: 84px;
+    filter: drop-shadow(2px 1px 1px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 1px 1px rgba(0, 0, 0, 0.3));
 }
 
 #trace-graph .node > .estimated-arrival {
@@ -48,6 +50,8 @@ form#module-search input {
     background: #f9d153;
     text-align: center;
     font-size: 14px;
+    box-shadow: 2px 1px 4px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 2px 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 @media (max-width: 991px) {
@@ -91,10 +95,12 @@ form#module-search input {
     width: 100%;
     height: 100%;
     z-index: -1;
+    filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(0 2px 1px rgba(0, 0, 0, 0.3));
 }
 
 #trace-graph svg > line {
-    stroke-width: 4px;
+    stroke-width: 6px;
 }
 
 #trace-graph svg > #line-left {
@@ -103,6 +109,12 @@ form#module-search input {
 
 #trace-graph svg > #line-right {
     stroke: #a6a6a6;
+}
+
+@media (max-width: 575px) {
+    #trace-graph svg > line {
+        stroke-width: 4px;
+    }
 }
 
 #panel {
