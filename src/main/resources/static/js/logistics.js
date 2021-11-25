@@ -235,6 +235,7 @@ function showLogisticsRoute() {
     // center to the current location of the tracked module
     map.flyTo({
         center: trackedModule.coordinates.at(-1),
+        zoom: 10,
         speed: 0.5,
         essential: true
     })
