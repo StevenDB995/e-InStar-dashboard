@@ -22,19 +22,19 @@
                     <line id="line-right" y1="50%" y2="50%"/>
                 </svg>
                 <div class="node">
-                    <img th:src="@{/images/logistics/factory-gray.png}">
+                    <img th:src="@{/images/logistics/factory-0.png}">
                 </div>
                 <div class="node">
-                    <img th:src="@{/images/logistics/truck-gray.png}">
+                    <img th:src="@{/images/logistics/truck-0.png}">
                 </div>
                 <div class="node">
-                    <img th:src="@{/images/logistics/ferry-gray.png}">
+                    <img th:src="@{/images/logistics/ferry-0.png}">
                 </div>
                 <div class="node">
-                    <img th:src="@{/images/logistics/truck-gray.png}">
+                    <img th:src="@{/images/logistics/truck-0.png}">
                 </div>
                 <div class="node">
-                    <img th:src="@{/images/logistics/destination-gray.png}">
+                    <img th:src="@{/images/logistics/destination-0.png}">
                 </div>
             </div>
             <div id="panel">
@@ -80,103 +80,7 @@
 
 <th:block layout:fragment="script">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
-    <script>
-        /**
-         * -------------------------------------------------------------------------------------------------------------
-         * trace graph
-         * this dom is hidden on page load, and will be displayed only if a valid module ID is searched
-         */
-        var stage = 1; // which stage the logistics is at; the number should be 0, 1, 3, or 4
-
-        // set the node image color
-        for (var i = 0; i <= stage; ++i) {
-            var $nodeImg = $($('#trace-graph .node > img')[i]);
-            var imgSrc = $nodeImg.attr('src').replace('-gray', '');
-            $nodeImg.attr('src', imgSrc);
-        }
-
-        // set the line color
-        new ResizeObserver(setLineColor).observe(document.getElementById('container-right'));
-
-        function setLineColor() {
-            var $svgLineLeft = $('#trace-graph svg > #line-left');
-            var $svgLineRight = $('#trace-graph svg > #line-right');
-            var graphWidth = $('#trace-graph').width();
-            var nodeWidth = $('#trace-graph .node > img').width();
-            var nodeGap = (graphWidth - nodeWidth) / 4;
-
-            var xLeft = nodeWidth / 2;
-            var xMiddle = xLeft + stage * nodeGap;
-            var xRight = graphWidth - nodeWidth / 2;
-            $svgLineLeft.attr('x1', xLeft + 'px')
-                .attr('x2', xMiddle + 'px');
-            $svgLineRight.attr('x1', xMiddle)
-                .attr('x2', xRight + 'px');
-        }
-
-        // display estimated arrival info
-        $($('#trace-graph .node')[stage]).append(
-            `<div class="estimated-arrival">
-                        <strong>Estimated Arrival Time:</strong>
-                        <br>
-                        18/9/2021
-                        <br>
-                        07:30
-                    </div>`);
-
-        /**
-         * -------------------------------------------------------------------------------------------------------------
-         * mapbox
-         */
-        mapboxgl.accessToken = 'pk.eyJ1Ijoic3RldmVuZGI5OTUiLCJhIjoiY2t3YmlyeWE4MWNhdjJvcW1ibW5vd2JtcyJ9.tGHXa1ClOlu6cVe-RSiH2Q';
-        const map = new mapboxgl.Map({
-            container: 'map', // container ID
-            style: 'mapbox://styles/mapbox/streets-v11', // style URL
-            center: [114.056824, 22.543206], // starting position [lng, lat]
-            zoom: 8 // starting zoom
-        });
-        map.addControl(new mapboxgl.FullscreenControl());
-        map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }));
-
-        // Create a default Marker and add it to the map.
-        const marker1 = new mapboxgl.Marker()
-            .setLngLat([114.129241, 22.281240])
-            .addTo(map);
-
-        const marker2 = new mapboxgl.Marker({ color: 'red' })
-            .setLngLat([113.798631, 22.732666])
-            .addTo(map);
-
-        map.on('click', function (event) {
-            var coordinates = event.lngLat;
-            console.log(`${coordinates.lng}, ${coordinates.lat}`);
-        });
-
-        new ResizeObserver(function () {
-            // resize the canvas of mapbox on change of the right container width
-            map.resize();
-        }).observe(document.getElementById('container-right'));
-
-        /**
-         * -------------------------------------------------------------------------------------------------------------
-         * module search
-         */
-        $('form#module-search button.search').click(function (event) {
-            event.preventDefault(); // prevent page reload
-            if ($('form#module-search input').val() === '') {
-                return;
-            }
-            $('#trace-graph').show();
-            // set the line color after the #trace-graph dom is rendered
-            setLineColor();
-        });
-
-        $('form#module-search input').on('input', function () {
-            if ($(this).val() === '') {
-                $('#trace-graph').hide();
-            }
-        });
-    </script>
+    <script th:src="@{/js/logistics.js}"></script>
 </th:block>
 </body>
 </html>
