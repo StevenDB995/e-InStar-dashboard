@@ -67,12 +67,55 @@ var modules = {
     }
 };
 
-var trackedModule;
+/**
+ * ---------------------------------------------------------------------------------------------------------------------
+ * codes to be executed immediately after all the HTML DOMs are ready
+ * put global variables and actions of initializations here
+ */
+
+/**
+ * global variables
+ */
+var trackedModule; // currently tracked module returned from search result
 var markers = []; // record all current markers on map
 
-$(function () {
-    resetBubbles();
+/**
+ * fill statistics of the logistics in the bubbles of the #panel dom
+ */
+resetBubbles();
+
+/**
+ * initialize mapbox
+ */
+mapboxgl.accessToken = 'pk.eyJ1Ijoic3RldmVuZGI5OTUiLCJhIjoiY2t3YmlyeWE4MWNhdjJvcW1ibW5vd2JtcyJ9.tGHXa1ClOlu6cVe-RSiH2Q';
+const map = new mapboxgl.Map({
+    container: 'map', // container ID
+    style: 'mapbox://styles/mapbox/streets-v11', // style URL
+    center: [114.056824, 22.543206], // starting position [lng, lat]
+    zoom: 7.5 // starting zoom
 });
+map.addControl(new mapboxgl.FullscreenControl());
+map.addControl(new mapboxgl.NavigationControl({visualizePitch: true}));
+
+map.on('click', function (event) {
+    var coordinates = event.lngLat;
+    console.log(`${coordinates.lng}, ${coordinates.lat}`);
+});
+
+// show current locations of all modules in transportation
+resetMap();
+
+/**
+ * register resize observer for right container
+ */
+new ResizeObserver(function () {
+    // resize the canvas of mapbox on change of the right container width
+    map.resize();
+    // only repaint the svg line when the #trace-graph dom is displayed
+    if ($('#trace-graph').css('display') !== 'none') {
+        setLineColor();
+    }
+}).observe(document.getElementById('container-right'));
 
 /**
  * ---------------------------------------------------------------------------------------------------------------------
@@ -165,40 +208,10 @@ function setLineColor() {
         .attr('x2', xRight + 'px');
 }
 
-new ResizeObserver(function () {
-    // only repaint the svg line when the #trace-graph dom is displayed
-    if ($('#trace-graph').css('display') !== 'none') {
-        setLineColor();
-    }
-}).observe(document.getElementById('container-right'));
-
 /**
  * ---------------------------------------------------------------------------------------------------------------------
  * mapbox
  */
-mapboxgl.accessToken = 'pk.eyJ1Ijoic3RldmVuZGI5OTUiLCJhIjoiY2t3YmlyeWE4MWNhdjJvcW1ibW5vd2JtcyJ9.tGHXa1ClOlu6cVe-RSiH2Q';
-const map = new mapboxgl.Map({
-    container: 'map', // container ID
-    style: 'mapbox://styles/mapbox/streets-v11', // style URL
-    center: [114.056824, 22.543206], // starting position [lng, lat]
-    zoom: 7.5 // starting zoom
-});
-map.addControl(new mapboxgl.FullscreenControl());
-map.addControl(new mapboxgl.NavigationControl({visualizePitch: true}));
-
-map.on('click', function (event) {
-    var coordinates = event.lngLat;
-    console.log(`${coordinates.lng}, ${coordinates.lat}`);
-});
-
-// show current locations of all modules in transportation
-resetMap();
-
-new ResizeObserver(function () {
-    // resize the canvas of mapbox on change of the right container width
-    map.resize();
-}).observe(document.getElementById('container-right'));
-
 function showLogisticsRoute() {
     // remove all existing markers and route
     clearMap();
@@ -301,8 +314,7 @@ function resetMap() {
  * ---------------------------------------------------------------------------------------------------------------------
  * bubbles in the #panel dom
  */
-// change the bubbles in the #panel based on module search result
-function changeBubbles() {
+function changeBubbles() { // change the bubbles in the #panel based on module search result
     $('.bubble-container').hide();
 
     switch (trackedModule.status) {

@@ -1,26 +1,24 @@
-$(function () {
-    // recover the left container status when the page is ready
-    // the status is stored in the session storage
-    if (window.sessionStorage.getItem('left-container-status') === 'expanded') {
-        expandLeftContainer();
-    }
+// recover the left container status when the page is ready
+// the status is stored in the session storage
+if (window.sessionStorage.getItem('left-container-status') === 'expanded') {
+    expandLeftContainer();
+}
 
-    // set the link corresponding to current page active
-    switch (window.location.pathname) {
-        case '/dashboard':
-            $('#home-link').addClass('active');
-            break;
-        case '/dashboard/production':
-            $('#production-link').addClass('active');
-            break;
-        case '/dashboard/logistics':
-            $('#logistics-link').addClass('active');
-            break;
-        case '/':
-            $('#installation-link').addClass('active');
-            break;
-    }
-});
+// set the link corresponding to current page active
+switch (window.location.pathname) {
+    case '/dashboard':
+        $('#home-link').addClass('active');
+        break;
+    case '/dashboard/production':
+        $('#production-link').addClass('active');
+        break;
+    case '/dashboard/logistics':
+        $('#logistics-link').addClass('active');
+        break;
+    case '/':
+        $('#installation-link').addClass('active');
+        break;
+}
 
 // disable transition temporary when the page is loading
 // remove the .no-transition class to recover css transition when the page is loaded
