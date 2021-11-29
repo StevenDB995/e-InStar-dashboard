@@ -25,6 +25,21 @@
     }
 }
 
+/* for iPad Pro */
+@media (device-width: 1024px) and (device-height: 1366px) {
+    #container-right:not(.shrunk) .cards-container {
+        padding-top: 200px;
+        padding-bottom: 200px;
+    }
+}
+
+/* for iPad and iPad Pro */
+@media (min-width: 992px) and (max-width: 1139px) {
+    #container-right.shrunk .card-box-wrapper {
+        width: 100%;
+    }
+}
+
 .card {
     color: white;
 }
