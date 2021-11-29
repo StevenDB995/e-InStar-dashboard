@@ -194,6 +194,7 @@ left container: navigation bar
 right container: top navigation bar and main container
  */
 #navbar-top {
+    flex-shrink: 0; /* added to fix the improper display of top navbar in Safari on MacBook */
     background: #199dff;
     padding: 12px 60px;
 }
