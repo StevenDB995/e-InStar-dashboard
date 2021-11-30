@@ -21,7 +21,7 @@
                                 <div id="completion-rate-graph" class="col-md-6 order-md-1 order-2">
                                     <div th:each="i : ${#numbers.sequence(0,4)}">
                                         <div th:each="j : ${#numbers.sequence(0,9)}" class="box-icon-frame">
-                                            <img th:id="'box-icon-' + ${i*10 + j}" th:src="@{/images/box-0.png}"
+                                            <img th:id="'box-icon-' + ${i*10 + j}" th:src="@{/images/production/box-0.png}"
                                                  class="box-icon"/>
                                         </div>
                                     </div>
@@ -69,7 +69,7 @@
 </th:block>
 
 <th:block layout:fragment="script">
-    <script th:src="@{/js/echarts.min.js}"></script>
+    <script th:src="@{/echarts-5.2.2/echarts.min.js}"></script>
     <script th:inline="javascript">
         console.log([[${student}]]);
 
@@ -82,7 +82,7 @@
         var completionRate = completedModules / totalModules;
 
         for (let i = 0; i < completionRate * 50; ++i) {
-            $('#box-icon-' + i).attr('src', '/images/box-1.png');
+            $('#box-icon-' + i).attr('src', '/images/production/box-1.png');
             $('#box-icon-' + i).addClass('filled');
         }
 
