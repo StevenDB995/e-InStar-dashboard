@@ -1,71 +1,17 @@
-var modules = {
-    "A-3-N-5": {
-        "moduleId": "A-3-N-5",
-        "status": 0,
-        "coordinates": [
-            [113.161265, 23.062559]
-        ]
+$.ajax({
+    url: 'http://147.8.139.123/api/icore/getlocationList',
+    method: 'post',
+    data: {
+        moduleid: 'A-3-N-3',
+        judgement: true
     },
-    "A-3-N-4": {
-        "moduleId": "A-3-N-4",
-        "status": 1,
-        "coordinates": [
-            [113.161265, 23.062559],
-            [113.163761, 23.053481],
-            [113.186721, 23.052533],
-            [113.245812, 23.035475],
-            [113.746977, 22.811362],
-            [113.896176, 22.457184]
-        ],
+    success: function (res) {
+        console.log(res);
     },
-    "A-3-N-3": {
-        "moduleId": "A-3-N-3",
-        "status": 2,
-        "coordinates": [
-            [113.161265, 23.062559],
-            [113.163761, 23.053481],
-            [113.186721, 23.052533],
-            [113.245812, 23.035475],
-            [113.746977, 22.811362],
-            [113.896176, 22.457184],
-            [113.922496, 22.360633],
-            [114.117742, 22.337009]
-        ]
-    },
-    "A-3-N-2": {
-        "moduleId": "A-3-N-2",
-        "status": 3,
-        "coordinates": [
-            [113.161265, 23.062559],
-            [113.163761, 23.053481],
-            [113.186721, 23.052533],
-            [113.245812, 23.035475],
-            [113.746977, 22.811362],
-            [113.896176, 22.457184],
-            [113.922496, 22.360633],
-            [114.117742, 22.337009],
-            [114.140315, 22.335361],
-            [114.162116, 22.299075]
-        ]
-    },
-    "A-3-N-1": {
-        "moduleId": "A-3-N-1",
-        "status": 4,
-        "coordinates": [
-            [113.161265, 23.062559],
-            [113.163761, 23.053481],
-            [113.186721, 23.052533],
-            [113.245812, 23.035475],
-            [113.746977, 22.811362],
-            [113.896176, 22.457184],
-            [113.922496, 22.360633],
-            [114.117742, 22.337009],
-            [114.140315, 22.335361],
-            [114.162116, 22.299075],
-            [114.174038, 22.244645]
-        ]
+    error: function (res) {
+        console.log(res);
     }
-};
+});
 
 /**
  * ---------------------------------------------------------------------------------------------------------------------
@@ -73,19 +19,46 @@ var modules = {
  * put global variables and actions of initializations here
  */
 
-/**
- * global variables
+/*
+global variables
  */
+var modules; // all modules in transportation
 var trackedModule; // currently tracked module returned from search result
 var markers = []; // record all current markers on map
 
-/**
- * fill statistics of the logistics in the bubbles of the #panel dom
- */
-resetBubbles();
+// mocking asynchronous ajax request
+// set delay to 10 ms
+function requestForAllModules(successHandler) {
+    console.log('sent request for all modules');
+    setTimeout(function () {
+        modules = allModules;
+        successHandler();
+    }, 10);
+}
 
-/**
- * initialize mapbox
+function requestForModuleDetail(requestData, successHandler, failHandler) {
+    console.log(`sent request for module ${requestData.moduleid}`);
+    setTimeout(function () {
+        if (allModulesDetail.hasOwnProperty(requestData.moduleid)) {
+            trackedModule = allModulesDetail[requestData.moduleid].data;
+            trackedModule.moduleId = requestData.moduleid;
+            successHandler();
+        } else {
+            failHandler();
+        }
+    }, 100);
+}
+
+// reset the #panel div
+function resetPanel() {
+    // show current locations of all modules in transportation
+    resetMap();
+    // fill statistics of the logistics in the bubbles of the #panel dom
+    resetBubbles();
+}
+
+/*
+initialize mapbox
  */
 mapboxgl.accessToken = 'pk.eyJ1Ijoic3RldmVuZGI5OTUiLCJhIjoiY2t3YmlyeWE4MWNhdjJvcW1ibW5vd2JtcyJ9.tGHXa1ClOlu6cVe-RSiH2Q';
 const map = new mapboxgl.Map({
@@ -98,15 +71,43 @@ map.addControl(new mapboxgl.FullscreenControl());
 map.addControl(new mapboxgl.NavigationControl({visualizePitch: true}));
 
 map.on('click', function (event) {
-    var coordinates = event.lngLat;
-    console.log(`${coordinates.lng}, ${coordinates.lat}`);
+    var lngLat = event.lngLat;
+    console.log(`${lngLat.lng}, ${lngLat.lat}`);
+
+    reverseGeocoder(coordinatesConverter(lngLat), function (data) {
+        console.log(data);
+    });
 });
 
-// show current locations of all modules in transportation
-resetMap();
+requestForAllModules(() => resetPanel());
 
-/**
- * register resize observer for right container
+// convert the format of coordinates
+// from {"lng": lng, "lat": lat}
+// to [lng, lat]
+function coordinatesConverter(lngLat) {
+    return [lngLat.lng, lngLat.lat];
+
+}
+
+/*
+reverse geocoding
+ */
+function reverseGeocoder(lngLat, successHandler) {
+    $.ajax({
+        url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
+            lngLat.lng + ',' + lngLat.lat + '.json?access_token=' + mapboxgl.accessToken,
+        type: 'get',
+        success: function (data) {
+            successHandler(data);
+        },
+        error: function () {
+            console.error('Fail to retrieve geographic information');
+        }
+    })
+}
+
+/*
+register resize observer for right container
  */
 new ResizeObserver(function () {
     // resize the canvas of mapbox on change of the right container width
@@ -126,18 +127,18 @@ $('form#module-search button.search').click(function (event) {
 
     var inputValue = $('form#module-search input').val()
         .toUpperCase();
-    if (inputValue === '') {
-        // do nothing with an empty string
-    } else if (modules[inputValue] === undefined) {
-        alert('No such module.\nPlease input a valid Module ID.');
-    } else {
-        trackedModule = modules[inputValue];
-        showSearchResult();
+    if (inputValue !== '') {
+        requestForModuleDetail(
+            {moduleid: inputValue, judgement: true},
+            () => showSearchResult(),
+            () => alert('No such module.\nPlease input a valid Module ID.')
+        );
     }
 });
 
 // hide #trace-graph dom when the search input is cleared
 $('form#module-search input').on('input', function () {
+    // space is disallowed in the search input field
     $(this).val($(this).val().replace(' ', ''));
     if ($(this).val() === '') {
         clearSearch();
@@ -154,9 +155,8 @@ function showSearchResult() {
 
 function clearSearch() {
     $('#trace-graph').hide();
-    resetMap();
     $('#panel-heading span').text('All Modules in Transportation');
-    resetBubbles();
+    requestForAllModules(() => resetPanel());
 }
 
 /**
@@ -168,7 +168,7 @@ function renderTraceGraph() {
     // set the node image color
     for (let i = 0; i < 5; ++i) {
         let $nodeImg = $($('#trace-graph .node > img')[i]);
-        if (i <= trackedModule.status) {
+        if (i <= trackedModule.latest.status) {
             let imgSrc = $nodeImg.attr('src').replace('-0', '-1');
             $nodeImg.attr('src', imgSrc);
         } else {
@@ -181,7 +181,7 @@ function renderTraceGraph() {
     // remove the original estimated arrival info first
     $('.estimated-arrival').remove();
     // display estimated arrival info
-    $($('#trace-graph .node')[trackedModule.status]).append(
+    $($('#trace-graph .node')[trackedModule.latest.status]).append(
         `<div class="estimated-arrival">
                         <strong>Estimated Arrival Time:</strong>
                         <br>
@@ -200,7 +200,7 @@ function setLineColor() {
     var nodeGap = (graphWidth - nodeWidth) / 4;
 
     var xLeft = nodeWidth / 2;
-    var xMiddle = xLeft + trackedModule.status * nodeGap;
+    var xMiddle = xLeft + trackedModule.latest.status * nodeGap;
     var xRight = graphWidth - nodeWidth / 2;
     $svgLineLeft.attr('x1', xLeft + 'px')
         .attr('x2', xMiddle + 'px');
@@ -216,9 +216,12 @@ function showLogisticsRoute() {
     // remove all existing markers and route
     clearMap();
 
-    // add marker point on map
-    trackedModule.coordinates.forEach(function (location) {
-        addMarker(location, trackedModule.moduleId, {color: 'red'});
+    var trail = [];
+    trackedModule.trail.forEach(function (lngLat) {
+        // add marker point on map
+        addMarker(lngLat, trackedModule.moduleId, {color: 'red'});
+        // convert the format of coordinates
+        trail.push(coordinatesConverter(lngLat));
     });
 
     // show lines of route on map load
@@ -229,7 +232,7 @@ function showLogisticsRoute() {
             'properties': {},
             'geometry': {
                 'type': 'LineString',
-                'coordinates': trackedModule.coordinates
+                'coordinates': trail
             }
         }
     });
@@ -249,29 +252,37 @@ function showLogisticsRoute() {
     });
 
     map.flyTo({
-        center: trackedModule.coordinates[trackedModule.coordinates.length - 1],
+        center: trackedModule.trail[trackedModule.trail.length - 1],
         zoom: 10,
         speed: 0.5,
         essential: true
     });
 }
 
-function addMarker(coordinates, moduleId, options) {
+function addMarker(lngLat, moduleId, options) {
+    var divs = [];
+    divs.push(
+        `<div id="${moduleId}">
+            <strong>Module ID:</strong> ${moduleId}
+        </div>`
+    );
+    divs.push(
+        `<div>
+            ${lngLat.lng.toFixed(2)}, ${lngLat.lat.toFixed(2)}
+        </div>`
+    );
+    var popup = new mapboxgl.Popup()
+        .setHTML(divs.join(''));
     var marker = new mapboxgl.Marker(options)
-        .setLngLat(coordinates)
-        .setPopup(
-            new mapboxgl.Popup()
-                .setHTML(
-                    `<div>
-                        <strong>Module ID:</strong> ${moduleId}
-                    </div>
-                    <div>
-                        ${coordinates[0].toFixed(2)}, ${coordinates[1].toFixed(2)}
-                    </div>`
-                )
-        )
+        .setLngLat(lngLat)
+        .setPopup(popup)
         .addTo(map);
     markers.push(marker);
+
+    reverseGeocoder(lngLat, function (data) {
+        divs.splice(1, 0, `<div>${data.features[0].place_name}</div>`)
+        popup.setHTML(divs.join(''));
+    });
 }
 
 function clearMap() {
@@ -291,9 +302,9 @@ function resetMap() {
     clearMap();
 
     // show current locations of all modules in transportation
-    Object.values(modules).forEach(function (module) {
+    for (let moduleId in modules) {
         let color;
-        switch (module.status) {
+        switch (modules[moduleId].status) {
             case 0:
             case 1:
                 color = '#d1452d';
@@ -306,8 +317,8 @@ function resetMap() {
                 color = '#8fc408';
                 break;
         }
-        addMarker(module.coordinates[module.coordinates.length - 1], module.moduleId, {color: color});
-    });
+        addMarker(modules[moduleId], moduleId, {color: color});
+    }
 }
 
 /**
@@ -317,7 +328,7 @@ function resetMap() {
 function changeBubbles() { // change the bubbles in the #panel based on module search result
     $('.bubble-container').hide();
 
-    switch (trackedModule.status) {
+    switch (trackedModule.latest.status) {
         case 0:
         case 1:
             $('.bubble.mainland').parent().show();
@@ -341,8 +352,8 @@ function resetBubbles() {
     var mainlandCnt = 0,
         seaCnt = 0,
         hkCnt = 0;
-    Object.values(modules).forEach(function (module) {
-        switch (module.status) {
+    for (let moduleId in modules) {
+        switch (modules[moduleId].status) {
             case 0:
             case 1:
                 mainlandCnt++;
@@ -355,7 +366,7 @@ function resetBubbles() {
                 hkCnt++;
                 break;
         }
-    });
+    }
 
     $('.bubble.mainland .number').text(mainlandCnt);
     $('.bubble.sea .number').text(seaCnt);

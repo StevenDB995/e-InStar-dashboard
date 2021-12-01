@@ -49,21 +49,21 @@
                             <div class="row">
                                 <div class="bubble-container col-xl-12 col">
                                     <div class="bubble mainland">
-                                        <div class="number"></div>
+                                        <div class="number">0</div>
                                         <img th:src="@{/images/logistics/mainland-transport.png}" alt="transportation" class="transport-logo">
                                         <div class="description-text">Factory to Gaoming Port</div>
                                     </div>
                                 </div>
                                 <div class="bubble-container col-xl-12 col">
                                     <div class="bubble sea">
-                                        <div class="number"></div>
+                                        <div class="number">0</div>
                                         <img th:src="@{/images/logistics/sea-transport.png}" alt="transportation" class="transport-logo">
                                         <div class="description-text">Sea freight</div>
                                     </div>
                                 </div>
                                 <div class="bubble-container col-xl-12 col">
                                     <div class="bubble hk">
-                                        <div class="number"></div>
+                                        <div class="number">0</div>
                                         <img th:src="@{/images/logistics/hk-transport.png}" alt="transportation" class="transport-logo">
                                         <div class="description-text">You Ma Tei Port to WCH site</div>
                                     </div>
@@ -79,6 +79,7 @@
 
 <th:block layout:fragment="script">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
+    <script th:src="@{/js/logistics-data.js}"></script>
     <script th:src="@{/js/logistics.js}"></script>
 </th:block>
 </body>
