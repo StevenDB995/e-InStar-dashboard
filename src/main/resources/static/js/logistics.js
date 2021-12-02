@@ -26,6 +26,7 @@ $.ajax({
     var modules; // all modules in transportation
     var trackedModule; // currently tracked module returned from search result
     var markers = []; // record all current markers on map
+    var searchStatus = false; // whether the search result of a particular module is currently displayed
 
     // mocking asynchronous ajax request
     // set delay to 10 ms
@@ -75,9 +76,9 @@ $.ajax({
         var lngLat = event.lngLat;
         console.log(`${lngLat.lng}, ${lngLat.lat}`);
 
-        reverseGeocoder(coordinatesConverter(lngLat), function (data) {
-            console.log(data);
-        });
+        // reverseGeocoder(lngLat, function (data) {
+        //     console.log(data);
+        // });
     });
 
     requestForAllModules(() => resetPanel());
@@ -147,6 +148,7 @@ $.ajax({
     });
 
     function showSearchResult() {
+        searchStatus = true;
         $('#trace-graph').show();
         renderTraceGraph(); // render the trace graph
         showLogisticsRoute(); // show route on map
@@ -157,7 +159,12 @@ $.ajax({
     function clearSearch() {
         $('#trace-graph').hide();
         $('#panel-heading span').text('All Modules in Transportation');
-        requestForAllModules(() => resetPanel());
+        if (searchStatus) {
+            requestForAllModules(() => resetPanel());
+            searchStatus = false;
+        } else {
+            resetPanel();
+        }
     }
 
     /**
