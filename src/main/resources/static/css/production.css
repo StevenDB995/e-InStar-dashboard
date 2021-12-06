@@ -1,28 +1,31 @@
-/* customize background color of the main container */
-#container-main {
-    background: #d8d9d4;
+#display-area {
+    padding: 16px 0;
 }
 
-#display-area {
-    margin: 20px 4px;
+#panel {
+    margin-top: 36px;
     text-align: center;
     border-style: solid;
     border-color: #6f6f6f;
     border-width: 3px;
     border-radius: 20px;
-    background: #eee;
-    padding: 20px;
+    /*background: #eee;*/
+    padding: 24px 16px;
 }
 
 @media (max-width: 575px) {
-    #display-area {
+    #panel {
         padding: 20px 10px;
     }
 }
 
 #heading {
     text-align: left;
-    padding-left: 16px;
+    /*padding-left: 16px;*/
+    color: #6a6a6a;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 2px 0 2px #aaa;
 }
 
 #completion-rate-graph {
@@ -44,7 +47,7 @@
     padding-top: 10px;
     font-family: Pixer-Regular;
     font-size: 100px;
-    background: linear-gradient(#25d7bc 30%, #ddd 50%, #25d7bc 70%);
+    background: linear-gradient(#199dff 40%, rgba(25, 157, 255, 0.3) 50%, #199dff 60%);
     background-position-y: 80px;
     -webkit-background-clip: text;
     -webkit-text-fill-color: rgba(255, 255, 255, 0);
@@ -113,15 +116,16 @@
     border-width: 2px;
     border-radius: 10px;
     padding-top: 12px;
+    padding-bottom: 12px;
     box-shadow: 4px 4px 4px gray;
 }
 
 #pass {
     margin-left: 15%;
     margin-right: 5%;
-    border-color: green;
-    color: green;
-    background: linear-gradient(315deg, rgba(255, 255, 255, 0) 40%, white 50%, rgba(255, 255, 255, 0) 60%) no-repeat;
+    border-color: #027bd3;
+    color: #027bd3;
+    background: linear-gradient(315deg, rgba(255, 255, 255, 0) 40%, rgba(2, 123, 211, 0.1) 50%, rgba(255, 255, 255, 0) 60%) no-repeat;
     background-size: 200%;
     background-position-x: -600px;
     animation: shine-pass 5s ease-in-out infinite;
@@ -163,7 +167,7 @@
 }
 
 #monthly-pass-rate {
-    margin: 40px 0;
+    margin: 36px 7%;
 }
 
 .progress-bar-row {
@@ -171,19 +175,27 @@
 }
 
 .progress {
+    height: 12px;
     width: 80%;
     margin: 10px 0;
-    background: #ffc107;
+    background: #ffc350;
+    border-radius: 3px;
+}
+
+.progress-bar {
+    background: #027bd3;
 }
 
 .progress-bar-left {
     width: 10%;
     align-self: center;
+    text-align: left;
     margin-right: 10px;
 }
 
 .progress-bar-right {
     width: 10%;
     align-self: center;
+    text-align: right;
     margin-left: 10px;
 }

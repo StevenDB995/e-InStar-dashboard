@@ -87,11 +87,11 @@ var option = {
             data: [1000, 1050, 1130, 1200, 1350, 1500, 1550, 1550, 1550, 1550, 1550, 1550], // to be passed via model map from backend
             smooth: true,
             lineStyle: {
-                color: '#25d7bc',
+                color: '#199dff',
                 width: 3
             },
             itemStyle: {
-                color: '#25d7bc'
+                color: '#199dff'
             }
         },
         {
@@ -100,11 +100,11 @@ var option = {
             data: [820, 932, 901, 934, 1290, 1330, 1320, 1440, 1508, 1601, 1599, 1604], // to be passed via model map from backend
             smooth: true,
             lineStyle: {
-                color: '#ee819a',
+                color: '#ffc350',
                 width: 3
             },
             itemStyle: {
-                color: '#ee819a'
+                color: '#ffc350'
             }
         }
     ]
