@@ -47,6 +47,10 @@ new ResizeObserver(function () {
  */
 var monthlyCompletionChart = echarts.init(document.getElementById('monthly-completion'));
 var option = {
+    title: {
+        text: 'Monthly Statistics',
+        left: 'center'
+    },
     grid: {
         left: '15%'
     },
@@ -69,7 +73,7 @@ var option = {
     legend: {
         orient: 'vertical',
         right: '10%',
-        bottom: '27%',
+        bottom: '28%',
         padding: 10,
         backgroundColor: '#fff',
         borderColor: '#999',
@@ -78,7 +82,10 @@ var option = {
         data: ['Planned', 'Actual']
     },
     tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
+        textStyle: {
+            align: 'left'
+        }
     },
     series: [
         {
