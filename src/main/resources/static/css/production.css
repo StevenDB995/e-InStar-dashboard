@@ -29,8 +29,6 @@
 }
 
 #completion-rate-graph {
-    padding-left: 0;
-    padding-right: 0;
     align-self: center;
 }
 
@@ -41,9 +39,7 @@
 
 #completion-rate-number {
     height: 180px; /* specifying the height of the dom is necessary for the floating animation  */
-    margin-bottom: 10px;
-    padding-left: 0;
-    padding-right: 0;
+    padding-bottom: 10px;
     padding-top: 10px;
     font-family: Pixer-Regular;
     font-size: 100px;

@@ -68,6 +68,20 @@ right: top navigation bar and main container
     margin-left: 280px;
 }
 
+/* shrink the left container's expanded size */
+/* when the screen width falls between 768px and 1440px (inclusive) */
+@media (min-width: 768px) and (max-width: 1441px) {
+    #container-left.expanded {
+        width: 200px;
+    }
+
+    #container-right.shrunk {
+        margin-left: 200px;
+    }
+}
+
+/* stop resizing left container and right container */
+/* when the screen width is smaller than 768px */
 @media (max-width: 767px) {
     #container-left {
         width: 0;

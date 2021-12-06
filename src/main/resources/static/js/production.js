@@ -7,8 +7,9 @@ var totalModules = 952; // to be passed via model map from backend
 var completionRate = completedModules / totalModules;
 
 for (let i = 0; i < completionRate * 50; ++i) {
-    $('#box-icon-' + i).attr('src', '/images/production/box-1.png');
-    $('#box-icon-' + i).addClass('filled');
+    $('#box-icon-' + i)
+        .attr('src', '/images/production/box-1.png')
+        .addClass('filled');
 }
 
 $('#completed-modules').text(completedModules);
@@ -20,10 +21,10 @@ new ResizeObserver(function () {
     if ($('#completion-rate-graph').width() < 280) {
         // shrink the box icon when the div width is less than 280px
         $('.box-icon').css({
-            width: '14px',
-            height: '14px'
+            width: '16px',
+            height: '16px'
         });
-        $('.box-icon-frame').css('width', '14px');
+        $('.box-icon-frame').css('width', '18px');
     } else {
         $('.box-icon').removeAttr('style');
         $('.box-icon-frame').removeAttr('style');
@@ -31,10 +32,8 @@ new ResizeObserver(function () {
 
     // also adjust the font size of the number while the div width changes
     var $completionRateNumber = $('#completion-rate-number');
-    if ($completionRateNumber.width() < 200) {
-        $completionRateNumber.css('font-size', '72px');
-    } else if ($completionRateNumber.width() < 280) {
-        $completionRateNumber.css('font-size', '80px');
+    if ($completionRateNumber.width() < 280) {
+        $completionRateNumber.css('font-size', '88px');
     } else {
         // it's necessary to remove the style attribute to recover the original font size
         $completionRateNumber.removeAttr('style');
