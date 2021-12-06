@@ -1,0 +1,177 @@
+/**
+ * -------------------------------------------------------------------------------------------------------------
+ * block: completion rate
+ */
+var completedModules = 532; // to be passed via model map from backend
+var totalModules = 952; // to be passed via model map from backend
+var completionRate = completedModules / totalModules;
+
+for (let i = 0; i < completionRate * 50; ++i) {
+    $('#box-icon-' + i).attr('src', '/images/production/box-1.png');
+    $('#box-icon-' + i).addClass('filled');
+}
+
+$('#completed-modules').text(completedModules);
+$('#total-modules').text(totalModules);
+
+animateNumberDisplay($('#completion-rate-number span'), completionRate * 100, 1000, 1);
+
+new ResizeObserver(function () {
+    if ($('#completion-rate-graph').width() < 280) {
+        // shrink the box icon when the div width is less than 280px
+        $('.box-icon').css({
+            width: '14px',
+            height: '14px'
+        });
+        $('.box-icon-frame').css('width', '14px');
+    } else {
+        $('.box-icon').removeAttr('style');
+        $('.box-icon-frame').removeAttr('style');
+    }
+
+    // also adjust the font size of the number while the div width changes
+    var $completionRateNumber = $('#completion-rate-number');
+    if ($completionRateNumber.width() < 200) {
+        $completionRateNumber.css('font-size', '72px');
+    } else if ($completionRateNumber.width() < 280) {
+        $completionRateNumber.css('font-size', '80px');
+    } else {
+        // it's necessary to remove the style attribute to recover the original font size
+        $completionRateNumber.removeAttr('style');
+    }
+}).observe(document.getElementById('completion-rate-graph'));
+
+/**
+ * -------------------------------------------------------------------------------------------------------------
+ * block: monthly completion
+ */
+var monthlyCompletionChart = echarts.init(document.getElementById('monthly-completion'));
+var option = {
+    grid: {
+        left: '15%'
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    },
+    yAxis: {
+        type: 'value',
+        name: 'No. of Modules',
+        nameLocation: 'middle',
+        nameGap: 50, // default 15
+        nameTextStyle: {
+            fontStyle: 'bold',
+            fontSize: 14,
+            color: '#000'
+        }
+    },
+    legend: {
+        orient: 'vertical',
+        right: '10%',
+        bottom: '27%',
+        padding: 10,
+        backgroundColor: '#fff',
+        borderColor: '#999',
+        borderWidth: 2,
+        borderRadius: 5,
+        data: ['Planned', 'Actual']
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    series: [
+        {
+            type: 'line',
+            name: 'Planned',
+            data: [1000, 1050, 1130, 1200, 1350, 1500, 1550, 1550, 1550, 1550, 1550, 1550], // to be passed via model map from backend
+            smooth: true,
+            lineStyle: {
+                color: '#25d7bc',
+                width: 3
+            },
+            itemStyle: {
+                color: '#25d7bc'
+            }
+        },
+        {
+            type: 'line',
+            name: 'Actual',
+            data: [820, 932, 901, 934, 1290, 1330, 1320, 1440, 1508, 1601, 1599, 1604], // to be passed via model map from backend
+            smooth: true,
+            lineStyle: {
+                color: '#ee819a',
+                width: 3
+            },
+            itemStyle: {
+                color: '#ee819a'
+            }
+        }
+    ]
+};
+monthlyCompletionChart.setOption(option);
+
+// the variable resizeFlag is used to fix the animation loss caused by the function eChartsInstance.resize()
+// the callback of ResizeObserver is called anyway when the object is first instantiated
+// regardless of the size of the observed DOM
+// therefore, we introduce the boolean variable resizeFlag to prevent the first call of eChartsInstance.resize()
+var resizeFlag = false;
+new ResizeObserver(function () {
+    if ($('#monthly-completion').width() < 480) {
+        // change the chart option and rerender the chart when the container width is less than 480px
+        // edit chart option before resizing
+        monthlyCompletionChart.setOption({
+            yAxis: {
+                nameLocation: 'end',
+                nameGap: 20,
+                nameTextStyle: {
+                    fontSize: 12
+                }
+            }
+        });
+    } else {
+        // recover the original chart option
+        monthlyCompletionChart.setOption(option);
+    }
+    // resize (or rerender) the chart
+    if (resizeFlag) {
+        monthlyCompletionChart.resize();
+    } else {
+        resizeFlag = true;
+    }
+}).observe(document.getElementById('container-right'));
+
+/**
+ * -------------------------------------------------------------------------------------------------------------
+ * block: pass rate
+ */
+var passRate = 0.9; // to be passed via model map from backend
+var failRate = 1.0 - passRate;
+animateNumberDisplay($('#pass-number span'), passRate * 100, 1000, 0);
+animateNumberDisplay($('#fail-number span'), failRate * 100, 1000, 0);
+
+/**
+ * display number with animation in a counting manner
+ * @param $element the jquery element holding the number
+ * @param number the number to be animated
+ * @param duration duration of the animation
+ * @param fractionDigits number of decimals to be rounded to
+ */
+function animateNumberDisplay($element, number, duration, fractionDigits) {
+    $element.text(number);
+    $element.prop('counter', 0).animate({ // start counting from 0
+        counter: $element.text()
+    }, {
+        duration: duration,
+        easing: 'swing',
+        step: function (current) {
+            $element.text(current.toFixed(fractionDigits));
+        }
+    });
+}
+
+$('.progress-bar').attr('aria-valuenow', 80).animate({
+    width: '80%'
+}, {
+    duration: 1000
+});
