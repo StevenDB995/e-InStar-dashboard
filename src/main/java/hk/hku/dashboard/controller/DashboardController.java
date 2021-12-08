@@ -15,11 +15,6 @@ public class DashboardController {
         return "dashboard/home";
     }
 
-    @GetMapping("dashboard/logistics")
-    public String logistics() {
-        return "dashboard/logistics";
-    }
-
     @GetMapping("dashboard/production")
     public String production(Model model) {
         Map<String, Object> student = new HashMap<>();
@@ -28,6 +23,16 @@ public class DashboardController {
         model.addAttribute("student", student);
 
         return "dashboard/production";
+    }
+
+    @GetMapping("dashboard/logistics")
+    public String logistics() {
+        return "dashboard/logistics";
+    }
+
+    @GetMapping("dashboard/installation")
+    public String installation() {
+        return "dashboard/installation";
     }
 
 }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout.html}">
+<head>
+    <title>Installation Dashboard</title>
+    <link th:href="@{/css/installation.css}" rel="stylesheet">
+</head>
+<body>
+<th:block layout:fragment="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-1"></div>
+            <div class="col-xl-10">
+                <div id="display-area">
+                    <h3 class="heading">Installation</h3>
+                    <div id="panel">
+                        <div class="row">
+                            <div class="flex-container col-sm-7">
+                                <div class="display-card" id="install-total">
+                                    <div class="display-number">
+                                        <span class="installed"></span>
+                                        /
+                                        <span class="total"></span>
+                                    </div>
+                                    <div>Total number of modules installed</div>
+                                </div>
+                            </div>
+                            <div class="flex-container col-sm-5">
+                                <div class="row">
+                                    <div class="flex-container col-sm-12 col-6">
+                                        <div class="display-card" id="install-block-a">
+                                            <div class="display-number">
+                                                <span class="installed"></span>
+                                                /
+                                                <span class="total"></span>
+                                            </div>
+                                            <div>Modules installed at Block A</div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-container col-sm-12 col-6">
+                                        <div class="display-card" id="install-block-b">
+                                            <div class="display-number">
+                                                <span class="installed"></span>
+                                                /
+                                                <span class="total"></span>
+                                            </div>
+                                            <div>Modules installed at Block B</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="flex-container col-sm-7 order-sm-0 order-1">
+                            <div class="display-card">Selected module</div>
+                        </div>
+                        <div class="flex-container col-sm-5 order-sm-1 order-0">
+                            <div class="display-card" id="avg-install-time">
+                                <div class="display-number">
+                                    <span></span>
+                                    min
+                                </div>
+                                <div>Average installation time</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="display-card">3D Model</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-1"></div>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:src="@{/js/installation.js}"></script>
+</th:block>
+</body>
+</html>

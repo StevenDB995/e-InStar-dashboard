@@ -295,3 +295,18 @@ button.search {
         display: none;
     }
 }
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+main container
+ */
+#display-area {
+    padding: 16px 0;
+}
+
+h3.heading {
+    color: #6a6a6a;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 2px 0 2px #aaa;
+}

@@ -15,7 +15,7 @@ switch (window.location.pathname) {
     case '/dashboard/logistics':
         $('#logistics-link').addClass('active');
         break;
-    case '/':
+    case '/dashboard/installation':
         $('#installation-link').addClass('active');
         break;
 }

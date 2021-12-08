@@ -1,14 +1,3 @@
-#display-area {
-    padding: 16px 0;
-}
-
-#heading {
-    color: #6a6a6a;
-    font-weight: bold;
-    letter-spacing: 2px;
-    text-shadow: 2px 0 2px #aaa;
-}
-
 form#module-search {
     padding-bottom: 32px;
 }

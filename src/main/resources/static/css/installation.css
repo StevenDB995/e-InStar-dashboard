@@ -1,0 +1,89 @@
+#panel {
+    margin-top: 36px;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-container > * {
+    flex-grow: 1;
+}
+
+#install-total,
+#install-block-a, #install-block-b,
+#avg-install-time {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.display-card {
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 6px;
+    padding: 12px 24px;
+    margin-bottom: 12px;
+}
+
+.display-number {
+    font-family: Pixer-Regular;
+}
+
+.display-number > * {
+    line-height: 0.75em;
+}
+
+#install-total .display-number {
+    font-size: 48px;
+}
+
+#install-total .installed {
+    font-size: 168px;
+}
+
+#install-block-a .display-number,
+#install-block-b .display-number {
+    font-size: 28px;
+}
+
+#install-block-a .installed,
+#install-block-b .installed {
+    font-size: 68px;
+}
+
+#avg-install-time > .display-number {
+    font-size: 36px;
+}
+
+#avg-install-time > .display-number > span {
+    font-size: 100px;
+}
+
+@media (max-width: 1023px) {
+    #install-total,
+    #install-block-a, #install-block-b,
+    #avg-install-time {
+        padding: 6px 12px;
+    }
+
+    #install-total .display-number {
+        font-size: 36px;
+    }
+
+    #install-total .installed {
+        font-size: 100px;
+    }
+
+    #install-block-a .display-number,
+    #install-block-b .display-number {
+        font-size: 24px;
+    }
+
+    #install-block-a .installed,
+    #install-block-b .installed {
+        font-size: 48px;
+    }
+}
