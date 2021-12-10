@@ -16,11 +16,11 @@ public class StaticResourcesConfiguration implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/js/3d-model/**")
                 .addResourceLocations(CLASSPATH_RESOURCE_LOCATION + "js/3d-model/")
-                .setCacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).noTransform().mustRevalidate());
+                .setCacheControl(CacheControl.noCache());
 
         registry.addResourceHandler("/newmodel/**")
                 .addResourceLocations(CLASSPATH_RESOURCE_LOCATION + "newmodel/")
-                .setCacheControl(CacheControl.maxAge(7, TimeUnit.DAYS).noTransform().mustRevalidate());
+                .setCacheControl(CacheControl.noCache());
     }
 
 }

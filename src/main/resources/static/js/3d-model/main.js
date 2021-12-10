@@ -90,6 +90,25 @@ function init() {
             group1.add(line);
             scene.add(group1);
 
+            load_standard1();
+            load_standard2();
+            load_standard3();
+            load_standard4();
+            load_standard5();
+            load_standard6();
+            load_standard7();
+            load_standard8();
+            load_standard9();
+            load_standard10();
+            load_standard11();
+            load_standard12();
+            load_standard13();
+            load_standard14();
+            load_standard15();
+            load_standard16();
+            load_standard17();
+            loadPLY18('/newmodel/roof.ply', 'roof');
+
             //getbounds(mesh);
         });
     }
@@ -160,7 +179,7 @@ function init() {
 
     }
 
-    load_standard1();
+    // load_standard1();
 
     function getbounds(mesh) {
         var xmin = Math.min.apply(null, x_min_group);
@@ -252,7 +271,7 @@ function init() {
 
     }
 
-    load_standard2();
+    // load_standard2();
 
     //加载第三层标准层
     function loadPLY3(url, nameID) {
@@ -310,7 +329,7 @@ function init() {
 
     }
 
-    load_standard3();
+    // load_standard3();
 
     //加载第四层标准层
     function loadPLY4(url, nameID) {
@@ -368,7 +387,7 @@ function init() {
 
     }
 
-    load_standard4();
+    // load_standard4();
 
     //加载第五层标准层
     function loadPLY5(url, nameID) {
@@ -426,7 +445,7 @@ function init() {
 
     }
 
-    load_standard5();
+    // load_standard5();
 
     //加载第六层标准层
     function loadPLY6(url, nameID) {
@@ -483,7 +502,7 @@ function init() {
 
     }
 
-    load_standard6();
+    // load_standard6();
 
     //加载标准层第七层
     function loadPLY7(url, nameID) {
@@ -542,7 +561,7 @@ function init() {
 
     }
 
-    load_standard7();
+    // load_standard7();
 
     //加载第八层标准层
     function loadPLY8(url, nameID) {
@@ -601,7 +620,7 @@ function init() {
 
     }
 
-    load_standard8();
+    // load_standard8();
 
     //加载第九层标准层
     function loadPLY9(url, nameID) {
@@ -660,7 +679,7 @@ function init() {
 
     }
 
-    load_standard9();
+    // load_standard9();
 
     //加载第十层标准层
     function loadPLY10(url, nameID) {
@@ -719,7 +738,7 @@ function init() {
 
     }
 
-    load_standard10();
+    // load_standard10();
 
     //加载第11层标准层
     function loadPLY11(url, nameID) {
@@ -777,7 +796,7 @@ function init() {
 
     }
 
-    load_standard11();
+    // load_standard11();
 
     //加载第12层标准层
     function loadPLY12(url, nameID) {
@@ -836,7 +855,7 @@ function init() {
 
     }
 
-    load_standard12();
+    // load_standard12();
 
     //加载第13层标准层
     function loadPLY13(url, nameID) {
@@ -895,7 +914,7 @@ function init() {
 
     }
 
-    load_standard13();
+    // load_standard13();
 
     //加载第14层标准层
     function loadPLY14(url, nameID) {
@@ -954,7 +973,7 @@ function init() {
 
     }
 
-    load_standard14();
+    // load_standard14();
 
     //加载第15层标准层
     function loadPLY15(url, nameID) {
@@ -1013,7 +1032,7 @@ function init() {
 
     }
 
-    load_standard15();
+    // load_standard15();
 
     //加载第16层标准层
     function loadPLY16(url, nameID) {
@@ -1074,7 +1093,7 @@ function init() {
 
     }
 
-    load_standard16();
+    // load_standard16();
 
     //加载第17层标准层
     function loadPLY17(url, nameID) {
@@ -1140,7 +1159,7 @@ function init() {
 
     }
 
-    load_standard17();
+    // load_standard17();
 
     //加载屋顶
     function loadPLY18(url, nameID) {
@@ -1185,7 +1204,7 @@ function init() {
         });
     }
 
-    loadPLY18('/newmodel/roof.ply', 'roof');
+    // loadPLY18('/newmodel/roof.ply', 'roof');
 
 
     // function cloneModel(ply,x,y,z,name){
