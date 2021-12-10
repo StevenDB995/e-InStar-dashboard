@@ -67,7 +67,12 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <div class="display-card">3D Model</div>
+                            <div class="display-card">
+                                3D Model
+                                <div>
+                                    <canvas id="3d-model"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -79,6 +84,7 @@
 
 <th:block layout:fragment="script">
     <script th:src="@{/js/installation.js}"></script>
+    <script type="module" th:src="@{/js/3d-model/main.js}"></script>
 </th:block>
 </body>
 </html>
