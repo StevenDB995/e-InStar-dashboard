@@ -38,6 +38,10 @@ function init() {
     // scene.add( plane );
     // plane.receiveShadow = true;
 
+    var y = -94.4871513671875;
+    var y_ground = y + 10;
+    var y_roof = y + 17.4871513671875;
+
     // PLY file
     function loadPLY(url, nameID) {
         const loader = new PLYLoader();
@@ -48,7 +52,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -84.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y_ground, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(0.003);
             mesh.material.opacity = 0.7;
@@ -65,7 +69,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(0.003);
-            line.position.set(-123.04345166015625, -84.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y_ground, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
             //获取模型的bounding数据
@@ -132,7 +136,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -94.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -150,7 +154,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -94.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
             group1.add(mesh);
@@ -225,7 +229,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -84.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 10, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -243,7 +247,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -84.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 10, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
             group1.add(mesh);
             group1.add(line);
@@ -283,7 +287,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -74.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 20, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -301,7 +305,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -74.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 20, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
             group1.add(mesh);
@@ -341,7 +345,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -64.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 30, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -359,7 +363,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -64.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 30, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
             group1.add(mesh);
@@ -399,7 +403,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -54.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 40, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -417,7 +421,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -54.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 40, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
             group1.add(mesh);
@@ -457,7 +461,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -44.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 50, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -475,7 +479,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -44.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 50, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
             group1.add(mesh);
             group1.add(line);
@@ -514,7 +518,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -34.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 60, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -532,7 +536,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -34.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 60, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -573,7 +577,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -24.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 70, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -591,7 +595,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -24.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 70, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -632,7 +636,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -14.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 80, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -650,7 +654,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -14.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 80, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -691,7 +695,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -4.4871513671875, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 90, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -709,7 +713,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -4.4871513671875, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 90, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -750,7 +754,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, 5.512848633, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 100, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -768,7 +772,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, 5.512848633, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 100, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -808,7 +812,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, 15.512848633, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 110, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -826,7 +830,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, 15.512848633, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 110, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -867,7 +871,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, 25.512848633, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 120, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -885,7 +889,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, 25.512848633, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 120, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -926,7 +930,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, 35.512848633, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 130, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -944,7 +948,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, 35.512848633, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 130, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -985,7 +989,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, 45.512848633, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 140, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -1003,7 +1007,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, 45.512848633, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 140, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -1044,7 +1048,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, 55.512848633, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 150, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -1062,7 +1066,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, 55.512848633, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 150, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -1105,7 +1109,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, 65.512848633, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y + 160, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -1123,7 +1127,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, 65.512848633, -46.603991455078145);
+            line.position.set(-123.04345166015625, y + 160, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
@@ -1171,7 +1175,7 @@ function init() {
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, -77, -46.603991455078145);
+            mesh.position.set(-123.04345166015625, y_roof, -46.603991455078145);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(3);
             mesh.material.opacity = 0.7;
@@ -1193,7 +1197,7 @@ function init() {
             })
             var line = new THREE.LineSegments(edges, edgesMaterial);
             line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, -77, -46.603991455078145);
+            line.position.set(-123.04345166015625, y_roof, -46.603991455078145);
             line.rotateX(-Math.PI / 2);
 
 
