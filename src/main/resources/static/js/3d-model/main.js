@@ -3,18 +3,14 @@ import Stats from './stats.module.js';
 import {PLYLoader} from "./PLYLoader.js";
 import {OrbitControls} from './OrbitControls.js';
 
-let container, stats;
+let stats;
 let camera, cameraTarget, scene, renderer, controls;
 var group1 = new THREE.Group();
-var x_min_group = [], y_min_group = [], z_min_group = [], x_max_group = [], y_max_group = [], z_max_group = [];
-var centerX, centerY, centerZ;
 
 init();
 animate();
 
 function init() {
-    // container = document.createElement('div');
-    // document.body.appendChild(container);
     var width = 1000;
     var height = 640;
 
@@ -25,392 +21,129 @@ function init() {
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xFFFFFF);
-    //scene.fog = new THREE.Fog( 0x72645b, 2, 15 );
 
-
-    // Ground
-    // const plane = new THREE.Mesh(
-    //     new THREE.PlaneGeometry( 40, 40 ),
-    //     new THREE.MeshPhongMaterial( { color: 0x999999, specular: 0x101010 } )
-    // );
-    // plane.rotation.x = - Math.PI / 2;
-    // plane.position.y = - 0.5;
-    // scene.add( plane );
-    // plane.receiveShadow = true;
-
+    var x = -123.04345166015625,
+        z = -46.603991455078145;
     var y = -94.4871513671875;
     var y_ground = y + 10;
     var y_roof = y + 17.4871513671875;
 
-    // PLY file
-    function loadPLY(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
+    const PLY_TOTAL = 60; // total number of .ply files to be loaded
+    var plySuccess = 0, plyError = 0; // number of successful and failed loads
 
-            geometry.computeVertexNormals();
+    // store all geometry objects on load
+    var groundGeometry;
+    var standardGeometry = {}; // map (key: .ply file name; value: geometry object)
+    var roofGeometry;
 
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y_ground, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(0.003);
-            mesh.material.opacity = 0.7;
-
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(0.003);
-            line.position.set(-123.04345166015625, y_ground, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-            //获取模型的bounding数据
-
-            var bounding = new THREE.Box3().setFromObject(mesh);
-
-            // console.log(bounding);
-            var x_min = bounding.min.x;
-            var y_min = bounding.min.y;
-            var z_min = bounding.min.z;
-            var x_max = bounding.max.x;
-            var y_max = bounding.max.y;
-            var z_max = bounding.max.z;
-            x_min_group.push(x_min);
-            y_min_group.push(y_min);
-            z_min_group.push(z_min);
-            x_max_group.push(x_max);
-            y_max_group.push(y_max);
-            z_max_group.push(z_max);
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-
-            load_standard1();
-            load_standard2();
-            load_standard3();
-            load_standard4();
-            load_standard5();
-            load_standard6();
-            load_standard7();
-            load_standard8();
-            load_standard9();
-            load_standard10();
-            load_standard11();
-            load_standard12();
-            load_standard13();
-            load_standard14();
-            load_standard15();
-            load_standard16();
-            load_standard17();
-            loadPLY18('/newmodel/roof.ply', 'roof');
-
-            //getbounds(mesh);
-        });
+    // load ground
+    loadPLY('/newmodel/ground.ply', 'ground');
+    // load standard
+    loadPLY(`/newmodel/standard/A-TR.ply`, 'standard', `A-TR`);
+    loadPLY(`/newmodel/standard/B-TR.ply`, 'standard', `B-TR`);
+    for (let i = 1; i <= 14; ++i) {
+        // Tower A
+        loadPLY(`/newmodel/standard/A-N-${i}.ply`, 'standard', `A-N-${i}`);
+        loadPLY(`/newmodel/standard/A-S-${i}.ply`, 'standard', `A-S-${i}`);
+        // Tower B
+        loadPLY(`/newmodel/standard/B-N-${i}.ply`, 'standard', `B-N-${i}`);
+        loadPLY(`/newmodel/standard/B-S-${i}.ply`, 'standard', `B-S-${i}`);
     }
+    // load roof
+    loadPLY('/newmodel/roof.ply', 'roof');
 
-    loadPLY('/newmodel/13.ply');
+    function onPLYLoadComplete() {
+        // ground
+        render(groundGeometry, 'ground', 'ground');
 
-    //axes
-    // var axesHelper = new THREE.AxesHelper(200);
-    // scene.add(axesHelper);
-
-    var array_tower = ['A', 'B'];
-    var array_wing = ['N', 'S'];
-
-    //加载第一层标准层
-    function loadPLY1(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard1() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level3/' + array_tower[t] + '-3-TR.ply';
-            loadPLY1(url_connection);
-        }
-        for (var i = 3; i < 4; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY1(url_unit, name_unit);
-                    }
-                }
+        // standard
+        for (let floor = 3; floor <= 19; ++floor) {
+            // Tower A, TR
+            render(standardGeometry[`A-TR`], 'standard', `A-${floor}-TR`, floor);
+            // Tower A, Wing N
+            for (let i = 1; i <= 14; ++i) {
+                render(standardGeometry[`A-N-${i}`], 'standard', `A-${floor}-N-${i}`, floor);
             }
-
-        }
-
-    }
-
-    // load_standard1();
-
-    function getbounds(mesh) {
-        var xmin = Math.min.apply(null, x_min_group);
-        var ymin = Math.min.apply(null, y_min_group);
-        var zmin = Math.min.apply(null, z_min_group);
-        var xmax = Math.max.apply(null, x_max_group);
-        var ymax = Math.max.apply(null, y_max_group);
-        var zmax = Math.max.apply(null, z_max_group);
-        centerX = (xmax + xmin) / 2;
-        centerY = (ymax + ymin) / 2;
-        centerZ = (zmax + zmin) / 2;
-        let lookPos1 = new THREE.Vector3(centerX, centerY, centerZ);
-        console.log("%f, %f, %f", centerX, centerY, centerZ);
-        console.log("%f, %f, %f", xmax - xmin, ymax - ymin, zmax - zmin);
-        // mesh.localToWorld(lookPos1);
-        // console.log("%f, %f, %f", lookPos1.x, lookPos1.y, lookPos1.z);
-        // const geometry = new THREE.BoxGeometry( 10, 10, 10 );
-        // const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-        // const cube = new THREE.Mesh( geometry, material );
-        // cube.position.set(38.076065527275205, 16.812720179557818, -41.02260017395019)
-
-        // scene.add(cube);
-
-        // const boundinggeoetry = new THREE.BoxGeometry( xmax-xmin, ymax-ymin, zmax-zmin );
-        //     //const material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-        //     var edgesMaterial = new THREE.LineBasicMaterial({
-        //         color:0xECE32E,
-        //         transparent:true,
-        //         opacity:2
-        //     })
-        //     const boundingline = new THREE.LineSegments( boundinggeoetry, edgesMaterial );
-        //     boundingline.position.set((xmax+xmin)/2, (ymax+ymin)/2, (zmax+zmin)/2)
-        //     scene.add(boundingline)
-    }
-
-    //加载第二层标准层
-    function loadPLY2(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 10, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 10, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard2() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level4/' + array_tower[t] + '-4-TR.ply';
-            loadPLY2(url_connection);
-        }
-        for (var i = 4; i < 5; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY2(url_unit, name_unit);
-                    }
-                }
+            // Tower A, Wing S
+            for (let i = 1; i <= 14; ++i) {
+                render(standardGeometry[`A-S-${i}`], 'standard', `A-${floor}-S-${i}`, floor);
             }
-
-        }
-
-    }
-
-    // load_standard2();
-
-    //加载第三层标准层
-    function loadPLY3(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 20, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 20, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard3() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level5/' + array_tower[t] + '-5-TR.ply';
-            loadPLY3(url_connection);
-        }
-        for (var i = 5; i < 6; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY3(url_unit, name_unit);
-                    }
-                }
+            // Tower B, TR
+            render(standardGeometry[`B-TR`], 'standard', `B-${floor}-TR`, floor);
+            // Tower B, Wing N
+            for (let i = 1; i <= 14; ++i) {
+                render(standardGeometry[`B-N-${i}`], 'standard', `B-${floor}-N-${i}`, floor);
+            }
+            // Tower B, Wing S
+            for (let i = 1; i <= 14; ++i) {
+                render(standardGeometry[`B-S-${i}`], 'standard', `B-${floor}-S-${i}`, floor);
             }
         }
 
+        // roof
+        render(roofGeometry, 'roof', 'roof');
     }
 
-    // load_standard3();
-
-    //加载第四层标准层
-    function loadPLY4(url, nameID) {
+    // load a .ply file and obtain the corresponding geometry object
+    function loadPLY(url, type, key) { // key: key for the standardGeometry map
         const loader = new PLYLoader();
         loader.load(url, function (geometry) {
+            switch (type) {
+                case 'ground':
+                    groundGeometry = geometry;
+                    break;
+                case 'standard':
+                    standardGeometry[key] = geometry;
+                    break;
+                case 'roof':
+                    roofGeometry = geometry;
+                    break;
+            }
 
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 30, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 30, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
+            plySuccess++;
+            if (plySuccess + plyError === PLY_TOTAL) {
+                onPLYLoadComplete();
+            }
+        }, undefined, function () {
+            plyError++;
+            if (plySuccess + plyError === PLY_TOTAL) {
+                onPLYLoadComplete();
+            }
         });
     }
 
-    function load_standard4() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level6/' + array_tower[t] + '-6-TR.ply';
-            loadPLY4(url_connection);
-        }
-        for (var i = 6; i < 7; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY4(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard4();
-
-    //加载第五层标准层
-    function loadPLY5(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
+    // render a geometry object on the canvas
+    function render(geometry, type, nameID, floor) { // floor: 3-19
+        // wrap the code inside setTimeout to make each rendering asynchronous
+        // this will give better effect of animation
+        setTimeout(function () {
             geometry.computeVertexNormals();
 
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
             const mesh = new THREE.Mesh(geometry, material);
 
-            mesh.position.set(-123.04345166015625, y + 40, -46.603991455078145);
+            var scalar = 3;
+            var calcY = y;
+            switch (type) {
+                case 'ground':
+                    scalar = 0.003;
+                    calcY = y_ground;
+                    break;
+                case 'standard':
+                    calcY = y + 10 * (floor - 3);
+                    break;
+                case 'roof':
+                    calcY = y_roof;
+                    break;
+            }
+
+            mesh.position.set(x, calcY, z);
             mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
+            mesh.scale.multiplyScalar(scalar);
             mesh.material.opacity = 0.7;
             mesh.NameID = nameID;
             mesh.castShadow = true;
             mesh.receiveShadow = true;
-
 
             //为mesh添加轮廓线
             var edges = new THREE.EdgesGeometry(geometry);
@@ -418,830 +151,17 @@ function init() {
                 color: 0xECE32E,
                 transparent: true,
                 opacity: 2
-            })
+            });
+
             var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 40, -46.603991455078145);
+            line.scale.multiplyScalar(scalar);
+            line.position.set(x, calcY, z);
             line.rotateX(-Math.PI / 2);
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard5() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level7/' + array_tower[t] + '-7-TR.ply';
-            loadPLY5(url_connection);
-        }
-        for (var i = 7; i < 8; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY5(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard5();
-
-    //加载第六层标准层
-    function loadPLY6(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 50, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 50, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard6() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level8/' + array_tower[t] + '-8-TR.ply';
-            loadPLY6(url_connection);
-        }
-        for (var i = 8; i < 9; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY6(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard6();
-
-    //加载标准层第七层
-    function loadPLY7(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 60, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 60, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard7() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level9/' + array_tower[t] + '-9-TR.ply';
-            loadPLY7(url_connection);
-        }
-        for (var i = 9; i < 10; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY7(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard7();
-
-    //加载第八层标准层
-    function loadPLY8(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 70, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 70, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard8() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level10/' + array_tower[t] + '-10-TR.ply';
-            loadPLY8(url_connection);
-        }
-        for (var i = 10; i < 11; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY8(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard8();
-
-    //加载第九层标准层
-    function loadPLY9(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 80, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 80, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard9() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level11/' + array_tower[t] + '-11-TR.ply';
-            loadPLY9(url_connection);
-        }
-        for (var i = 11; i < 12; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY9(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard9();
-
-    //加载第十层标准层
-    function loadPLY10(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 90, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 90, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard10() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level12/' + array_tower[t] + '-12-TR.ply';
-            loadPLY10(url_connection);
-        }
-        for (var i = 12; i < 13; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY10(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard10();
-
-    //加载第11层标准层
-    function loadPLY11(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 100, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 100, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
 
             scene.add(mesh);
             scene.add(line);
-        });
+        }, 0);
     }
-
-    function load_standard11() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level13/' + array_tower[t] + '-13-TR.ply';
-            loadPLY11(url_connection);
-        }
-        for (var i = 13; i < 14; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY11(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard11();
-
-    //加载第12层标准层
-    function loadPLY12(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 110, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 110, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard12() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level14/' + array_tower[t] + '-14-TR.ply';
-            loadPLY12(url_connection);
-        }
-        for (var i = 14; i < 15; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY12(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard12();
-
-    //加载第13层标准层
-    function loadPLY13(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 120, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 120, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard13() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level15/' + array_tower[t] + '-15-TR.ply';
-            loadPLY13(url_connection);
-        }
-        for (var i = 15; i < 16; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY13(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard13();
-
-    //加载第14层标准层
-    function loadPLY14(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 130, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 130, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard14() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level16/' + array_tower[t] + '-16-TR.ply';
-            loadPLY14(url_connection);
-        }
-        for (var i = 16; i < 17; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY14(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard14();
-
-    //加载第15层标准层
-    function loadPLY15(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 140, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 140, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard15() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level17/' + array_tower[t] + '-17-TR.ply';
-            loadPLY15(url_connection);
-        }
-        for (var i = 17; i < 18; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY15(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard15();
-
-    //加载第16层标准层
-    function loadPLY16(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 150, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 150, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-        });
-    }
-
-    function load_standard16() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level18/' + array_tower[t] + '-18-TR.ply';
-            loadPLY16(url_connection);
-        }
-
-        for (var i = 18; i < 19; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                loadPLY16()
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY16(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard16();
-
-    //加载第17层标准层
-    function loadPLY17(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y + 160, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y + 160, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-
-            // scene.updateMatrixWorld(true);
-            // var worldPosition = new THREE.Vector3();
-            // mesh.getWorldPosition(worldPosition);
-            // console.log(worldPosition)
-        });
-    }
-
-    function load_standard17() {
-        for (var t = 0; t < 2; t++) {
-            var url_connection = '/newmodel/StandardLevel/Tower' + array_tower[t] + '/level18/' + array_tower[t] + '-18-TR.ply';
-            loadPLY17(url_connection);
-        }
-
-        for (var i = 19; i < 20; i++) {//floor
-            for (var j = 0; j < 2; j++) {//tower
-                loadPLY17()
-                for (var k = 0; k < 2; k++) {//wing
-                    for (var u = 1; u < 15; u++) {
-                        var url_unit = '/newmodel/StandardLevel/Tower' + array_tower[j] + '/level' + i + '/' + array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u + '.ply';
-                        var name_unit = array_tower[j] + '-' + i + '-' + array_wing[k] + '-' + u;
-                        loadPLY17(url_unit, name_unit);
-                    }
-                }
-            }
-        }
-
-    }
-
-    // load_standard17();
-
-    //加载屋顶
-    function loadPLY18(url, nameID) {
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-
-            geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
-            const mesh = new THREE.Mesh(geometry, material);
-
-            mesh.position.set(-123.04345166015625, y_roof, -46.603991455078145);
-            mesh.rotation.x = -Math.PI / 2;
-            mesh.scale.multiplyScalar(3);
-            mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
-            //;
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
-            var worldPosition = new THREE.Vector3();
-            mesh.getWorldPosition(worldPosition);
-            // console.log(worldPosition)
-
-
-            //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
-                transparent: true,
-                opacity: 2
-            })
-            var line = new THREE.LineSegments(edges, edgesMaterial);
-            line.scale.multiplyScalar(3);
-            line.position.set(-123.04345166015625, y_roof, -46.603991455078145);
-            line.rotateX(-Math.PI / 2);
-
-
-            group1.add(mesh);
-            group1.add(line);
-            scene.add(group1);
-            //console.log("roof has been");
-        });
-    }
-
-    // loadPLY18('/newmodel/roof.ply', 'roof');
-
-
-    // function cloneModel(ply,x,y,z,name){
-    //     const clonePLY= ply.clone();
-    //     clonePLY.children.map((v,c)=>{
-    //         if(v.material){
-    //             v.material = ply.children(c).material.clone();
-    //         }
-    //     })
-    //
-    //     ply.name = name;
-    //     clonePLY.position.set(x,y,z);
-    //     this.group.add(clonePLY);
-    // }
-
-
-    //drc file
-
-    // function load_drc(url,nameID){
-    //     var loader = new DRACOLoader();
-    //     loader.setDecoderPath('js/draco/');
-    //     loader.load(url, function (geometry){
-    //         geometry.computeVertexNormals();
-    //         var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, shininess: 200, vertexColors: THREE.VertexColors} );
-    //         var mesh = = new THREE.Mesh(geometry,material);
-    //         mesh.NameID = nameID;
-    //         mesh.castShadow = true;
-    //         mesh.receiveShadow = true;
-    //         mesh.rotation.x = - Math.PI / 2;
-    //         mesh.scale.multiplyScalar( 0.001 );
-    //     })
-    //
-    // }
 
     //lights
     let light;
@@ -1254,17 +174,13 @@ function init() {
     light.castShadow = true;
 
     //canvas
-
-
     //renderer
-
     renderer = new THREE.WebGLRenderer({antialias: true, canvas: document.getElementById('3d-model')});
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.setClearColor(0xffffff);
     renderer.shadowMap.enabled = false;
-
     // container.appendChild(renderer.domElement);
 
     //stats
@@ -1272,7 +188,6 @@ function init() {
     // container.appendChild( stats.dom );
 
     // resize
-
     window.addEventListener('resize', onWindowResize);
     //document.addEventListener('click',onDocumentMouseClick,false);
 }
@@ -1309,15 +224,11 @@ function onWindowResize() {
 //     })
 
 function animate() {
-
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-
     //render();
     stats.update();
-
 }
-
 
 controls = new OrbitControls(camera, renderer.domElement);
 controls._isrotateup = true;
