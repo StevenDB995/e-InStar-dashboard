@@ -193,7 +193,6 @@ function init() {
     controls.minPolarAngle = 0;
     controls.maxPolarAngle = Math.PI / 2;
     //左右旋转范围
-    //controls.minAzimuthAngle=-Math.PI;
     controls.maxAzimuthAngle = 0;
     controls.update();
 

@@ -89,16 +89,38 @@
 }
 
 #three-model {
+    margin-bottom: 0;
     padding: 0;
+    position: relative;
 }
 
-#canvas-container {
+#three-model > * {
     height: 680px;
 }
 
+.no-grab {
+    position: absolute;
+    top: 0;
+    width: 48px;
+}
+
+.no-grab.left {
+    left: 0;
+}
+
+.no-grab.right {
+    right: 0;
+}
+
 @media (max-width: 577px) {
-    #canvas-container {
+    #three-model > * {
         height: 480px;
+    }
+}
+
+@media (max-height: 481px) {
+    #three-model > * {
+        height: 280px;
     }
 }
 
