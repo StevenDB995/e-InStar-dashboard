@@ -25246,7 +25246,7 @@ function WebGLRenderer( parameters = {} ) {
 
 		if ( updateStyle !== false ) {
 
-			_canvas.style.width = '100%';
+			_canvas.style.width = width + 'px';
 			_canvas.style.height = height + 'px';
 
 		}

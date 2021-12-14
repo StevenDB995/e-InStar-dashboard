@@ -87,3 +87,26 @@
         font-size: 48px;
     }
 }
+
+#three-model {
+    padding: 0;
+}
+
+#canvas-container {
+    height: 680px;
+}
+
+@media (max-width: 577px) {
+    #canvas-container {
+        height: 480px;
+    }
+}
+
+#canvas {
+    border-radius: 6px;
+    cursor: grab;
+}
+
+#canvas.grabbing {
+    cursor: grabbing;
+}

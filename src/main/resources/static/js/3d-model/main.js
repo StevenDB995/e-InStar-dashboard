@@ -1,30 +1,27 @@
 import * as THREE from './three.module.js';
-import Stats from './stats.module.js';
 import {PLYLoader} from "./PLYLoader.js";
 import {OrbitControls} from './OrbitControls.js';
 
-let stats;
-let camera, cameraTarget, scene, renderer, controls;
-var group1 = new THREE.Group();
+let camera, scene, renderer, light, controls;
+let canvasContainer = document.getElementById('canvas-container');
+let width = canvasContainer.clientWidth,
+    height = canvasContainer.clientHeight;
+let defaultCameraZoom = 1.5;
 
 init();
 animate();
 
 function init() {
-    var width = 1000;
-    var height = 640;
-
     camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
-    cameraTarget = new THREE.Vector3(0.1, -0.1, 0.1);
-    camera.position.set(300, 300, 300);
-    camera.lookAt(0, 0, 0);
+    camera.position.set(300, 240, 300);
+    camera.zoom = defaultCameraZoom;
 
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0xFFFFFF);
 
     var x = -123.04345166015625,
         z = -46.603991455078145;
-    var y = -94.4871513671875;
+    var y = -184.4871513671875;
     var y_ground = y + 10;
     var y_roof = y + 17.4871513671875;
 
@@ -53,6 +50,7 @@ function init() {
     loadPLY('/newmodel/roof.ply', 'roof');
 
     function onPLYLoadComplete() {
+        alert('Load complete!')
         // ground
         render(groundGeometry, 'ground', 'ground');
 
@@ -116,7 +114,12 @@ function init() {
     function render(geometry, type, nameID, floor) { // floor: 3-19
         // wrap the code inside setTimeout to make each rendering asynchronous
         // this will give better effect of animation
+        // not working properly in Chrome on iOS devices or Safari
         setTimeout(function () {
+            if (geometry === undefined) {
+                // TODO: handle undefined geometry caused by load error
+            }
+
             geometry.computeVertexNormals();
 
             const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
@@ -160,86 +163,65 @@ function init() {
 
             scene.add(mesh);
             scene.add(line);
-        }, 0);
+        }, 100);
     }
 
     //lights
-    let light;
     scene.add(new THREE.AmbientLight(0x404040));
-
     light = new THREE.PointLight(0xffffff);
     light.position.set(0, 50, 50);
-
     //告诉平行光需要开启阴影投射
     light.castShadow = true;
 
     //canvas
     //renderer
-    renderer = new THREE.WebGLRenderer({antialias: true, canvas: document.getElementById('3d-model')});
+    renderer = new THREE.WebGLRenderer({antialias: true, canvas: document.getElementById('canvas')});
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.setClearColor(0xffffff);
     renderer.shadowMap.enabled = false;
-    // container.appendChild(renderer.domElement);
 
-    //stats
-    stats = new Stats();
-    // container.appendChild( stats.dom );
+    // controls
+    controls = new OrbitControls(camera, renderer.domElement);
+    controls._isrotateup = true;
+    controls.autoRotate = false;
+    //controls.dampingFactor=0.5;
+    controls.enableZoom = true;
+    //设置旋转范围
+    //上下旋转范围
+    controls.minPolarAngle = Math.PI / 4;
+    controls.maxPolarAngle = Math.PI / 2;
+    //左右旋转范围
+    //controls.minAzimuthAngle=-Math.PI;
+    controls.maxAzimuthAngle = 0;
+    controls.update();
+
+    // cursor: grab
+    let canvas = document.getElementById('canvas');
+    canvas.addEventListener('mousedown', function () {
+        canvas.classList.add('grabbing');
+    });
+    canvas.addEventListener('mouseup', function () {
+        canvas.classList.remove('grabbing');
+    });
 
     // resize
-    window.addEventListener('resize', onWindowResize);
-    //document.addEventListener('click',onDocumentMouseClick,false);
+    new ResizeObserver(function () {
+        var newWidth = canvasContainer.clientWidth;
+        var newHeight = canvasContainer.clientHeight;
+
+        camera.aspect = newWidth / newHeight;
+        camera.zoom = (window.innerWidth <= 576) ? 1.25 : defaultCameraZoom;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(newWidth, newHeight);
+        renderer.render(scene, camera);
+
+    }).observe(canvasContainer);
 }
-
-function onWindowResize() {
-
-    var width = window.innerWidth / 2;
-    var height = window.innerHeight;
-
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize(width, height);
-
-}
-
-// var mouse = new THREE.Vector2(), INTERSECTED;
-// function onDocumentMouseClick(event){
-//     mouse.x = (event.clientX / window.innerWidth)*2 - 1;
-//     mouse.y = -(event.clientY / window.innerHeight)*2 + 1;
-//     var x=event.clientX+50;
-//     var y=event.clientY+50;
-//     MouseClick();
-// }
-//
-// function MouseClick(){
-//     var mesh_array=[];
-//     scene.children.forEach(child=>{
-//         if (child.type == "Mesh"){
-//             if (!child.name){
-//                 mesh_array.push(child);
-//             }
-//         }
-//     })
 
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    //render();
-    stats.update();
 }
-
-controls = new OrbitControls(camera, renderer.domElement);
-controls._isrotateup = true;
-controls.autoRotate = false;
-//controls.dampingFactor=0.5;
-controls.enableZoom = true;
-//设置旋转范围
-//上下旋转范围
-controls.minPolarAngle = Math.PI / 4;
-controls.maxPolarAngle = Math.PI / 2;
-//左右旋转范围
-//controls.minAzimuthAngle=-Math.PI;
-controls.maxAzimuthAngle = 0;
-controls.update();
