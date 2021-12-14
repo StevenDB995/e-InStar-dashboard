@@ -50,7 +50,6 @@ function init() {
     loadPLY('/newmodel/roof.ply', 'roof');
 
     function onPLYLoadComplete() {
-        alert('Load complete!')
         // ground
         render(groundGeometry, 'ground', 'ground');
 
@@ -118,6 +117,7 @@ function init() {
         setTimeout(function () {
             if (geometry === undefined) {
                 // TODO: handle undefined geometry caused by load error
+                return;
             }
 
             geometry.computeVertexNormals();
