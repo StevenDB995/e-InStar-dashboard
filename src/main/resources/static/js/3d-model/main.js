@@ -116,7 +116,7 @@ function init() {
         // not working properly in Chrome on iOS devices or Safari
         setTimeout(function () {
             if (geometry === undefined) {
-                // TODO: handle undefined geometry caused by load error
+                // handle undefined geometry caused by load error
                 return;
             }
 
@@ -190,7 +190,7 @@ function init() {
     controls.enableZoom = true;
     //设置旋转范围
     //上下旋转范围
-    controls.minPolarAngle = Math.PI / 4;
+    controls.minPolarAngle = 0;
     controls.maxPolarAngle = Math.PI / 2;
     //左右旋转范围
     //controls.minAzimuthAngle=-Math.PI;
