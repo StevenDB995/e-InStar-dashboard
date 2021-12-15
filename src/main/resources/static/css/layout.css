@@ -37,7 +37,6 @@ right: top navigation bar and main container
     height: 100%;
     z-index: 10;
     position: fixed;
-    overflow-y: scroll; /* for scenario where the device height is not enough for the content. This usually happens in the landscape view of a mobile device */
     width: 70px;
     padding: 0;
     background-image: url(/images/navbar-left-bg.jpg);
@@ -45,6 +44,9 @@ right: top navigation bar and main container
     background-color: #027bd3;
     color: white;
     transition: width .5s;
+    /* scroller */
+    overflow-y: scroll; /* for scenario where the device height is not enough for the content. This usually happens in the landscape view of a mobile device */
+    scrollbar-width: none; /* for Firefox */
 }
 
 #container-left.expanded {
