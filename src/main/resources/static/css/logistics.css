@@ -107,7 +107,7 @@ form#module-search input {
 }
 
 #panel {
-    padding: 12px 4px 20px;
+    padding: 12px 16px 20px;
     border-radius: 14px;
     background: #027bd3;
     color: white;
@@ -126,6 +126,12 @@ form#module-search input {
 #map {
     height: 600px;
     border-radius: 12px;
+}
+
+@media (max-height: 481px) {
+    #map {
+        height: 360px;
+    }
 }
 
 #map canvas {
