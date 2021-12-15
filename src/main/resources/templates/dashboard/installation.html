@@ -53,7 +53,9 @@
                     </div>
                     <div class="row">
                         <div class="flex-container col-sm-7 order-sm-0 order-1">
-                            <div class="display-card">Selected module</div>
+                            <div class="display-card" id="selected-module">
+                                Selected module
+                            </div>
                         </div>
                         <div class="flex-container col-sm-5 order-sm-1 order-0">
                             <div class="display-card" id="avg-install-time">
@@ -68,6 +70,10 @@
                     <div class="row">
                         <div class="col">
                             <div class="display-card" id="three-model">
+                                <div class="loading">
+                                    <div class="spinner-border text-primary" role="status"></div>
+                                    <div class="caption">Loading...</div>
+                                </div>
                                 <div class="no-grab left"></div>
                                 <div id="canvas-container">
                                     <canvas id="canvas"></canvas>

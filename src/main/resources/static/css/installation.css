@@ -98,8 +98,33 @@
     height: 680px;
 }
 
+.loading {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading.hide {
+    display: none;
+}
+
+.loading .spinner-border {
+    width: 44px;
+    height: 44px;
+}
+
+.loading .caption {
+    margin-top: 8px;
+}
+
 .no-grab {
     position: absolute;
+    z-index: 1;
     top: 0;
     width: 48px;
 }

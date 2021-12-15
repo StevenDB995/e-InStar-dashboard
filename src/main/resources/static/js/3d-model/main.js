@@ -27,6 +27,8 @@ function init() {
 
     const PLY_TOTAL = 60; // total number of .ply files to be loaded
     var plySuccess = 0, plyError = 0; // number of successful and failed loads
+    var renderedTotal; // total number of PLY to be rendered
+    var rendered = 0; // number of rendered PLY
 
     // store all geometry objects on load
     var groundGeometry;
@@ -50,6 +52,17 @@ function init() {
     loadPLY('/newmodel/roof.ply', 'roof');
 
     function onPLYLoadComplete() {
+        if (getOS() !== 'iOS') {
+            // hide the .loading div
+            let loadingDiv = document.querySelector('#three-model > .loading');
+            loadingDiv.classList.add('hide');
+        }
+
+        // calculate total number of PLY to be rendered
+        renderedTotal = ( (groundGeometry !== undefined) ? 1 : 0 )
+            + Object.keys(standardGeometry).length * 17
+            + ( (roofGeometry !== undefined) ? 1 : 0 );
+
         // ground
         render(groundGeometry, 'ground', 'ground');
 
@@ -97,13 +110,11 @@ function init() {
                     break;
             }
 
-            plySuccess++;
-            if (plySuccess + plyError === PLY_TOTAL) {
+            if ((++plySuccess) + plyError === PLY_TOTAL) {
                 onPLYLoadComplete();
             }
         }, undefined, function () {
-            plyError++;
-            if (plySuccess + plyError === PLY_TOTAL) {
+            if (plySuccess + (++plyError) === PLY_TOTAL) {
                 onPLYLoadComplete();
             }
         });
@@ -163,7 +174,29 @@ function init() {
 
             scene.add(mesh);
             scene.add(line);
+
+            if ((++rendered) === renderedTotal) {
+                onRenderComplete();
+            }
         }, 100);
+    }
+
+    function onRenderComplete() {
+        if (getOS() === 'iOS') {
+            // hide the .loading div
+            let loadingDiv = document.querySelector('#three-model > .loading');
+            loadingDiv.classList.add('hide');
+        }
+    }
+
+    function getOS() {
+        var userAgent = navigator.userAgent;
+        if (/iPad|iPhone|iPod/.test(userAgent)
+            || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 0)) {
+            return 'iOS';
+        } else {
+            return 'other';
+        }
     }
 
     //lights
