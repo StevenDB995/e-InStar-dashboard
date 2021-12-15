@@ -123,23 +123,24 @@ form#module-search input {
     letter-spacing: 1px;
 }
 
+#map-container {
+    border-radius: 12px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: white;
+    /* clip the corners of the map to fit its container */
+    overflow: hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black); /* for Safari and iOS devices */
+}
+
 #map {
     height: 600px;
-    border-radius: 12px;
 }
 
 @media (max-height: 481px) {
     #map {
         height: 360px;
     }
-}
-
-#map canvas {
-    /* must have the same border radius as #map div to ensure proper display of mapbox */
-    border-radius: 12px;
-    border-style: solid;
-    border-width: 4px;
-    border-color: white;
 }
 
 .mapboxgl-popup-content {
