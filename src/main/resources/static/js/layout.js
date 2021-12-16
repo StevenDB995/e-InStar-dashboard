@@ -1,3 +1,11 @@
+// the threshold of the viewport width
+// for hiding the left container when it's collapsed
+const THRESHOLD_WIDTH = 768;
+
+if (window.innerWidth < THRESHOLD_WIDTH) {
+    window.sessionStorage.removeItem('left-container-status');
+}
+
 // recover the left container status when the page is ready
 // the status is stored in the session storage
 if (window.sessionStorage.getItem('left-container-status') === 'expanded') {
@@ -47,7 +55,7 @@ $('#float-expand-btn').click(function () {
 
 // click anywhere except left container to collapse the left container in mobile view
 $('html').click(function (event) {
-    if (window.innerWidth < 768
+    if (window.innerWidth < THRESHOLD_WIDTH
         && !document.getElementById('float-expand-btn').contains(event.target)
         && $('#container-left').hasClass('expanded')
         && document.getElementById('container-right').contains(event.target)) {
