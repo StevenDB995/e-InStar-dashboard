@@ -7,6 +7,7 @@ let canvasContainer = document.getElementById('canvas-container');
 let width = canvasContainer.clientWidth,
     height = canvasContainer.clientHeight;
 let defaultCameraZoom = 1.5;
+const loader = new PLYLoader();
 
 init();
 animate();
@@ -17,7 +18,7 @@ function init() {
     camera.zoom = defaultCameraZoom;
 
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xFFFFFF);
+    scene.background = new THREE.Color('#FFF');
 
     var x = -123.04345166015625,
         z = -46.603991455078145;
@@ -50,6 +51,31 @@ function init() {
     }
     // load roof
     loadPLY('/newmodel/roof.ply', 'roof');
+
+    // load a .ply file and obtain the corresponding geometry object
+    function loadPLY(url, type, key) { // key: key for the standardGeometry map
+        loader.load(url, function (geometry) {
+            switch (type) {
+                case 'ground':
+                    groundGeometry = geometry;
+                    break;
+                case 'standard':
+                    standardGeometry[key] = geometry;
+                    break;
+                case 'roof':
+                    roofGeometry = geometry;
+                    break;
+            }
+
+            if ((++plySuccess) + plyError === PLY_TOTAL) {
+                onPLYLoadComplete();
+            }
+        }, undefined, function () {
+            if (plySuccess + (++plyError) === PLY_TOTAL) {
+                onPLYLoadComplete();
+            }
+        });
+    }
 
     function onPLYLoadComplete() {
         if (getOS() !== 'iOS') {
@@ -94,32 +120,6 @@ function init() {
         render(roofGeometry, 'roof', 'roof');
     }
 
-    // load a .ply file and obtain the corresponding geometry object
-    function loadPLY(url, type, key) { // key: key for the standardGeometry map
-        const loader = new PLYLoader();
-        loader.load(url, function (geometry) {
-            switch (type) {
-                case 'ground':
-                    groundGeometry = geometry;
-                    break;
-                case 'standard':
-                    standardGeometry[key] = geometry;
-                    break;
-                case 'roof':
-                    roofGeometry = geometry;
-                    break;
-            }
-
-            if ((++plySuccess) + plyError === PLY_TOTAL) {
-                onPLYLoadComplete();
-            }
-        }, undefined, function () {
-            if (plySuccess + (++plyError) === PLY_TOTAL) {
-                onPLYLoadComplete();
-            }
-        });
-    }
-
     // render a geometry object on the canvas
     function render(geometry, type, nameID, floor) { // floor: 3-19
         // wrap the code inside setTimeout to make each rendering asynchronous
@@ -133,7 +133,11 @@ function init() {
 
             geometry.computeVertexNormals();
 
-            const material = new THREE.MeshPhongMaterial({color: 0x62605F, specular: 0x111111, shininess: 200});
+            const material = new THREE.MeshPhongMaterial({
+                color: '#62605F',
+                specular: 0x111111,
+                shininess: 200
+            });
             const mesh = new THREE.Mesh(geometry, material);
 
             var scalar = 3;
@@ -162,7 +166,7 @@ function init() {
             //为mesh添加轮廓线
             var edges = new THREE.EdgesGeometry(geometry);
             var edgesMaterial = new THREE.LineBasicMaterial({
-                color: 0xECE32E,
+                color: '#ECE32E',
                 transparent: true,
                 opacity: 2
             });
@@ -212,7 +216,7 @@ function init() {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
     renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.setClearColor(0xffffff);
+    renderer.setClearColor('#FFF');
     renderer.shadowMap.enabled = false;
 
     // controls
