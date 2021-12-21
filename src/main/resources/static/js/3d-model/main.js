@@ -9,6 +9,11 @@ let width = canvasContainer.clientWidth,
 let defaultCameraZoom = 1.5;
 const loader = new PLYLoader();
 
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+const targets = [];
+
 init();
 animate();
 
@@ -121,7 +126,7 @@ function init() {
     }
 
     // render a geometry object on the canvas
-    function render(geometry, type, nameID, floor) { // floor: 3-19
+    function render(geometry, type, name, floor) { // floor: 3-19
         // wrap the code inside setTimeout to make each rendering asynchronous
         // this will give better effect of animation
         // not working properly in Chrome on iOS devices or Safari
@@ -159,9 +164,12 @@ function init() {
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(scalar);
             mesh.material.opacity = 0.7;
-            mesh.NameID = nameID;
+            mesh.name = name;
             mesh.castShadow = true;
             mesh.receiveShadow = true;
+            mesh.onClick = function () {
+                mesh.material.color.set('#f00');
+            }
 
             //为mesh添加轮廓线
             var edges = new THREE.EdgesGeometry(geometry);
@@ -178,6 +186,7 @@ function init() {
 
             scene.add(mesh);
             scene.add(line);
+            targets.push(mesh);
 
             if ((++rendered) === renderedTotal) {
                 onRenderComplete();
@@ -255,6 +264,31 @@ function init() {
         renderer.render(scene, camera);
 
     }).observe(canvasContainer);
+
+    // mouse click event
+    let drag = false;
+
+    renderer.domElement.addEventListener('mousedown', function () {
+        drag = false;
+    });
+
+    renderer.domElement.addEventListener('mousemove', function (event) {
+        drag = true;
+    });
+
+    renderer.domElement.addEventListener('mouseup', function (event) {
+        if (!drag) {
+            mouse.x = (event.offsetX / renderer.domElement.clientWidth) * 2 - 1;
+            mouse.y = -(event.offsetY / renderer.domElement.clientHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            let intersects = raycaster.intersectObjects(targets);
+            console.log(intersects);
+            if (intersects.length > 0) {
+                intersects[0].object.onClick();
+            }
+        }
+    });
 }
 
 function animate() {
