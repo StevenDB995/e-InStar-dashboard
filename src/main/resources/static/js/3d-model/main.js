@@ -6,13 +6,20 @@ let camera, scene, renderer, light, controls;
 let canvasContainer = document.getElementById('canvas-container');
 let width = canvasContainer.clientWidth,
     height = canvasContainer.clientHeight;
-let defaultCameraZoom = 1.5;
+const DEFAULT_CAMERA_ZOOM = 1.5;
 const loader = new PLYLoader();
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-const targets = [];
+const meshes = [];
+const lines = [];
+
+let selectedMode = false; // indicate whether a module is selected (clicked)
+const MESH_OPACITY_FOCUS = 1,
+    LINE_OPACITY_FOCUS = 1;
+const MESH_OPACITY_FADE = 0.5,
+    LINE_OPACITY_FADE = 0.3;
 
 init();
 animate();
@@ -20,10 +27,8 @@ animate();
 function init() {
     camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
     camera.position.set(300, 240, 300);
-    camera.zoom = defaultCameraZoom;
-
+    camera.zoom = DEFAULT_CAMERA_ZOOM;
     scene = new THREE.Scene();
-    scene.background = new THREE.Color('#FFF');
 
     var x = -123.04345166015625,
         z = -46.603991455078145;
@@ -140,8 +145,10 @@ function init() {
 
             const material = new THREE.MeshPhongMaterial({
                 color: '#62605F',
-                specular: 0x111111,
-                shininess: 200
+                specular: '#111',
+                shininess: 200,
+                transparent: true,
+                opacity: selectedMode ? MESH_OPACITY_FADE : MESH_OPACITY_FOCUS
             });
             const mesh = new THREE.Mesh(geometry, material);
 
@@ -160,33 +167,55 @@ function init() {
                     break;
             }
 
+            mesh.name = name;
             mesh.position.set(x, calcY, z);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(scalar);
-            mesh.material.opacity = 0.7;
-            mesh.name = name;
             mesh.castShadow = true;
             mesh.receiveShadow = true;
-            mesh.onClick = function () {
-                mesh.material.color.set('#f00');
-            }
 
             //为mesh添加轮廓线
-            var edges = new THREE.EdgesGeometry(geometry);
-            var edgesMaterial = new THREE.LineBasicMaterial({
+            const edges = new THREE.EdgesGeometry(geometry);
+            const edgesMaterial = new THREE.LineBasicMaterial({
                 color: '#ECE32E',
                 transparent: true,
-                opacity: 2
+                opacity: selectedMode ? LINE_OPACITY_FADE : LINE_OPACITY_FOCUS
             });
 
-            var line = new THREE.LineSegments(edges, edgesMaterial);
+            const line = new THREE.LineSegments(edges, edgesMaterial);
+            line.name = name;
             line.scale.multiplyScalar(scalar);
             line.position.set(x, calcY, z);
             line.rotateX(-Math.PI / 2);
 
+            // add click event for each mesh
+            mesh.onClick = function () {
+                for (let i = 0; i < meshes.length; ++i) {
+                    if (meshes[i].name === mesh.name) {
+                        meshes[i].material.opacity = 1;
+                        continue;
+                    }
+
+                    meshes[i].material.opacity = MESH_OPACITY_FADE;
+                }
+
+                for (let i = 0; i < lines.length; ++i) {
+                    if (lines[i].name === line.name) {
+                        lines[i].material.opacity = 1;
+                        continue;
+                    }
+
+                    lines[i].material.opacity = LINE_OPACITY_FADE;
+                }
+
+                $('#selected-module').text(mesh.name);
+            }
+
             scene.add(mesh);
             scene.add(line);
-            targets.push(mesh);
+
+            meshes.push(mesh);
+            lines.push(line);
 
             if ((++rendered) === renderedTotal) {
                 onRenderComplete();
@@ -213,19 +242,23 @@ function init() {
     }
 
     //lights
-    scene.add(new THREE.AmbientLight(0x404040));
-    light = new THREE.PointLight(0xffffff);
+    scene.add(new THREE.AmbientLight('#404040'));
+    light = new THREE.PointLight('#FFF');
     light.position.set(0, 50, 50);
     //告诉平行光需要开启阴影投射
     light.castShadow = true;
 
     //canvas
     //renderer
-    renderer = new THREE.WebGLRenderer({antialias: true, canvas: document.getElementById('canvas')});
+    renderer = new THREE.WebGLRenderer({
+        canvas: document.getElementById('canvas'),
+        antialias: true,
+        alpha: true
+    });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
     renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.setClearColor('#FFF');
+    renderer.setClearColor('#FFF', 0);
     renderer.shadowMap.enabled = false;
 
     // controls
@@ -257,7 +290,7 @@ function init() {
         var newHeight = canvasContainer.clientHeight;
 
         camera.aspect = newWidth / newHeight;
-        camera.zoom = (window.innerWidth <= 576) ? 1.25 : defaultCameraZoom;
+        camera.zoom = (window.innerWidth <= 576) ? 1.25 : DEFAULT_CAMERA_ZOOM;
         camera.updateProjectionMatrix();
 
         renderer.setSize(newWidth, newHeight);
@@ -274,21 +307,38 @@ function init() {
 
     renderer.domElement.addEventListener('mousemove', function (event) {
         drag = true;
+        intersect(event,
+            () => canvas.classList.add('select'),
+            () => canvas.classList.remove('select'));
     });
 
     renderer.domElement.addEventListener('mouseup', function (event) {
         if (!drag) {
-            mouse.x = (event.offsetX / renderer.domElement.clientWidth) * 2 - 1;
-            mouse.y = -(event.offsetY / renderer.domElement.clientHeight) * 2 + 1;
-
-            raycaster.setFromCamera(mouse, camera);
-            let intersects = raycaster.intersectObjects(targets);
-            console.log(intersects);
-            if (intersects.length > 0) {
+            intersect(event, function (intersects) {
+                selectedMode = true;
                 intersects[0].object.onClick();
-            }
+            }, function () {
+                selectedMode = false;
+                meshes.forEach((mesh) => mesh.material.opacity = MESH_OPACITY_FOCUS);
+                lines.forEach((line) => line.material.opacity = LINE_OPACITY_FOCUS);
+            });
         }
     });
+
+    // handle cursor's intersection with meshes
+    function intersect(event, onIntersect, noIntersect) {
+        mouse.x = (event.offsetX / renderer.domElement.clientWidth) * 2 - 1;
+        mouse.y = -(event.offsetY / renderer.domElement.clientHeight) * 2 + 1;
+
+        raycaster.setFromCamera(mouse, camera);
+        let intersects = raycaster.intersectObjects(meshes);
+
+        if (intersects.length > 0) {
+            onIntersect(intersects);
+        } else {
+            noIntersect();
+        }
+    }
 }
 
 function animate() {
