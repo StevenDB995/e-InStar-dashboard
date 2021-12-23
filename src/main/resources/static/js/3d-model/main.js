@@ -12,14 +12,18 @@ const loader = new PLYLoader();
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-const meshes = [];
-const lines = [];
+const meshes = {};
+const lines = {};
 
 let selectedMode = false; // indicate whether a module is selected (clicked)
+let selectedModuleName, hoveredModuleName;
+
 const MESH_OPACITY_FOCUS = 1,
     LINE_OPACITY_FOCUS = 1;
-const MESH_OPACITY_FADE = 0.5,
-    LINE_OPACITY_FADE = 0.3;
+const MESH_OPACITY_FADE = 0.3,
+    LINE_OPACITY_FADE = 0.1;
+const MESH_OPACITY_HOVER = 0.7,
+    LINE_OPACITY_HOVER = 0.5;
 
 init();
 animate();
@@ -131,7 +135,7 @@ function init() {
     }
 
     // render a geometry object on the canvas
-    function render(geometry, type, name, floor) { // floor: 3-19
+    function render(geometry, type, moduleName, floor) { // floor: 3-19
         // wrap the code inside setTimeout to make each rendering asynchronous
         // this will give better effect of animation
         // not working properly in Chrome on iOS devices or Safari
@@ -167,7 +171,7 @@ function init() {
                     break;
             }
 
-            mesh.name = name;
+            mesh.name = moduleName;
             mesh.position.set(x, calcY, z);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(scalar);
@@ -183,39 +187,62 @@ function init() {
             });
 
             const line = new THREE.LineSegments(edges, edgesMaterial);
-            line.name = name;
+            line.name = moduleName;
             line.scale.multiplyScalar(scalar);
             line.position.set(x, calcY, z);
             line.rotateX(-Math.PI / 2);
 
             // add click event for each mesh
             mesh.onClick = function () {
-                for (let i = 0; i < meshes.length; ++i) {
-                    if (meshes[i].name === mesh.name) {
-                        meshes[i].material.opacity = 1;
-                        continue;
-                    }
+                if (selectedMode) {
+                    setFade(selectedModuleName);
+                    setFocus(moduleName);
 
-                    meshes[i].material.opacity = MESH_OPACITY_FADE;
+                } else {
+                    for (let key in meshes) {
+                        if (key === moduleName) {
+                            setFocus(key);
+                            continue;
+                        }
+
+                        setFade(key);
+                    }
                 }
 
-                for (let i = 0; i < lines.length; ++i) {
-                    if (lines[i].name === line.name) {
-                        lines[i].material.opacity = 1;
-                        continue;
+                selectedModuleName = moduleName;
+                $('#selected-module').text(moduleName);
+            };
+
+            mesh.onHover = function () {
+                if (selectedMode) {
+                    if (hoveredModuleName !== selectedModuleName) {
+                        // recover the last hovered mesh
+                        setFade(hoveredModuleName);
                     }
 
-                    lines[i].material.opacity = LINE_OPACITY_FADE;
+                    if (moduleName !== selectedModuleName) {
+                        // highlight the newly hovered mesh
+                        setHover(moduleName);
+                    }
+
+                } else {
+                    if (hoveredModuleName !== undefined) {
+                        // recover the last hovered mesh
+                        setFocus(hoveredModuleName);
+                    }
+
+                    // highlight the newly hovered mesh
+                    setHover(moduleName);
                 }
 
-                $('#selected-module').text(mesh.name);
+                hoveredModuleName = moduleName;
             }
 
             scene.add(mesh);
             scene.add(line);
 
-            meshes.push(mesh);
-            lines.push(line);
+            meshes[moduleName] = mesh;
+            lines[moduleName] = line;
 
             if ((++rendered) === renderedTotal) {
                 onRenderComplete();
@@ -307,20 +334,33 @@ function init() {
 
     renderer.domElement.addEventListener('mousemove', function (event) {
         drag = true;
-        intersect(event,
-            () => canvas.classList.add('select'),
-            () => canvas.classList.remove('select'));
+        intersect(event, function (intersects) {
+            canvas.classList.add('select');
+            intersects[0].object.onHover();
+        }, function () {
+            canvas.classList.remove('select');
+            // remove the highlight when the mouse is not hovered above meshes
+            if (selectedMode) {
+                for (let key in meshes) {
+                    if (key === selectedModuleName) continue;
+                    setFade(key);
+                }
+            } else {
+                if (hoveredModuleName !== undefined) {
+                    setFocus(hoveredModuleName);
+                }
+            }
+        })
     });
 
     renderer.domElement.addEventListener('mouseup', function (event) {
         if (!drag) {
             intersect(event, function (intersects) {
-                selectedMode = true;
                 intersects[0].object.onClick();
+                selectedMode = true;
             }, function () {
+                for (let key in meshes) setFocus(key);
                 selectedMode = false;
-                meshes.forEach((mesh) => mesh.material.opacity = MESH_OPACITY_FOCUS);
-                lines.forEach((line) => line.material.opacity = LINE_OPACITY_FOCUS);
             });
         }
     });
@@ -331,13 +371,28 @@ function init() {
         mouse.y = -(event.offsetY / renderer.domElement.clientHeight) * 2 + 1;
 
         raycaster.setFromCamera(mouse, camera);
-        let intersects = raycaster.intersectObjects(meshes);
+        let intersects = raycaster.intersectObjects(Object.values(meshes));
 
         if (intersects.length > 0) {
             onIntersect(intersects);
         } else {
             noIntersect();
         }
+    }
+
+    function setFocus(moduleName) {
+        meshes[moduleName].material.opacity = MESH_OPACITY_FOCUS;
+        lines[moduleName].material.opacity = LINE_OPACITY_FOCUS;
+    }
+
+    function setFade(moduleName) {
+        meshes[moduleName].material.opacity = MESH_OPACITY_FADE;
+        lines[moduleName].material.opacity = LINE_OPACITY_FADE;
+    }
+
+    function setHover(moduleName) {
+        meshes[moduleName].material.opacity = MESH_OPACITY_HOVER;
+        lines[moduleName].material.opacity = LINE_OPACITY_HOVER;
     }
 }
 
