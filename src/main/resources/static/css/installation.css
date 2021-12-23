@@ -96,6 +96,9 @@
 
 #three-model > * {
     height: 680px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
 }
 
 .loading {
