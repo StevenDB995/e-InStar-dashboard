@@ -2,7 +2,7 @@ import * as THREE from './three.module.js';
 import {PLYLoader} from "./PLYLoader.js";
 import {OrbitControls} from './OrbitControls.js';
 
-let camera, scene, renderer, light, controls;
+let camera, scene, renderer, orbitControls;
 let canvasContainer = document.getElementById('canvas-container');
 let width = canvasContainer.clientWidth,
     height = canvasContainer.clientHeight;
@@ -270,10 +270,6 @@ function init() {
 
     //lights
     scene.add(new THREE.AmbientLight('#404040'));
-    light = new THREE.PointLight('#FFF');
-    light.position.set(0, 50, 50);
-    //告诉平行光需要开启阴影投射
-    light.castShadow = true;
 
     //canvas
     //renderer
@@ -289,18 +285,10 @@ function init() {
     renderer.shadowMap.enabled = false;
 
     // controls
-    controls = new OrbitControls(camera, renderer.domElement);
-    controls._isrotateup = true;
-    controls.autoRotate = false;
-    //controls.dampingFactor=0.5;
-    controls.enableZoom = true;
-    //设置旋转范围
+    orbitControls = new OrbitControls(camera, renderer.domElement);
     //上下旋转范围
-    controls.minPolarAngle = 0;
-    controls.maxPolarAngle = Math.PI / 2;
-    //左右旋转范围
-    controls.maxAzimuthAngle = 0;
-    controls.update();
+    orbitControls.minPolarAngle = 0;
+    orbitControls.maxPolarAngle = Math.PI / 2;
 
     // cursor: grab
     let canvas = document.getElementById('canvas');
