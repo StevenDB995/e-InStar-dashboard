@@ -1,5 +1,5 @@
 /**
- * -------------------------------------------------------------------------------------------------------------
+ * ---------------------------------------------------------------------------------------------------------------------
  * block: completion rate
  */
 var completedModules = 532; // to be passed via model map from backend
@@ -41,7 +41,7 @@ new ResizeObserver(function () {
 }).observe(document.getElementById('completion-rate-graph'));
 
 /**
- * -------------------------------------------------------------------------------------------------------------
+ * ---------------------------------------------------------------------------------------------------------------------
  * block: monthly completion
  */
 var monthlyCompletionChart = echarts.init(document.getElementById('monthly-completion'));
@@ -148,7 +148,7 @@ new ResizeObserver(function () {
 }).observe(document.getElementById('container-right'));
 
 /**
- * -------------------------------------------------------------------------------------------------------------
+ * ---------------------------------------------------------------------------------------------------------------------
  * block: pass rate
  */
 var passRate = 0.9; // to be passed via model map from backend

@@ -341,14 +341,11 @@ function init() {
             canvas.classList.remove('select');
             // remove the highlight when the mouse is not hovered above meshes
             if (selectedMode) {
-                for (let key in meshes) {
-                    if (key === selectedModuleName) continue;
-                    setFade(key);
-                }
+                if (hoveredModuleName !== selectedModuleName)
+                    setFade(hoveredModuleName);
             } else {
-                if (hoveredModuleName !== undefined) {
+                if (hoveredModuleName !== undefined)
                     setFocus(hoveredModuleName);
-                }
             }
         })
     });
