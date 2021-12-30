@@ -2,7 +2,7 @@ import * as THREE from './three.module.js';
 import {PLYLoader} from "./PLYLoader.js";
 import {OrbitControls} from './OrbitControls.js';
 
-let camera, scene, renderer, orbitControls;
+let camera, scene, renderer, light, orbitControls;
 let canvasContainer = document.getElementById('canvas-container');
 let width = canvasContainer.clientWidth,
     height = canvasContainer.clientHeight;
@@ -18,11 +18,21 @@ const lines = {};
 let selectedMode = false; // indicate whether a module is selected (clicked)
 let selectedModuleName, hoveredModuleName;
 
-const MESH_OPACITY_FOCUS = 1,
+// const MESH_OPACITY_FOCUS = 1,
+//     LINE_OPACITY_FOCUS = 1;
+// const MESH_OPACITY_FADE = 0.3,
+//     LINE_OPACITY_FADE = 0.1;
+// const MESH_OPACITY_HOVER = 0.7,
+//     LINE_OPACITY_HOVER = 0.5;
+
+const MESH_COLOR_FOCUS = '#EEE',
+    MESH_OPACITY_FOCUS = 0.8,
     LINE_OPACITY_FOCUS = 1;
-const MESH_OPACITY_FADE = 0.3,
+const MESH_COLOR_FADE = '#AAA',
+    MESH_OPACITY_FADE = 0.3,
     LINE_OPACITY_FADE = 0.1;
-const MESH_OPACITY_HOVER = 0.7,
+const MESH_COLOR_HOVER = '#EEE',
+    MESH_OPACITY_HOVER = 0.7,
     LINE_OPACITY_HOVER = 0.5;
 
 init();
@@ -148,9 +158,10 @@ function init() {
             geometry.computeVertexNormals();
 
             const material = new THREE.MeshPhongMaterial({
-                color: '#62605F',
+                // color: '#62605F', // mesh color
+                color: selectedMode ? MESH_COLOR_FADE : MESH_COLOR_FOCUS, // mesh color
                 specular: '#111',
-                shininess: 200,
+                // shininess: 200,
                 transparent: true,
                 opacity: selectedMode ? MESH_OPACITY_FADE : MESH_OPACITY_FOCUS
             });
@@ -181,7 +192,8 @@ function init() {
             //为mesh添加轮廓线
             const edges = new THREE.EdgesGeometry(geometry);
             const edgesMaterial = new THREE.LineBasicMaterial({
-                color: '#ECE32E',
+                // color: '#ECE32E', // line color
+                color: '#045996', // line color
                 transparent: true,
                 opacity: selectedMode ? LINE_OPACITY_FADE : LINE_OPACITY_FOCUS
             });
@@ -269,7 +281,9 @@ function init() {
     }
 
     //lights
-    scene.add(new THREE.AmbientLight('#404040'));
+    // light = new THREE.AmbientLight('#404040');
+    light = new THREE.AmbientLight('#FFF');
+    scene.add(light);
 
     //canvas
     //renderer
@@ -366,16 +380,19 @@ function init() {
     }
 
     function setFocus(moduleName) {
+        meshes[moduleName].material.color.set(MESH_COLOR_FOCUS);
         meshes[moduleName].material.opacity = MESH_OPACITY_FOCUS;
         lines[moduleName].material.opacity = LINE_OPACITY_FOCUS;
     }
 
     function setFade(moduleName) {
+        meshes[moduleName].material.color.set(MESH_COLOR_FADE);
         meshes[moduleName].material.opacity = MESH_OPACITY_FADE;
         lines[moduleName].material.opacity = LINE_OPACITY_FADE;
     }
 
     function setHover(moduleName) {
+        meshes[moduleName].material.color.set(MESH_COLOR_HOVER);
         meshes[moduleName].material.opacity = MESH_OPACITY_HOVER;
         lines[moduleName].material.opacity = LINE_OPACITY_HOVER;
     }
