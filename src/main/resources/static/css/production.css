@@ -21,14 +21,14 @@
 
 #completion-rate-caption {
     padding-top: 10px;
-    font-family: Pixer-Regular;
+    font-family: Pixer-Regular, system-ui;
 }
 
 #completion-rate-number {
     height: 180px; /* specifying the height of the dom is necessary for the floating animation  */
     padding-bottom: 10px;
     padding-top: 10px;
-    font-family: Pixer-Regular;
+    font-family: Pixer-Regular, system-ui;
     font-size: 100px;
     background: linear-gradient(#199dff 40%, rgba(25, 157, 255, 0.3) 50%, #199dff 60%);
     background-position-y: 80px;
@@ -90,7 +90,7 @@
 #pass-rate {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    font-family: Pixer-Regular;
+    font-family: Pixer-Regular, system-ui;
 }
 
 #pass, #fail {
