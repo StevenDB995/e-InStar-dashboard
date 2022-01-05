@@ -270,26 +270,34 @@ $.ajax({
     function addMarker(lngLat, moduleId, options) {
         var divs = [];
         divs.push(
-            `<div id="${moduleId}">
-            <strong>Module ID:</strong> ${moduleId}
-        </div>`
+            //language=HTML
+            `<div>
+                <strong>Module ID:</strong> ${moduleId}
+            </div>`
         );
         divs.push(
+            //language=HTML
             `<div>
-            ${lngLat.lng.toFixed(2)}, ${lngLat.lat.toFixed(2)}
-        </div>`
+                ${lngLat.lng.toFixed(2)}, ${lngLat.lat.toFixed(2)}
+            </div>`
         );
+
         var popup = new mapboxgl.Popup()
             .setHTML(divs.join(''));
         var marker = new mapboxgl.Marker(options)
             .setLngLat(lngLat)
             .setPopup(popup)
             .addTo(map);
+        marker.isClicked = false;
         markers.push(marker);
 
-        reverseGeocoder(lngLat, function (data) {
-            divs.splice(1, 0, `<div>${data.features[0].place_name}</div>`)
-            popup.setHTML(divs.join(''));
+        $(marker.getElement()).click(function () {
+            if (marker.isClicked) return;
+            marker.isClicked = true;
+            reverseGeocoder(lngLat, function (data) {
+                divs.splice(1, 0, `<div>${data.features[0].place_name}</div>`)
+                popup.setHTML(divs.join(''));
+            });
         });
     }
 
