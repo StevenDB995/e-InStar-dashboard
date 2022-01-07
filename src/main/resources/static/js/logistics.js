@@ -72,15 +72,6 @@ $.ajax({
     map.addControl(new mapboxgl.FullscreenControl());
     map.addControl(new mapboxgl.NavigationControl({visualizePitch: true}));
 
-    map.on('click', function (event) {
-        var lngLat = event.lngLat;
-        console.log(`${lngLat.lng}, ${lngLat.lat}`);
-
-        // reverseGeocoder(lngLat, function (data) {
-        //     console.log(data);
-        // });
-    });
-
     requestForAllModules(() => resetPanel());
 
     // convert the format of coordinates
@@ -105,7 +96,7 @@ $.ajax({
             error: function () {
                 console.error('Fail to retrieve geographic information');
             }
-        })
+        });
     }
 
     /*
@@ -184,19 +175,21 @@ $.ajax({
                 $nodeImg.attr('src', imgSrc);
             }
         }
+
         // set the line color
         setLineColor();
         // remove the original estimated arrival info first
         $('.estimated-arrival').remove();
         // display estimated arrival info
         $($('#trace-graph .node')[trackedModule.latest.status]).append(
+            //language=HTML
             `<div class="estimated-arrival">
-                        <strong>Estimated Arrival Time:</strong>
-                        <br>
-                        18/9/2021
-                        <br>
-                        07:30
-                    </div>`);
+                <strong>Estimated Arrival Time:</strong>
+                <br>
+                18/9/2021
+                <br>
+                07:30
+            </div>`);
     }
 
     // set the line color of the #trace-graph
@@ -333,6 +326,7 @@ $.ajax({
                     color = '#8fc408';
                     break;
             }
+
             addMarker(modules[moduleId], moduleId, {color: color});
         }
     }
