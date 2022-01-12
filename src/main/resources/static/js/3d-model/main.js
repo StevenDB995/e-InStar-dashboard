@@ -18,6 +18,9 @@ const lines = {};
 let selectedMode = false; // indicate whether a module is selected (clicked)
 let selectedModuleName, hoveredModuleName;
 
+let map; // logistics map for the selected module
+let trackedModule; // currently tracked module
+
 // const MESH_OPACITY_FOCUS = 1,
 //     LINE_OPACITY_FOCUS = 1;
 // const MESH_OPACITY_FADE = 0.3,
@@ -222,7 +225,21 @@ function init() {
                 }
 
                 selectedModuleName = moduleName;
-                $('#selected-module').text(moduleName);
+
+                $('#selected-module > .unselected').hide();
+                $('#selected-module > .selected').show();
+
+                $('#logistics-info > .module-id > .data').text(moduleName);
+
+                if (map === undefined) {
+                    mapboxgl.accessToken = 'pk.eyJ1Ijoic3RldmVuZGI5OTUiLCJhIjoiY2t3YmlyeWE4MWNhdjJvcW1ibW5vd2JtcyJ9.tGHXa1ClOlu6cVe-RSiH2Q';
+                    map = new mapboxgl.Map({
+                        container: 'map', // container ID
+                        style: 'mapbox://styles/mapbox/streets-v11', // style URL
+                        center: [114.056824, 22.543206], // starting position [lng, lat]
+                        zoom: 7.5 // starting zoom
+                    });
+                }
             };
 
             mesh.onHover = function () {

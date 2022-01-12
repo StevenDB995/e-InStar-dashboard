@@ -4,6 +4,7 @@
 <head>
     <title>Installation Dashboard</title>
     <link th:href="@{/css/installation.css}" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css" rel="stylesheet">
 </head>
 <body>
 <th:block layout:fragment="content">
@@ -53,7 +54,38 @@
                         <div class="row">
                             <div class="flex-container col-sm-7 order-sm-0 order-1">
                                 <div class="display-card" id="selected-module">
-                                    Selected module
+                                    <div class="row unselected">
+                                        Select a module from the model below
+                                    </div>
+                                    <div class="row selected" style="display: none;">
+                                        <div class="col-lg-7">
+                                            <ul id="logistics-info">
+                                                <li class="module-id">
+                                                    <span class="name">
+                                                        <strong>Module</strong>
+                                                    </span>
+                                                    <span class="colon">
+                                                        <strong>:</strong>
+                                                    </span>
+                                                    <span class="data"></span>
+                                                </li>
+                                                <li class="status">
+                                                    <span class="name">
+                                                        <strong>Status</strong>
+                                                    </span>
+                                                    <span class="colon">
+                                                        <strong>:</strong>
+                                                    </span>
+                                                    <span class="data">Sea transportation</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div id="map-container">
+                                                <div id="map"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="flex-container col-sm-5 order-sm-1 order-0">
@@ -90,7 +122,9 @@
 </th:block>
 
 <th:block layout:fragment="script">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
     <script th:src="@{/js/installation.js}"></script>
+    <script th:src="@{/js/logistics-data.js}"></script>
     <script type="module" th:src="@{/js/3d-model/main.js}"></script>
 </th:block>
 </body>

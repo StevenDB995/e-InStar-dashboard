@@ -88,6 +88,36 @@
     }
 }
 
+#logistics-info {
+    list-style: none;
+    padding-left: 0;
+    display: table;
+}
+
+#logistics-info > li {
+    display: table-row;
+}
+
+#logistics-info > li > span {
+    display: table-cell;
+}
+
+#logistics-info > li > .colon {
+    padding-left: 1.5rem;
+    padding-right: 0.75rem;
+}
+
+#map-container {
+    border-radius: 2px;
+    /* clip the corners of the map to fit its container */
+    overflow: hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black); /* for Safari and iOS devices */
+}
+
+#map {
+    height: 180px;
+}
+
 #three-model {
     margin-bottom: 0;
     padding: 0;
