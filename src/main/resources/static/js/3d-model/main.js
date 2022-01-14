@@ -235,9 +235,15 @@ function init() {
                     logisticsMap = new LogisticsMap('map', 6, false);
                 }
 
-                logisticsMap.requestForModuleDetail({moduleid: moduleName, judgement: true},
-                    () => logisticsMap.showLogisticsRoute(0.5, 2, false),
-                    () => logisticsMap.clearMap());
+                logisticsMap.requestForModuleDetail({
+                    moduleid: moduleName,
+                    judgement: true
+                }, () => logisticsMap.showLogisticsRoute({
+                    markerSize: 0.5,
+                    lineWidth: 2,
+                    detailedGeoInfo: false,
+                    flyToSpeed: 1
+                }), () => logisticsMap.clearMap());
             };
 
             mesh.onHover = function () {

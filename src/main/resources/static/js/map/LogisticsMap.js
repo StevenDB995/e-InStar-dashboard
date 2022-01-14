@@ -65,13 +65,19 @@ export class LogisticsMap {
 
     /**
      * show the logistics route of the currently tracked module
-     * @param {number} markerSize the size of the markers
-     * @param {number} lineWidth the line width of the route line
-     * @param {boolean} detailedGeoInfo whether to show detailed geographic information in the popup
+     * @param {Object} options
+     * @param {number?} options.markerSize the size of the markers
+     * @param {number?} options.lineWidth the line width of the route line
+     * @param {boolean?} options.detailedGeoInfo whether to show detailed geographic information in the popup
+     * @param {number?} options.flyToSpeed the speed for the flyTo function
      */
-    showLogisticsRoute(markerSize = 1,
-                       lineWidth = 4,
-                       detailedGeoInfo = true) {
+    showLogisticsRoute(options = {}) {
+        let markerSize = options.markerSize || 1;
+        let lineWidth = options.lineWidth || 4;
+        let detailedGeoInfo = options.hasOwnProperty('detailedGeoInfo')
+            ? options.detailedGeoInfo : true;
+        let flyToSpeed = options.flyToSpeed || 0.5;
+
         // remove all existing markers and route
         this.clearMap();
 
@@ -100,7 +106,7 @@ export class LogisticsMap {
         this._map.flyTo({
             center: this._trackedModule.trail[this._trackedModule.trail.length - 1],
             zoom: 10,
-            speed: 0.7,
+            speed: flyToSpeed,
             essential: true
         });
     }
