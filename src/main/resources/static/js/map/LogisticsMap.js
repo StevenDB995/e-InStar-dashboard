@@ -144,6 +144,23 @@ export class LogisticsMap {
         marker.isClicked = false;
         this._markers.push(marker);
 
+        if (options.hasOwnProperty('scale')) {
+            const markerHeight = 41 * options.scale;
+            const markerRadius = 13.5 * options.scale;
+            const linearOffset = markerRadius / Math.sqrt(2);
+
+            popup.setOffset({
+                'top': [0, 0],
+                'top-left': [0, 0],
+                'top-right': [0, 0],
+                'bottom': [0, -markerHeight],
+                'bottom-left': [linearOffset, -(markerHeight - markerRadius + linearOffset)],
+                'bottom-right': [-linearOffset, -(markerHeight - markerRadius + linearOffset)],
+                'left': [markerRadius, -(markerHeight - markerRadius)],
+                'right': [-markerRadius, -(markerHeight - markerRadius)]
+            });
+        }
+
         $(marker.getElement()).click(() => {
             if (marker.isClicked) return;
             marker.isClicked = true;
