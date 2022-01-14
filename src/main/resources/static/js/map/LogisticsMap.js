@@ -85,32 +85,17 @@ export class LogisticsMap {
             trail.push(LogisticsMap.coordinatesConverter(lngLat));
         });
 
-        // show lines of route on map load
-        this._map.addSource('route', {
-            'type': 'geojson',
-            'data': {
-                'type': 'Feature',
-                'properties': {},
-                'geometry': {
-                    'type': 'LineString',
-                    'coordinates': trail
-                }
-            }
-        });
-
-        this._map.addLayer({
-            'id': 'route',
-            'type': 'line',
-            'source': 'route',
-            'layout': {
-                'line-join': 'round',
-                'line-cap': 'round'
-            },
-            'paint': {
-                'line-color': 'red',
-                'line-width': lineWidth
-            }
-        });
+        // check whether the style of the map is done loading
+        if (this._map.isStyleLoaded()) {
+            // show lines of route on map load
+            this._addLines(trail, lineWidth);
+        } else {
+            // if the map is not done loading yet,
+            // wait until it is fully loaded to add the lines
+            this._map.on('load', () => {
+                this._addLines(trail, lineWidth);
+            });
+        }
 
         this._map.flyTo({
             center: this._trackedModule.trail[this._trackedModule.trail.length - 1],
@@ -172,6 +157,34 @@ export class LogisticsMap {
                 divs.splice(1, 0, `<div>${geoInfo}</div>`)
                 popup.setHTML(divs.join(''));
             });
+        });
+    }
+
+    _addLines(coordinates, lineWidth) {
+        this._map.addSource('route', {
+            'type': 'geojson',
+            'data': {
+                'type': 'Feature',
+                'properties': {},
+                'geometry': {
+                    'type': 'LineString',
+                    'coordinates': coordinates
+                }
+            }
+        });
+
+        this._map.addLayer({
+            'id': 'route',
+            'type': 'line',
+            'source': 'route',
+            'layout': {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            'paint': {
+                'line-color': 'red',
+                'line-width': lineWidth
+            }
         });
     }
 
