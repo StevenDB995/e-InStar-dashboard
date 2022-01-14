@@ -1,4 +1,4 @@
-var allModules = { // all modules with modules ids and their current locations
+const allModules = { // all modules with modules ids and their current locations
     "A-3-N-5": {
         "lng": 113.161265,
         "lat": 23.062559,
@@ -26,7 +26,7 @@ var allModules = { // all modules with modules ids and their current locations
     }
 };
 
-var allModulesDetail = {
+const allModulesDetail = {
     "A-3-N-5": {
         "data": {
             "latest": {
@@ -227,3 +227,5 @@ var allModulesDetail = {
         }
     }
 };
+
+export {allModules, allModulesDetail};

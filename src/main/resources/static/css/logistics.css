@@ -123,12 +123,12 @@ form#module-search input {
     letter-spacing: 1px;
 }
 
-#map-container {
+#map-frame {
     border-radius: 12px;
     border-style: solid;
     border-width: 4px;
     border-color: white;
-    /* clip the corners of the map to fit its container */
+    /* clip the corners of the map to fit its frame */
     overflow: hidden;
     -webkit-mask-image: -webkit-radial-gradient(white, black); /* for Safari and iOS devices */
 }

@@ -54,7 +54,7 @@
                         <div class="row">
                             <div class="flex-container col-sm-7 order-sm-0 order-1">
                                 <div class="display-card" id="selected-module">
-                                    <div class="row unselected">
+                                    <div class="unselected">
                                         Select a module from the model below
                                     </div>
                                     <div class="row selected" style="display: none;">
@@ -81,7 +81,7 @@
                                             </ul>
                                         </div>
                                         <div class="col-lg-5">
-                                            <div id="map-container">
+                                            <div id="map-frame">
                                                 <div id="map"></div>
                                             </div>
                                         </div>
@@ -124,7 +124,6 @@
 <th:block layout:fragment="script">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
     <script th:src="@{/js/installation.js}"></script>
-    <script th:src="@{/js/logistics-data.js}"></script>
     <script type="module" th:src="@{/js/3d-model/main.js}"></script>
 </th:block>
 </body>

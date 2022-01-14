@@ -42,7 +42,7 @@
                         <strong>Tracking: </strong><span>All Modules in Transportation</span>
                     </div>
                     <div class="col-xl-10 col-12">
-                        <div id="map-container">
+                        <div id="map-frame">
                             <div id="map"></div>
                         </div>
                     </div>
@@ -82,8 +82,7 @@
 
 <th:block layout:fragment="script">
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.js"></script>
-    <script th:src="@{/js/logistics-data.js}"></script>
-    <script th:src="@{/js/logistics.js}"></script>
+    <script type="module" th:src="@{/js/logistics.js}"></script>
 </th:block>
 </body>
 </html>

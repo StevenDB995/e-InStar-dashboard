@@ -63,9 +63,7 @@
 }
 
 @media (max-width: 1023px) {
-    #install-total,
-    #install-block-a, #install-block-b,
-    #avg-install-time {
+    .display-card {
         padding: 6px 12px;
     }
 
@@ -107,9 +105,9 @@
     padding-right: 0.75rem;
 }
 
-#map-container {
+#map-frame {
     border-radius: 2px;
-    /* clip the corners of the map to fit its container */
+    /* clip the corners of the map to fit its frame */
     overflow: hidden;
     -webkit-mask-image: -webkit-radial-gradient(white, black); /* for Safari and iOS devices */
 }
@@ -118,9 +116,20 @@
     height: 180px;
 }
 
+.mapboxgl-popup-content {
+    font-size: 10px !important;
+    line-height: 1rem !important;
+    padding: 5px 10px !important;
+    max-width: 150px;
+}
+
+.mapboxgl-popup-close-button {
+    display: none;
+}
+
 #three-model {
     margin-bottom: 0;
-    padding: 0;
+    padding: 0 !important;
     position: relative;
 }
 
