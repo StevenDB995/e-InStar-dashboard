@@ -32,11 +32,11 @@ export class LogisticsMap {
         }).observe(document.getElementById(containerId));
     }
 
-    getModules() {
+    get modules() {
         return this._modules;
     }
 
-    getTrackedModule() {
+    get trackedModule() {
         return this._trackedModule;
     }
 

@@ -240,8 +240,7 @@ function init() {
                     moduleid: moduleName,
                     judgement: true
                 }, () => {
-                    let trackedModule = logisticsMap.getTrackedModule();
-                    switch (trackedModule.latest.status) {
+                    switch (logisticsMap.trackedModule.latest.status) {
                         case 0:
                             $status.text('In factory');
                             break;

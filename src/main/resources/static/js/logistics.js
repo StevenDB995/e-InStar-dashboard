@@ -75,7 +75,7 @@ function showSearchResult() {
     $('#trace-graph').show();
     renderTraceGraph(); // render the trace graph
     logisticsMap.showLogisticsRoute(); // show route on map
-    $('#panel-heading span').text(`Module ${logisticsMap.getTrackedModule().moduleId}`);
+    $('#panel-heading span').text(`Module ${logisticsMap.trackedModule.moduleId}`);
     changeBubbles();
 }
 
@@ -104,7 +104,7 @@ function resetPanel() {
  * this dom is hidden on page load, and will be displayed only if a valid module ID is searched
  */
 function renderTraceGraph() {
-    let trackedModule = logisticsMap.getTrackedModule();
+    let trackedModule = logisticsMap.trackedModule;
 
     // set the node image color
     for (let i = 0; i < 5; ++i) {
@@ -143,7 +143,7 @@ function setLineColor() {
     let nodeGap = (graphWidth - nodeWidth) / 4;
 
     let xLeft = nodeWidth / 2;
-    let xMiddle = xLeft + logisticsMap.getTrackedModule().latest.status * nodeGap;
+    let xMiddle = xLeft + logisticsMap.trackedModule.latest.status * nodeGap;
     let xRight = graphWidth - nodeWidth / 2;
     $svgLineLeft.attr('x1', xLeft + 'px')
         .attr('x2', xMiddle + 'px');
@@ -157,12 +157,11 @@ function setLineColor() {
  */
 function resetMap() {
     logisticsMap.clearMap();
-    let modules = logisticsMap.getModules();
 
     // show current locations of all modules in transportation
-    for (let moduleId in modules) {
+    for (let moduleId in logisticsMap.modules) {
         let color;
-        switch (modules[moduleId].status) {
+        switch (logisticsMap.modules[moduleId].status) {
             case 0:
             case 1:
                 color = '#d1452d';
@@ -176,7 +175,7 @@ function resetMap() {
                 break;
         }
 
-        logisticsMap.addMarker(modules[moduleId], moduleId, {color: color});
+        logisticsMap.addMarker(logisticsMap.modules[moduleId], moduleId, {color: color});
     }
 }
 
@@ -187,7 +186,7 @@ function resetMap() {
 function changeBubbles() { // change the bubbles in the #panel based on module search result
     $('.bubble-container').hide();
 
-    switch (logisticsMap.getTrackedModule().latest.status) {
+    switch (logisticsMap.trackedModule.latest.status) {
         case 0:
         case 1:
             $('.bubble.mainland').parent().show();
@@ -211,10 +210,9 @@ function resetBubbles() {
     let mainlandCnt = 0,
         seaCnt = 0,
         hkCnt = 0;
-    let modules = logisticsMap.getModules();
 
-    for (let moduleId in modules) {
-        switch (modules[moduleId].status) {
+    for (let moduleId in logisticsMap.modules) {
+        switch (logisticsMap.modules[moduleId].status) {
             case 0:
             case 1:
                 mainlandCnt++;
