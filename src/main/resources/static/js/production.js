@@ -1,3 +1,5 @@
+import {animateNumberDisplay} from "./Util.js";
+
 /**
  * ---------------------------------------------------------------------------------------------------------------------
  * block: completion rate
@@ -155,26 +157,6 @@ var passRate = 0.9; // to be passed via model map from backend
 var failRate = 1.0 - passRate;
 animateNumberDisplay($('#pass-number span'), passRate * 100, 1000, 0);
 animateNumberDisplay($('#fail-number span'), failRate * 100, 1000, 0);
-
-/**
- * display number with animation in a counting manner
- * @param $element the jquery element holding the number
- * @param number the number to be animated
- * @param duration duration of the animation
- * @param fractionDigits number of decimals to be rounded to
- */
-function animateNumberDisplay($element, number, duration, fractionDigits) {
-    $element.text(number);
-    $element.prop('counter', 0).animate({ // start counting from 0
-        counter: $element.text()
-    }, {
-        duration: duration,
-        easing: 'swing',
-        step: function (current) {
-            $element.text(current.toFixed(fractionDigits));
-        }
-    });
-}
 
 $('.progress-bar').attr('aria-valuenow', 80).animate({
     width: '80%'

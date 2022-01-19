@@ -38,9 +38,6 @@ const MESH_COLOR_HOVER = '#EEE',
     MESH_OPACITY_HOVER = 0.7,
     LINE_OPACITY_HOVER = 0.5;
 
-init();
-animate();
-
 function init() {
     camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
     camera.position.set(300, 240, 300);
@@ -447,3 +444,5 @@ function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
 }
+
+export default {init, animate};
