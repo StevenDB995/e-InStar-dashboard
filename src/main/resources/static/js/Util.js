@@ -4,9 +4,8 @@
  * @param number the number to be animated
  * @param duration duration of the animation
  * @param fractionDigits number of decimals to be rounded to
- * @param complete
  */
-export function animateNumberDisplay($element, number, duration, fractionDigits, complete) {
+export function animateNumberDisplay($element, number, duration, fractionDigits) {
     $element.text(number);
     $element.prop('counter', 0).animate({ // start counting from 0
         counter: $element.text()
@@ -15,7 +14,6 @@ export function animateNumberDisplay($element, number, duration, fractionDigits,
         easing: 'swing',
         step: function (current) {
             $element.text(current.toFixed(fractionDigits));
-        },
-        complete: complete || function () {}
+        }
     });
 }

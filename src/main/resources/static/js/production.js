@@ -1,4 +1,4 @@
-import {animateNumberDisplay} from "./Util.js";
+import {animateNumberDisplay} from './Util.js';
 
 /**
  * ---------------------------------------------------------------------------------------------------------------------
