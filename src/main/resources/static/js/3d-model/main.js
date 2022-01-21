@@ -171,7 +171,7 @@ function init() {
             var calcY = y;
             switch (type) {
                 case 'ground':
-                    scalar = 0.003;
+                    scalar *= 0.001;
                     calcY = y_ground;
                     break;
                 case 'standard':
@@ -301,7 +301,7 @@ function init() {
             if ((++rendered) === renderedTotal) {
                 onRenderComplete();
             }
-        }, 100);
+        });
     }
 
     function onRenderComplete() {
