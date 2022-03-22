@@ -31,7 +31,7 @@ let searchStatus = false; // whether the search result of a particular module is
 initialize mapbox
  */
 logisticsMap = new LogisticsMap('map', 7.5, true);
-logisticsMap.requestForAllModules(() => resetPanel());
+// logisticsMap.requestForAllModules(() => resetPanel());
 
 /*
 register resize observer for right container
@@ -72,16 +72,17 @@ $('form#module-search input').on('input', function () {
 
 function showSearchResult() {
     searchStatus = true;
-    $('#trace-graph').show();
-    renderTraceGraph(); // render the trace graph
-    logisticsMap.showLogisticsRoute(); // show route on map
-    $('#panel-heading span').text(`Module ${logisticsMap.trackedModule.moduleId}`);
-    changeBubbles();
+    // $('#trace-graph').show();
+    // renderTraceGraph(); // render the trace graph
+    // logisticsMap.showLogisticsRoute(); // show route on map
+    logisticsMap.showCurrentLogistics();
+    $('#panel-heading span').text(`Box ${logisticsMap.trackedModule.moduleId}`);
+    // changeBubbles();
 }
 
 function clearSearch() {
-    $('#trace-graph').hide();
-    $('#panel-heading span').text('All Modules in Transportation');
+    // $('#trace-graph').hide();
+    $('#panel-heading span').text('No selection');
     if (searchStatus) {
         logisticsMap.requestForAllModules(() => resetPanel());
         searchStatus = false;
@@ -93,9 +94,9 @@ function clearSearch() {
 // reset the #panel div
 function resetPanel() {
     // show current locations of all modules in transportation
-    resetMap();
+    logisticsMap.clearMap();
     // fill statistics of the logistics in the bubbles of the #panel dom
-    resetBubbles();
+    // resetBubbles();
 }
 
 /**

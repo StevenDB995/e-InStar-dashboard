@@ -9,73 +9,80 @@
 <body>
 <th:block layout:fragment="content">
     <div class="container">
-        <div id="display-area">
-            <h3 class="heading">Logistics</h3>
-            <form id="module-search" class="d-flex col-xl-3 col-md-6 col-12">
-                <input class="form-control" type="search" placeholder="Search module ID" aria-label="Search module ID">
-                <button class="btn search"><i class="bi bi-search"></i></button>
-            </form>
-            <div id="trace-graph" style="display: none;">
-                <svg>
-                    <line id="line-left" y1="50%" y2="50%"/>
-                    <line id="line-right" y1="50%" y2="50%"/>
-                </svg>
-                <div class="node">
-                    <img th:src="@{/images/logistics/factory-0.png}">
-                </div>
-                <div class="node">
-                    <img th:src="@{/images/logistics/truck-0.png}">
-                </div>
-                <div class="node">
-                    <img th:src="@{/images/logistics/ferry-0.png}">
-                </div>
-                <div class="node">
-                    <img th:src="@{/images/logistics/truck-0.png}">
-                </div>
-                <div class="node">
-                    <img th:src="@{/images/logistics/destination-0.png}">
-                </div>
-            </div>
-            <div id="panel">
-                <div class="row">
-                    <div id="panel-heading">
-                        <strong>Tracking: </strong><span>All Modules in Transportation</span>
-                    </div>
-                    <div class="col-xl-10 col-12">
-                        <div id="map-frame">
-                            <div id="map"></div>
+        <div class="row">
+            <div class="col-xl-1"></div>
+            <div class="col-xl-10">
+                <div id="display-area">
+                    <h3 class="heading">Logistics Tracking</h3>
+                    <form id="module-search" class="d-flex col-xl-3 col-md-6 col-12">
+                        <input class="form-control" type="search" placeholder="Search module ID" aria-label="Search module ID">
+                        <button class="btn search"><i class="bi bi-search"></i></button>
+                    </form>
+                    <div id="trace-graph" style="display: none;">
+                        <svg>
+                            <line id="line-left" y1="50%" y2="50%"/>
+                            <line id="line-right" y1="50%" y2="50%"/>
+                        </svg>
+                        <div class="node">
+                            <img th:src="@{/images/logistics/factory-0.png}">
+                        </div>
+                        <div class="node">
+                            <img th:src="@{/images/logistics/truck-0.png}">
+                        </div>
+                        <div class="node">
+                            <img th:src="@{/images/logistics/ferry-0.png}">
+                        </div>
+                        <div class="node">
+                            <img th:src="@{/images/logistics/truck-0.png}">
+                        </div>
+                        <div class="node">
+                            <img th:src="@{/images/logistics/destination-0.png}">
                         </div>
                     </div>
-                    <div class="col-xl-2 col-12">
+                    <div id="panel">
                         <div class="row">
-                            <div class="bubble-container col-xl-12 col">
-                                <div class="bubble mainland">
-                                    <div class="number">0</div>
-                                    <img th:src="@{/images/logistics/mainland-transport.png}" alt="transportation"
-                                         class="transport-logo">
-                                    <div class="description-text">Factory to Gaoming Port</div>
+                            <div id="panel-heading">
+                                <strong>Tracking: </strong><span>No selection</span>
+                            </div>
+                            <div class="col-12">
+                                <div id="map-frame">
+                                    <div id="map"></div>
                                 </div>
                             </div>
-                            <div class="bubble-container col-xl-12 col">
-                                <div class="bubble sea">
-                                    <div class="number">0</div>
-                                    <img th:src="@{/images/logistics/sea-transport.png}" alt="transportation"
-                                         class="transport-logo">
-                                    <div class="description-text">Sea freight</div>
-                                </div>
-                            </div>
-                            <div class="bubble-container col-xl-12 col">
-                                <div class="bubble hk">
-                                    <div class="number">0</div>
-                                    <img th:src="@{/images/logistics/hk-transport.png}" alt="transportation"
-                                         class="transport-logo">
-                                    <div class="description-text">You Ma Tei Port to WCH site</div>
-                                </div>
-                            </div>
+<!--                            <div class="col-xl-2 col-12">-->
+<!--                                <div class="row">-->
+<!--                                    <div class="bubble-container col-xl-12 col">-->
+<!--                                        <div class="bubble mainland">-->
+<!--                                            <div class="number">0</div>-->
+<!--                                            <img th:src="@{/images/logistics/mainland-transport.png}"-->
+<!--                                                 alt="transportation"-->
+<!--                                                 class="transport-logo">-->
+<!--                                            <div class="description-text">Factory to Gaoming Port</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="bubble-container col-xl-12 col">-->
+<!--                                        <div class="bubble sea">-->
+<!--                                            <div class="number">0</div>-->
+<!--                                            <img th:src="@{/images/logistics/sea-transport.png}" alt="transportation"-->
+<!--                                                 class="transport-logo">-->
+<!--                                            <div class="description-text">Sea freight</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="bubble-container col-xl-12 col">-->
+<!--                                        <div class="bubble hk">-->
+<!--                                            <div class="number">0</div>-->
+<!--                                            <img th:src="@{/images/logistics/hk-transport.png}" alt="transportation"-->
+<!--                                                 class="transport-logo">-->
+<!--                                            <div class="description-text">You Ma Tei Port to WCH site</div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-xl-1"></div>
         </div>
     </div>
 </th:block>

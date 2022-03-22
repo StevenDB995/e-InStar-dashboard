@@ -26,6 +26,10 @@ export class LogisticsMap {
             this._map.touchZoomRotate.disableRotation();
         }
 
+        this._map.on('click', function (event) {
+            console.log(event.lngLat);
+        })
+
         new ResizeObserver(() => {
             // resize the canvas of mapbox on change of the map dom
             this._map.resize();
@@ -116,7 +120,13 @@ export class LogisticsMap {
         divs.push(
             //language=HTML
             `<div>
-                <strong>Module ID:</strong> ${moduleId}
+                <strong>Box ID:</strong> ${moduleId}
+            </div>
+            <div>
+                <strong>Truck ID:</strong> 12
+            </div>
+            <div>
+                <strong>Status:</strong> In transportation
             </div>`
         );
         divs.push(
@@ -228,6 +238,22 @@ export class LogisticsMap {
             error: () => {
                 console.error('Fail to retrieve geographic information');
             }
+        });
+    }
+
+    showCurrentLogistics() {
+        // remove all existing markers and route
+        this.clearMap();
+
+        // add marker point on map
+        this.addMarker(this._trackedModule.latest, this._trackedModule.moduleId,
+            {color: 'red'});
+
+        this._map.flyTo({
+            center: this._trackedModule.latest,
+            zoom: 10,
+            speed: 0.5,
+            essential: true
         });
     }
 

@@ -225,6 +225,14 @@ const allModulesDetail = {
                 }
             ]
         }
+    },
+    "A-SAMPLE-ID": {
+        "data": {
+            "latest": {
+                "lng": 114.063031,
+                "lat": 22.637749
+            }
+        }
     }
 };
 
