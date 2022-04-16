@@ -1,0 +1,95 @@
+@font-face {
+    font-family: Roboto;
+    src: url(/fonts/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: RobotoSlab;
+    src: url(/fonts/RobotoSlab-Regular.ttf);
+}
+
+#header {
+    margin-bottom: 16px;
+}
+
+#swiper {
+    height: 160px;
+}
+
+#swiper .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.swiper-pagination {
+    bottom: -4px !important;
+}
+
+.header-card {
+    background: #3AA0DD;
+    border-radius: 10px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+    width: 240px;
+    height: 120px;
+    padding: 6px 12px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+    letter-spacing: 2px;
+}
+
+.header-card > .title {
+    color: white;
+    font-family: Roboto, system-ui;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.header-card > .body {
+    display: flex;
+    justify-content: space-around;
+}
+
+.header-card > .body > .number {
+    color: #F7CD45;
+    font-family: RobotoSlab, system-ui;
+    font-size: 52px;
+    font-weight: bold;
+    line-height: 1em;
+}
+
+.header-card > .body > .number > .unit {
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1em;
+}
+
+.header-card > .body > .icon {
+    display: flex;
+    align-items: center;
+}
+
+.header-card > .body > .icon > img {
+    max-width: 54px;
+    max-height: 48px;
+}
+
+.header-card > .footer {
+    color: white;
+    font-family: Roboto, system-ui;
+    font-size: 14px;
+}
+
+#content {
+    background: #0689D8;
+}
+
+.page {
+    display: none;
+}
+
+.page-active {
+    display: block !important;
+}
