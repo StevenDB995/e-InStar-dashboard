@@ -131,6 +131,27 @@ content (for exhibiting data)
     letter-spacing: 2px;
 }
 
+.page > .content-card:not(:last-child) {
+    margin-bottom: 32px;
+}
+
+.content-card .data {
+    color: #0689D8;
+}
+
+.content-card .data-body {
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.content-card .data-sub {
+    font-size: 18px;
+}
+
+.content-card .annotation {
+    font-size: 21px;
+}
+
 /*
 progress diagram:
 customization of content card
@@ -143,23 +164,6 @@ customization of content card
 .progress-diagram > .content-card-body {
     display: grid;
     grid-template-columns: 2fr 1fr;
-}
-
-.progress-diagram .data {
-    color: #0689D8;
-}
-
-.progress-diagram .data-body {
-    font-size: 60px;
-    font-weight: bold;
-}
-
-.progress-diagram .data-sub {
-    font-size: 18px;
-}
-
-.progress-diagram .annotation {
-    font-size: 21px;
 }
 
 .progress-diagram .diagram {
@@ -198,4 +202,22 @@ customization of content card
 
 .pc-square-yellow {
     background: rgba(247, 205, 69, 0.3);
+}
+
+/*
+factory storage
+ */
+
+.factory-storage .data-wrapper  {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.factory-icon {
+    display: flex;
+    align-items: center;
+}
+
+.factory-icon > img {
+    width: 90px;
 }

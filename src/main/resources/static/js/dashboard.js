@@ -36,6 +36,7 @@ production pages (in progress and completed)
 let productionTotal = 952;
 let productionProgressCount = 142;
 let productionCompletedCount = 285;
+let factoryStorageCount = 93;
 
 let productionProgressRate = productionProgressCount / productionTotal;
 let productionCompletedRate = productionCompletedCount / productionTotal;
@@ -54,6 +55,7 @@ $('#production-completed-percentage').text(
 $('#production-progress-count').text(productionProgressCount);
 $('#production-completed-count').text(productionCompletedCount);
 $('#production-total').text(productionTotal);
+$('#production-factory-count').text(factoryStorageCount);
 
 // render the diagrams
 let productionCompletedSquares = productionCompletedRate.toFixed(2) * 100;
