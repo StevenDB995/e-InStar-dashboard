@@ -3,24 +3,29 @@
 swiper and hash change event
  */
 
+const swiper = new Swiper('#swiper', {
+    //enable hash navigation
+    hashNavigation: {
+        watchState: true
+    },
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true
+    }
+});
+
 function onHashChange() {
     $('.page').removeClass('page-active');
-    $(window.location.hash).addClass('page-active');
+    if ($(window.location.hash).length === 0) {
+        $('#production-progress').addClass('page-active');
+        swiper.slideTo(0);
+    } else {
+        $(window.location.hash).addClass('page-active');
+    }
 }
 
 window.addEventListener('hashchange', onHashChange);
 onHashChange();
-
-const swiper = new Swiper('#swiper', {
-    //enable hash navigation
-    hashNavigation: {
-        watchState: true,
-    },
-    pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-    }
-});
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
