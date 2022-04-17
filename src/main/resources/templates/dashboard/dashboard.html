@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,52 +16,59 @@
         <div class="swiper-wrapper">
             <div class="swiper-slide" data-hash="production-progress">
                 <div class="header-card">
-                    <div class="title">Production</div>
-                    <div class="body">
-                        <div class="number">15%</div>
+                    <div class="header-card-title">Production</div>
+                    <div class="header-card-body">
+                        <div class="data">
+                            <div class="data-body" id="production-progress-percentage"></div>
+                        </div>
                         <div class="icon">
                             <img src="/icons/production-progress.svg" />
                         </div>
                     </div>
-                    <div class="footer">in Progress</div>
+                    <div class="header-card-footer">in Progress</div>
                 </div>
             </div>
             <div class="swiper-slide" data-hash="production-completed">
                 <div class="header-card">
-                    <div class="title">Production</div>
-                    <div class="body">
-                        <div class="number">30%</div>
+                    <div class="header-card-title">Production</div>
+                    <div class="header-card-body">
+                        <div class="data">
+                            <div class="data-body" id="production-completed-percentage"></div>
+                        </div>
                         <div class="icon">
                             <img src="/icons/production-completed.svg" />
                         </div>
                     </div>
-                    <div class="footer">Completed</div>
+                    <div class="header-card-footer">Completed</div>
                 </div>
             </div>
             <div class="swiper-slide" data-hash="logistics">
                 <div class="header-card">
-                    <div class="title">Logistics</div>
-                    <div class="body">
-                        <div class="number">
-                            86<span class="unit">Units</span>
+                    <div class="header-card-title">Logistics</div>
+                    <div class="header-card-body">
+                        <div class="data">
+                            <div class="data-body" id="logistics-count">86</div>
+                            <div class="data-sub">Units</div>
                         </div>
                         <div class="icon">
                             <img src="/icons/logistics.svg" />
                         </div>
                     </div>
-                    <div class="footer">in Transit</div>
+                    <div class="header-card-footer">in Transit</div>
                 </div>
             </div>
             <div class="swiper-slide" data-hash="installation">
                 <div class="header-card">
-                    <div class="title">Installation</div>
-                    <div class="body">
-                        <div class="number">15%</div>
+                    <div class="header-card-title">Installation</div>
+                    <div class="header-card-body">
+                        <div class="data">
+                            <div class="data-body" id="installation-percentage">15%</div>
+                        </div>
                         <div class="icon">
                             <img src="/icons/installation.svg" />
                         </div>
                     </div>
-                    <div class="footer">Completed</div>
+                    <div class="header-card-footer">Installed</div>
                 </div>
             </div>
         </div>
@@ -70,8 +77,53 @@
 </div>
 
 <div id="content">
-    <div id="production-progress" class="page">1</div>
-    <div id="production-completed" class="page">2</div>
+    <div id="production-progress" class="page">
+        <div class="content-card progress-diagram">
+            <div class="content-card-body">
+                <div class="data-wrapper">
+                    <div class="data">
+                        <div class="data-body" id="production-progress-count"></div>
+                        <div class="data-sub">&nbsp;Units</div>
+                    </div>
+                    <div class="annotation">in Progress</div>
+                </div>
+                <div class="diagram">
+                    <div class="square-wrapper">
+                        <div class="square-row" th:each="i : ${#numbers.sequence(0,9)}">
+                            <div class="square"
+                                 th:each="j : ${#numbers.sequence(0,9)}"
+                                 th:id="'pp-square-' + ${100 - i*10 - j}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="production-completed" class="page">
+        <div class="content-card progress-diagram">
+            <div class="content-card-body">
+                <div class="data-wrapper">
+                    <div class="data">
+                        <div class="data-body" id="production-completed-count"></div>
+                        <div class="data-sub">/</div>
+                        <div class="data-sub" id="production-total"></div>
+                    </div>
+                    <div class="annotation">Completed</div>
+                </div>
+                <div class="diagram">
+                    <div class="square-wrapper">
+                        <div class="square-row" th:each="i : ${#numbers.sequence(0,9)}">
+                            <div class="square"
+                                 th:each="j : ${#numbers.sequence(0,9)}"
+                                 th:id="'pc-square-' + ${100 - i*10 - j}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="logistics" class="page">3</div>
     <div id="installation" class="page">4</div>
 </div>
@@ -81,7 +133,7 @@
 <script src="/jquery/3.6.0/jquery.min.js"></script>
 <script src="/bootstrap-5.1.3/js/bootstrap.bundle.min.js"></script>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script src="/js/dashboard.js"></script>
+<script type="module" src="/js/dashboard.js"></script>
 
 </body>
 </html>

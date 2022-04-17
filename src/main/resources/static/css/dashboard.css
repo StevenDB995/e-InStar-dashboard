@@ -1,3 +1,8 @@
+/*
+------------------------------------------------------------------------------------------------------------------------
+import fonts
+ */
+
 @font-face {
     font-family: Roboto;
     src: url(/fonts/Roboto-Regular.ttf);
@@ -7,6 +12,26 @@
     font-family: RobotoSlab;
     src: url(/fonts/RobotoSlab-Regular.ttf);
 }
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+global properties
+ */
+
+body {
+    font-family: Roboto, system-ui;
+}
+
+.data {
+    font-family: RobotoSlab, system-ui;
+    display: flex;
+    align-items: baseline;
+}
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+header (with swiper)
+ */
 
 #header {
     margin-bottom: 16px;
@@ -40,50 +65,55 @@
     letter-spacing: 2px;
 }
 
-.header-card > .title {
+.header-card-title {
     color: white;
-    font-family: Roboto, system-ui;
     font-size: 18px;
     font-weight: bold;
 }
 
-.header-card > .body {
+.header-card-body {
     display: flex;
     justify-content: space-around;
 }
 
-.header-card > .body > .number {
+.header-card-body > .data {
     color: #F7CD45;
-    font-family: RobotoSlab, system-ui;
+}
+
+.header-card-body .data-body {
     font-size: 52px;
     font-weight: bold;
     line-height: 1em;
 }
 
-.header-card > .body > .number > .unit {
+.header-card-body .data-sub {
     font-size: 14px;
-    font-weight: normal;
     line-height: 1em;
 }
 
-.header-card > .body > .icon {
+.header-card-body > .icon {
     display: flex;
     align-items: center;
 }
 
-.header-card > .body > .icon > img {
+.header-card-body > .icon > img {
     max-width: 54px;
     max-height: 54px;
 }
 
-.header-card > .footer {
+.header-card-footer {
     color: white;
-    font-family: Roboto, system-ui;
     font-size: 14px;
 }
 
+/*
+------------------------------------------------------------------------------------------------------------------------
+content (for exhibiting data)
+ */
+
 #content {
     background: #0689D8;
+    padding: 32px;
 }
 
 .page {
@@ -92,4 +122,80 @@
 
 .page-active {
     display: block !important;
+}
+
+.content-card {
+    background: white;
+    border-radius: 10px;
+    padding: 12px 24px;
+    letter-spacing: 2px;
+}
+
+/*
+progress diagram:
+customization of content card
+ */
+
+.progress-diagram {
+    padding-bottom: 20px;
+}
+
+.progress-diagram > .content-card-body {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.progress-diagram .data {
+    color: #0689D8;
+}
+
+.progress-diagram .data-body {
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.progress-diagram .data-sub {
+    font-size: 18px;
+}
+
+.progress-diagram .annotation {
+    font-size: 21px;
+}
+
+.progress-diagram .diagram {
+    display: flex;
+    align-items: center;
+}
+
+.square-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.square-row {
+    display: flex;
+    gap: 3px;
+}
+
+.square {
+    width: 6px;
+    height: 6px;
+    background: #C4C4C4;
+}
+
+.pp-square-blue {
+    background: rgba(58, 160, 221, 0.3);
+}
+
+.pp-square-yellow {
+    background: rgba(247, 205, 69);
+}
+
+.pc-square-blue {
+    background: rgba(58, 160, 221);
+}
+
+.pc-square-yellow {
+    background: rgba(247, 205, 69, 0.3);
 }
