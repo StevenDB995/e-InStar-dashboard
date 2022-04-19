@@ -1,3 +1,5 @@
+import {LogisticsMap} from './map/LogisticsMap.js';
+
 /*
 ------------------------------------------------------------------------------------------------------------------------
 swiper and hash change event
@@ -72,3 +74,20 @@ for (let i = productionCompletedSquares + 1;
     $('#pp-square-' + i).addClass('pp-square-yellow');
     $('#pc-square-' + i).addClass('pc-square-yellow');
 }
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+logistics pages
+ */
+
+/*
+global variables
+ */
+let logisticsMap;
+let searchStatus = false; // whether the search result of a particular module is currently displayed
+
+/*
+initialize mapbox
+ */
+logisticsMap = new LogisticsMap('map', 7, true);
+// logisticsMap.requestForAllModules(() => resetPanel());

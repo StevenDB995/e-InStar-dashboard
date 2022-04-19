@@ -17,7 +17,7 @@ export class LogisticsMap {
         });
 
         if (control) {
-            this._map.addControl(new mapboxgl.FullscreenControl());
+            // this._map.addControl(new mapboxgl.FullscreenControl());
             this._map.addControl(new mapboxgl.NavigationControl({visualizePitch: true}));
         } else {
             // disable map rotation using right click + drag

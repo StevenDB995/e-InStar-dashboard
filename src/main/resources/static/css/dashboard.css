@@ -208,7 +208,7 @@ customization of content card
 factory storage
  */
 
-.factory-storage .data-wrapper  {
+.factory-storage .data-wrapper {
     display: grid;
     grid-template-columns: 2fr 1fr;
 }
@@ -220,4 +220,20 @@ factory storage
 
 .factory-icon > img {
     width: 90px;
+}
+
+/*
+map
+ */
+
+#map-frame {
+    border-radius: 10px;
+    border: 2px solid white;
+    /* clip the corners of the map to fit its frame */
+    overflow: hidden;
+    -webkit-mask-image: -webkit-radial-gradient(white, black); /* for Safari and iOS devices */
+}
+
+#map {
+    height: 360px;
 }
