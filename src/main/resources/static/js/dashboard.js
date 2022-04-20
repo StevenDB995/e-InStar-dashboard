@@ -1,3 +1,4 @@
+import {workStageData} from './work-stage-data.js';
 import {LogisticsMap} from './map/LogisticsMap.js';
 
 /*
@@ -74,6 +75,25 @@ for (let i = productionCompletedSquares + 1;
     $('#pp-square-' + i).addClass('pp-square-yellow');
     $('#pc-square-' + i).addClass('pc-square-yellow');
 }
+
+/*
+work stage
+ */
+
+let dots = ' ';
+for (let i = 0; i < 100; ++i) {
+    dots += '.';
+}
+
+workStageData.forEach(function (elem) {
+    //language=HTML
+    $('#work-stage-table').append(`
+        <div class="table-row">
+            <div class="table-cell work-stage-name">${elem.name + dots}</div>
+            <div class="table-cell work-stage-count">${elem.count} Units</div>
+        </div>
+    `);
+});
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
