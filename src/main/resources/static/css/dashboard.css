@@ -33,12 +33,9 @@ body {
 header (with swiper)
  */
 
-#header {
-    margin-bottom: 16px;
-}
-
 #swiper {
-    height: 160px;
+    height: 184px;
+    margin-bottom: 16px;
 }
 
 #swiper .swiper-slide {
@@ -48,7 +45,11 @@ header (with swiper)
 }
 
 .swiper-pagination {
-    bottom: -4px !important;
+    bottom: 0 !important;
+}
+
+.swiper-pagination-bullet {
+    margin: 0 8px !important;
 }
 
 .header-card {
