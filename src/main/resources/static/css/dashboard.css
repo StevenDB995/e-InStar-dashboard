@@ -324,6 +324,19 @@ factory storage
 }
 
 /*
+monthly stat (bar chart)
+ */
+
+.monthly-stat {
+    padding: 0;
+}
+
+#bar-chart {
+    height: 360px;
+    letter-spacing: 0;
+}
+
+/*
 map
  */
 

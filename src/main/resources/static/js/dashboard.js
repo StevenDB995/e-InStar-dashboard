@@ -1,4 +1,5 @@
 import {workStageData} from './work-stage-data.js';
+import * as barChartData from './monthly-stat-data.js';
 import {LogisticsMap} from './map/LogisticsMap.js';
 
 /*
@@ -94,6 +95,111 @@ workStageData.forEach(function (elem) {
         </div>
     `);
 });
+
+/*
+monthly stat (bar chart)
+ */
+
+for (let i = 0; i < barChartData.xAxis.length; ++i) {
+    barChartData.xAxis[i] = barChartData.xAxis[i].toUpperCase();
+}
+
+const barChart = echarts.init(document.getElementById('bar-chart'));
+barChart.setOption({
+    animation: false,
+    textStyle: {
+        fontFamily: 'RobotoSlab'
+    },
+    grid: {
+        top: 40,
+        left: '12%'
+    },
+    xAxis: {
+        type: 'category',
+        data: barChartData.xAxis,
+        name: 'Month',
+        nameLocation: 'middle',
+        nameGap: 28,
+        nameTextStyle: {
+            fontSize: 14,
+            fontStyle: 'bold'
+        },
+        axisLine: {
+            symbol: ['none', 'arrow'],
+            symbolSize: [6, 9],
+            lineStyle: {
+                color: '#000'
+            }
+        },
+        axisTick: {
+            show: false
+        },
+        axisLabel: {
+            fontSize: 10
+        },
+        boundaryGap: false,
+        min: function (value) {
+            return value.min - 1;
+        },
+        max: function (value) {
+            return value.max + 1;
+        }
+    },
+    yAxis: {
+        type: 'value',
+        name: 'No. of Units',
+        nameLocation: 'middle',
+        nameGap: 6,
+        nameTextStyle: {
+            fontSize: 14,
+            fontStyle: 'bold'
+        },
+        axisLine: {
+            show: true,
+            symbol: ['none', 'arrow'],
+            symbolSize: [6, 9],
+            lineStyle: {
+                color: '#000'
+            }
+        },
+        splitLine: {
+            show: false
+        },
+        axisLabel: {
+            show: false
+        },
+        max: function (value) {
+            return value.max + 30;
+        }
+    },
+    series: [
+        {
+            type: 'bar',
+            data: barChartData.yAxis,
+            label: {
+                show: true,
+                position: 'top',
+                formatter: '{c}',
+                textStyle: {
+                    fontStyle: 'bold'
+                }
+            },
+            itemStyle: {
+                color: '#80C1E9'
+            }
+        }
+    ]
+});
+
+window.addEventListener('hashchange', function () {
+    if (window.location.hash === '#production-completed') {
+        barChart.resize();
+    }
+});
+
+new ResizeObserver(function () {
+    barChart.resize();
+}).observe(document.getElementById('bar-chart'));
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
