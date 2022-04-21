@@ -109,7 +109,11 @@ header (with swiper)
 
 .header-card-body > .icon > img {
     max-width: 54px;
-    max-height: 54px;
+    max-height: 48px;
+}
+
+.installation-icon > img {
+    max-height: 54px !important;
 }
 
 .header-card-footer {
