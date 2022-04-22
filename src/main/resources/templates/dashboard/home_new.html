@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Home</title>
+    <link href="/bootstrap-5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/home_new.css" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="home-page-container">
+    <div class="home-card-container">
+        <div class="home-card" id="production-progress">
+            <div class="home-card-title">Production</div>
+            <div class="home-card-body">
+                <div class="data">
+                    <div class="data-body" id="production-progress-percentage"></div>
+                </div>
+                <div class="annotation">in Progress</div>
+            </div>
+            <div class="home-card-footer">
+                <div class="icon">
+                    <img src="/icons/production-progress.png" />
+                </div>
+            </div>
+        </div>
+        <div class="home-card" id="production-completed">
+            <div class="home-card-title">Production</div>
+            <div class="home-card-body">
+                <div class="data">
+                    <div class="data-body" id="production-completed-percentage"></div>
+                </div>
+                <div class="annotation">Completed</div>
+            </div>
+            <div class="home-card-footer">
+                <div class="icon">
+                    <img src="/icons/production-completed.png" />
+                </div>
+            </div>
+        </div>
+        <div class="home-card" id="logistics">
+            <div class="home-card-title">Logistics</div>
+            <div class="home-card-body">
+                <div class="data">
+                    <div class="data-body" id="logistics-count"></div>
+                    <div class="data-sub">Units</div>
+                </div>
+                <div class="annotation">in Transit</div>
+            </div>
+            <div class="home-card-footer">
+                <div class="icon">
+                    <img src="/icons/logistics.png" />
+                </div>
+            </div>
+        </div>
+        <div class="home-card" id="installation">
+            <div class="home-card-title">Installation</div>
+            <div class="home-card-body">
+                <div class="data">
+                    <div class="data-body" id="installation-percentage"></div>
+                </div>
+                <div class="annotation">Installed</div>
+            </div>
+            <div class="home-card-footer">
+                <div class="icon">
+                    <img src="/icons/installation.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(function () {
+        $('.home-card').click(function () {
+            window.location.href = '/dashboard#/' + $(this).attr('id');
+        });
+
+        let productionTotal = 952;
+        let productionProgressCount = 142;
+        let productionCompletedCount = 285;
+        let logisticsCount = 86;
+        let installationCount = 72;
+
+        let productionProgressRate = productionProgressCount / productionTotal;
+        let productionCompletedRate = productionCompletedCount / productionTotal;
+        let installationRate = installationCount / productionTotal;
+
+        $('#production-progress-percentage').text(
+            productionProgressRate.toFixed(2)
+            * 100 + '%'
+        );
+
+        $('#production-completed-percentage').text(
+            productionCompletedRate.toFixed(2)
+            * 100 + '%'
+        );
+
+        $('#logistics-count').text(logisticsCount);
+
+        $('#installation-percentage').text(
+            installationRate.toFixed(2)
+            * 100 + '%'
+        );
+    });
+</script>
+
+</body>
+
+</html>

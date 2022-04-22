@@ -8,7 +8,7 @@ public class DashboardController {
 
     @GetMapping("dashboard/home")
     public String home() {
-        return "dashboard/home";
+        return "dashboard/home_new";
     }
 
     @GetMapping("dashboard")

@@ -14,11 +14,6 @@ import fonts
 }
 
 @font-face {
-    font-family: RobotoBlack;
-    src: url(/fonts/Roboto-Black.ttf);
-}
-
-@font-face {
     font-family: RobotoSlab;
     src: url(/fonts/RobotoSlab-Regular.ttf);
 }

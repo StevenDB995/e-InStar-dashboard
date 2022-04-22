@@ -20,11 +20,14 @@ const swiper = new Swiper('#swiper', {
 
 function onHashChange() {
     $('.page').removeClass('page-active');
-    if ($(window.location.hash).length === 0) {
+    // slice off the '#/' at the beginning of the hash
+    let $page = $( document.getElementById(window.location.hash.substring(2)) );
+
+    if ($page.length === 0) {
         $('#production-progress').addClass('page-active');
         swiper.slideTo(0);
     } else {
-        $(window.location.hash).addClass('page-active');
+        $page.addClass('page-active');
     }
 }
 
@@ -39,7 +42,7 @@ get data
 let productionTotal = 952;
 let productionProgressCount = 142;
 let productionCompletedCount = 285;
-let factoryStorageCount = 93;
+let logisticsCount = 86;
 let installationCount = 72;
 
 let productionProgressRate = productionProgressCount / productionTotal;
@@ -62,6 +65,8 @@ $('#production-completed-percentage').text(
     * 100 + '%'
 );
 
+$('#logistics-count').text(logisticsCount);
+
 $('#installation-percentage').text(
     installationRate.toFixed(2)
     * 100 + '%'
@@ -71,6 +76,8 @@ $('#installation-percentage').text(
 ------------------------------------------------------------------------------------------------------------------------
 production pages (in progress and completed)
  */
+
+let factoryStorageCount = 93;
 
 $('#production-progress-count').text(productionProgressCount);
 $('#production-completed-count').text(productionCompletedCount);
@@ -207,12 +214,9 @@ barChart.setOption({
     ]
 });
 
-window.addEventListener('hashchange', function () {
-    if (window.location.hash === '#production-completed') {
-        barChart.resize();
-    }
-});
-
+// resize when the container's width changes;
+// rerender the chart anyway when the page first loaded
+// to prevent the failure to render the chart
 new ResizeObserver(function () {
     barChart.resize();
 }).observe(document.getElementById('bar-chart'));
