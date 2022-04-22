@@ -183,7 +183,7 @@ customization of content card
  */
 
 .progress-diagram, .factory-storage {
-    padding: 12px 24px 20px;
+    padding: 12px 24px;
 }
 
 .progress-diagram > .content-card-body {
@@ -229,6 +229,39 @@ customization of content card
     background: rgba(247, 205, 69, 0.3);
 }
 
+.in-square-green {
+    background: rgba(48, 161, 78);
+}
+
+.in-square-blue {
+    background: rgba(58, 160, 221, 0.3);
+}
+
+.in-square-yellow {
+    background: rgba(247, 205, 69, 0.3);
+}
+
+.progress-diagram > .content-card-footer {
+    margin-top: 12px;
+}
+
+.progress-diagram .legend {
+    display: flex;
+    justify-content: space-around;
+}
+
+.progress-diagram .legend > * {
+    display: flex;
+    align-items: center;
+}
+
+.progress-diagram .legend .description {
+    margin-left: 6px;
+    font-family: RobotoSlab, system-ui;
+    font-size: 11px;
+    letter-spacing: 0;
+}
+
 @media (max-width: 360px) {
     .content-card .data-body {
         font-size: 48px;
@@ -253,6 +286,10 @@ customization of content card
     .square {
         width: 4px;
         height: 4px;
+    }
+
+    .progress-diagram .legend .description {
+        font-size: 9px;
     }
 }
 

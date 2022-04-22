@@ -33,17 +33,23 @@ onHashChange();
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
-production pages (in progress and completed)
+get data
  */
 
-// get data
 let productionTotal = 952;
 let productionProgressCount = 142;
 let productionCompletedCount = 285;
 let factoryStorageCount = 93;
+let installationCount = 72;
 
 let productionProgressRate = productionProgressCount / productionTotal;
 let productionCompletedRate = productionCompletedCount / productionTotal;
+let installationRate = installationCount / productionTotal;
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+header (with swiper)
+ */
 
 // fill data
 $('#production-progress-percentage').text(
@@ -55,6 +61,16 @@ $('#production-completed-percentage').text(
     productionCompletedRate.toFixed(2)
     * 100 + '%'
 );
+
+$('#installation-percentage').text(
+    installationRate.toFixed(2)
+    * 100 + '%'
+);
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+production pages (in progress and completed)
+ */
 
 $('#production-progress-count').text(productionProgressCount);
 $('#production-completed-count').text(productionCompletedCount);
@@ -203,7 +219,7 @@ new ResizeObserver(function () {
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
-logistics pages
+logistics page
  */
 
 /*
@@ -217,3 +233,30 @@ initialize mapbox
  */
 logisticsMap = new LogisticsMap('map', 7, true);
 // logisticsMap.requestForAllModules(() => resetPanel());
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+installation page
+ */
+
+// fill data
+$('#installation-count').text(installationCount);
+
+// render the diagram
+let installationSquares = installationRate.toFixed(2) * 100;
+
+for (let i = 1; i <= installationSquares; ++i) {
+    $('#in-square-' + i).addClass('in-square-green');
+}
+
+for (let i = installationSquares + 1;
+     i <= productionCompletedSquares;
+     ++i) {
+    $('#in-square-' + i).addClass('in-square-blue');
+}
+
+for (let i = productionCompletedSquares + 1;
+     i <= productionCompletedSquares + productionProgressSquares;
+     ++i) {
+    $('#in-square-' + i).addClass('in-square-yellow');
+}
