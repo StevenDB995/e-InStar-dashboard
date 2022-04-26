@@ -376,6 +376,38 @@ monthly stat (bar chart)
 map
  */
 
+#module-search {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+#module-search > label {
+    width: 100%;
+    color: white;
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+#module-search > #module-id {
+    flex: 1 0 auto;
+    padding: 4px 8px;
+    border: 1px solid #454545;
+    border-radius: 5px;
+    height: 32px;
+}
+
+#module-search button.search {
+    padding: 4px !important;
+    margin-left: 12px;
+}
+
+#module-search button.search > img {
+    width: 24px;
+}
+
 #map-frame {
     border-radius: 10px;
     border: 2px solid white;
@@ -386,4 +418,8 @@ map
 
 #map {
     height: 360px;
+}
+
+.mapboxgl-popup-content {
+    padding: 5px 10px !important;
 }

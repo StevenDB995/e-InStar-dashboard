@@ -236,7 +236,88 @@ let searchStatus = false; // whether the search result of a particular module is
 initialize mapbox
  */
 logisticsMap = new LogisticsMap('map', 7, true);
-// logisticsMap.requestForAllModules(() => resetPanel());
+logisticsMap.requestForAllModules(resetMap);
+
+$('#module-id').on('input', function () {
+    // all input characters with be transformed to uppercase automatically and
+    // space is disallowed in the search input field
+    $(this).val($(this).val()
+        .toUpperCase()
+        .replace(' ', ''));
+    if ($(this).val() === '') {
+        clearSearch();
+    }
+});
+
+$('#module-search button.search').click(function (event) {
+    event.preventDefault(); // prevent page reload
+
+    let inputValue = $('#module-id').val();
+    if (inputValue !== '') {
+        logisticsMap.requestForModuleDetail(
+            {moduleid: inputValue, judgement: true},
+            () => showSearchResult(),
+            () => alert('No such module.\nPlease input a valid Module ID.')
+        );
+    }
+});
+
+function showSearchResult() {
+    searchStatus = true;
+    // $('#trace-graph').show();
+    // renderTraceGraph(); // render the trace graph
+    logisticsMap.showLogisticsRoute(); // show route on map
+}
+
+function clearSearch() {
+    // $('#trace-graph').hide();
+    if (searchStatus) {
+        logisticsMap.requestForAllModules(resetMap);
+        searchStatus = false;
+    }
+}
+
+function resetMap() {
+    logisticsMap.clearMap();
+
+    // show current locations of all modules in transportation
+    for (let moduleId in logisticsMap.modules) {
+        let color;
+        switch (logisticsMap.modules[moduleId].status) {
+            case 0:
+            case 1:
+                color = '#d1452d';
+                break;
+            case 2:
+                color = '#f8c012';
+                break;
+            case 3:
+            case 4:
+                color = '#8fc408';
+                break;
+        }
+
+        logisticsMap.addMarker(logisticsMap.modules[moduleId], moduleId, {color: color});
+    }
+}
+
+function getStatus(lngLat) {
+    LogisticsMap.reverseGeocoder(lngLat, (data) => {
+        let features = data.features;
+
+        if (features.length > 2) {
+            let placeName = features[features.length - 1].place_name;
+            if (placeName === 'China') {
+                // mainland
+            } else if (placeName === 'Hong Kong') {
+                // HK
+            }
+
+        } else {
+            // sea
+        }
+    });
+}
 
 /*
 ------------------------------------------------------------------------------------------------------------------------

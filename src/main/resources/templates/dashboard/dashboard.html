@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link href="/bootstrap-5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/bootstrap-icons-1.7.0/bootstrap-icons.css" rel="stylesheet">
     <link href="/css/dashboard.css" rel="stylesheet">
     <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css" rel="stylesheet">
@@ -181,6 +182,13 @@
     </div>
 
     <div id="logistics" class="page">
+        <form id="module-search" autocomplete="off">
+            <label for="module-id">Search Unit ID</label>
+            <input id="module-id">
+            <button class="btn search">
+                <img src="/icons/search.svg" />
+            </button>
+        </form>
         <div id="map-frame">
             <div id="map"></div>
         </div>
