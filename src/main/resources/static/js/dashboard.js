@@ -264,17 +264,42 @@ $('#module-search button.search').click(function (event) {
 
 function showSearchResult() {
     searchStatus = true;
-    // $('#trace-graph').show();
-    // renderTraceGraph(); // render the trace graph
+    renderTraceGraph(); // render the trace graph
     logisticsMap.showLogisticsRoute(); // show route on map
 }
 
 function clearSearch() {
-    // $('#trace-graph').hide();
+    hideTraceGraph();
     if (searchStatus) {
         logisticsMap.requestForAllModules(resetMap);
         searchStatus = false;
     }
+}
+
+function renderTraceGraph() {
+    $('#trace-graph *').removeAttr('style'); // clear the style
+    $('#trace-graph').removeClass('hide');
+
+    let status = getStatus(logisticsMap.trackedModule.latest);
+    let lineFillWidth;
+
+    if (status === 0) {
+        lineFillWidth = '0';
+    } else if (status === 4) {
+        lineFillWidth = '100%';
+    } else {
+        lineFillWidth = ( (2*status - 1) / 6 * 100 ) + '%';
+    }
+
+    $('#trace-graph > .line > .line-fill').css('width', lineFillWidth);
+
+    for (let i = 0; i < status; ++i) {
+        $($('#trace-graph > .node')[i]).css('background', '#FFD12D');
+    }
+}
+
+function hideTraceGraph() {
+    $('#trace-graph').addClass('hide');
 }
 
 function resetMap() {

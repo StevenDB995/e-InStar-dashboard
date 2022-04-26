@@ -414,13 +414,34 @@ logistics page
 #trace-graph {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+#trace-graph.hide {
+    display: none;
+}
+
+#trace-graph > .line {
+    position: absolute;
+    background: white;
+    height: 3px;
+    width: calc(100% - 48px);
+    left: 24px;
+}
+
+#trace-graph > .line > .line-fill {
+    height: 100%;
+    background: #FFD12D;
+    width: 0;
 }
 
 #trace-graph > .node {
+    z-index: 1;
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: #FFD12D;
+    background: white;
     display: flex;
     align-items: center;
     justify-content: center;
