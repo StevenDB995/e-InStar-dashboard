@@ -217,11 +217,12 @@ export class LogisticsMap {
     /*
     reverse geocoding
      */
-    static reverseGeocoder(lngLat, successHandler) {
+    static reverseGeocoder(lngLat, successHandler, async = true) {
         $.ajax({
             url: 'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
                 lngLat.lng + ',' + lngLat.lat + '.json?access_token=' + mapboxgl.accessToken,
             type: 'get',
+            async: async,
             success: (data) => {
                 successHandler(data);
             },

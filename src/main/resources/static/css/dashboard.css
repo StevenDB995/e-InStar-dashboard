@@ -373,14 +373,17 @@ monthly stat (bar chart)
 }
 
 /*
-map
+logistics page
  */
+
+#logistics > *:not(:last-child) {
+    margin-bottom: 24px;
+}
 
 #module-search {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 24px;
 }
 
 #module-search > label {
@@ -406,6 +409,26 @@ map
 
 #module-search button.search > img {
     width: 24px;
+}
+
+#trace-graph {
+    display: flex;
+    justify-content: space-between;
+}
+
+#trace-graph > .node {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #FFD12D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#trace-graph > .node > img {
+    width: 60%;
+    height: 60%;
 }
 
 #map-frame {

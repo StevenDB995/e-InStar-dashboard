@@ -283,8 +283,8 @@ function resetMap() {
     // show current locations of all modules in transportation
     for (let moduleId in logisticsMap.modules) {
         let color;
-        switch (logisticsMap.modules[moduleId].status) {
-            case 0:
+
+        switch (getStatus(logisticsMap.modules[moduleId])) {
             case 1:
                 color = '#d1452d';
                 break;
@@ -292,7 +292,6 @@ function resetMap() {
                 color = '#f8c012';
                 break;
             case 3:
-            case 4:
                 color = '#8fc408';
                 break;
         }
@@ -301,22 +300,27 @@ function resetMap() {
     }
 }
 
+// get the transportation status of a unit
+// according to its current coordinates
 function getStatus(lngLat) {
-    LogisticsMap.reverseGeocoder(lngLat, (data) => {
+    let status;
+    LogisticsMap.reverseGeocoder(lngLat, function (data) {
         let features = data.features;
 
         if (features.length > 2) {
             let placeName = features[features.length - 1].place_name;
             if (placeName === 'China') {
-                // mainland
+                status = 1; // mainland transportation
             } else if (placeName === 'Hong Kong') {
-                // HK
+                status = 3; // hk transportation
             }
 
         } else {
-            // sea
+            status = 2; // sea transportation
         }
-    });
+    }, false);
+
+    return status;
 }
 
 /*
