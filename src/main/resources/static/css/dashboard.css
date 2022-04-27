@@ -467,3 +467,55 @@ logistics page
 .mapboxgl-popup-content {
     padding: 5px 10px !important;
 }
+
+/*
+installation page
+ */
+
+#three-model {
+    padding: 0 !important;
+    position: relative;
+}
+
+#three-model > * {
+    height: 480px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+.loading {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading.hide {
+    display: none;
+}
+
+.loading .spinner-border {
+    width: 44px;
+    height: 44px;
+}
+
+.loading .caption {
+    margin-top: 8px;
+}
+
+#canvas {
+    cursor: grab;
+}
+
+#canvas.grabbing {
+    cursor: grabbing !important;
+}
+
+#canvas.select {
+    cursor: pointer;
+}

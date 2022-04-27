@@ -1,6 +1,7 @@
 import {workStageData} from './work-stage-data.js';
 import * as barChartData from './monthly-stat-data.js';
 import {LogisticsMap} from './map/LogisticsMap.js';
+import BIM from './3d-model/main.js';
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
@@ -374,3 +375,10 @@ for (let i = productionCompletedSquares + 1;
      ++i) {
     $('#in-square-' + i).addClass('in-square-yellow');
 }
+
+/*
+3d model
+ */
+
+BIM.init();
+BIM.animate();

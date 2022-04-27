@@ -44,21 +44,21 @@ function init() {
     camera.zoom = DEFAULT_CAMERA_ZOOM;
     scene = new THREE.Scene();
 
-    var x = -123.04345166015625,
+    let x = -123.04345166015625,
         z = -46.603991455078145;
-    var y = -184.4871513671875;
-    var y_ground = y + 10;
-    var y_roof = y + 17.4871513671875;
+    let y = -184.4871513671875;
+    let y_ground = y + 10;
+    let y_roof = y + 17.4871513671875;
 
     const PLY_TOTAL = 60; // total number of .ply files to be loaded
-    var plySuccess = 0, plyError = 0; // number of successful and failed loads
-    var renderedTotal; // total number of PLY to be rendered
-    var rendered = 0; // number of rendered PLY
+    let plySuccess = 0, plyError = 0; // number of successful and failed loads
+    let renderedTotal; // total number of PLY to be rendered
+    let rendered = 0; // number of rendered PLY
 
     // store all geometry objects on load
-    var groundGeometry;
-    var standardGeometry = {}; // map (key: .ply file name; value: geometry object)
-    var roofGeometry;
+    let groundGeometry;
+    let standardGeometry = {}; // map (key: .ply file name; value: geometry object)
+    let roofGeometry;
 
     // load ground
     loadPLY('/newmodel/ground.ply', 'ground');
@@ -156,19 +156,20 @@ function init() {
             }
 
             geometry.computeVertexNormals();
-
-            const material = new THREE.MeshPhongMaterial({
+            // TODO: improve performance
+            const material = new THREE.MeshLambertMaterial({
                 // color: '#62605F', // mesh color
                 color: selectedMode ? MESH_COLOR_FADE : MESH_COLOR_FOCUS, // mesh color
-                specular: '#111',
+                // specular: '#111',
                 // shininess: 200,
                 transparent: true,
                 opacity: selectedMode ? MESH_OPACITY_FADE : MESH_OPACITY_FOCUS
             });
+
             const mesh = new THREE.Mesh(geometry, material);
 
-            var scalar = 3;
-            var calcY = y;
+            let scalar = 3;
+            let calcY = y;
             switch (type) {
                 case 'ground':
                     scalar *= 0.001;
@@ -186,8 +187,9 @@ function init() {
             mesh.position.set(x, calcY, z);
             mesh.rotation.x = -Math.PI / 2;
             mesh.scale.multiplyScalar(scalar);
-            mesh.castShadow = true;
-            mesh.receiveShadow = true;
+            // TODO: improve performance
+            // mesh.castShadow = true;
+            // mesh.receiveShadow = true;
 
             //为mesh添加轮廓线
             const edges = new THREE.EdgesGeometry(geometry);
@@ -222,49 +224,7 @@ function init() {
                 }
 
                 selectedModuleName = moduleName;
-
-                $('#selected-module > .unselected').hide();
-                $('#selected-module > .selected').show();
-
-                $('#logistics-info > .module-id > .data').text(moduleName);
-                let $status = $('#logistics-info > .status > .data');
-
-                if (logisticsMap === undefined) {
-                    logisticsMap = new LogisticsMap('map', 6, false);
-                }
-
-                logisticsMap.requestForModuleDetail({
-                    moduleid: moduleName,
-                    judgement: true
-                }, () => {
-                    switch (logisticsMap.trackedModule.latest.status) {
-                        case 0:
-                            $status.text('In factory');
-                            break;
-                        case 1:
-                            $status.text('Mainland transportation');
-                            break;
-                        case 2:
-                            $status.text('Sea transportation');
-                            break;
-                        case 3:
-                            $status.text('HK transportation');
-                            break;
-                        case 4:
-                            $status.text('Arrived');
-                            break;
-                    }
-
-                    logisticsMap.showLogisticsRoute({
-                        markerSize: 0.5,
-                        lineWidth: 2,
-                        detailedGeoInfo: false,
-                        flyToSpeed: 1
-                    });
-                }, () => {
-                    $status.text('No data');
-                    logisticsMap.clearMap();
-                });
+                // showLogisticsMap(moduleName);
             };
 
             mesh.onHover = function () {
@@ -313,7 +273,7 @@ function init() {
     }
 
     function getOS() {
-        var userAgent = navigator.userAgent;
+        let userAgent = navigator.userAgent;
         if (/iPad|iPhone|iPod/.test(userAgent)
             || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 0)) {
             return 'iOS';
@@ -334,7 +294,10 @@ function init() {
         antialias: true,
         alpha: true
     });
-    renderer.setPixelRatio(window.devicePixelRatio);
+
+    // TODO: improve performance
+    // renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setPixelRatio(2);
     renderer.setSize(width, height);
     renderer.outputEncoding = THREE.sRGBEncoding;
     renderer.setClearColor('#FFF', 0);
@@ -357,8 +320,8 @@ function init() {
 
     // resize
     new ResizeObserver(function () {
-        var newWidth = canvasContainer.clientWidth;
-        var newHeight = canvasContainer.clientHeight;
+        let newWidth = canvasContainer.clientWidth;
+        let newHeight = canvasContainer.clientHeight;
 
         camera.aspect = newWidth / newHeight;
         camera.zoom = (window.innerWidth <= 576) ? 1.25 : DEFAULT_CAMERA_ZOOM;
@@ -438,11 +401,69 @@ function init() {
         meshes[moduleName].material.opacity = MESH_OPACITY_HOVER;
         lines[moduleName].material.opacity = LINE_OPACITY_HOVER;
     }
+
+    function showLogisticsMap(moduleName) {
+        $('#selected-module > .unselected').hide();
+        $('#selected-module > .selected').show();
+
+        $('#logistics-info > .module-id > .data').text(moduleName);
+        let $status = $('#logistics-info > .status > .data');
+
+        if (logisticsMap === undefined) {
+            logisticsMap = new LogisticsMap('map', 6, false);
+        }
+
+        logisticsMap.requestForModuleDetail({
+            moduleid: moduleName,
+            judgement: true
+        }, () => {
+            switch (logisticsMap.trackedModule.latest.status) {
+                case 0:
+                    $status.text('In factory');
+                    break;
+                case 1:
+                    $status.text('Mainland transportation');
+                    break;
+                case 2:
+                    $status.text('Sea transportation');
+                    break;
+                case 3:
+                    $status.text('HK transportation');
+                    break;
+                case 4:
+                    $status.text('Arrived');
+                    break;
+            }
+
+            logisticsMap.showLogisticsRoute({
+                markerSize: 0.5,
+                lineWidth: 2,
+                detailedGeoInfo: false,
+                flyToSpeed: 1
+            });
+        }, () => {
+            $status.text('No data');
+            logisticsMap.clearMap();
+        });
+    }
 }
+
+
+// TODO: improve performance
+let clock = new THREE.Clock();
+let delta = 0;
+// 30 fps
+let interval = 1 / 30;
 
 function animate() {
     requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+    delta += clock.getDelta();
+
+    if (delta  > interval) {
+        // The draw or time dependent code are here
+        renderer.render(scene, camera);
+        delta = delta % interval;
+    }
 }
 
 export default {init, animate};
