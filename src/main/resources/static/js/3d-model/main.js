@@ -1,4 +1,4 @@
-import * as THREE from './three.module.js';
+import * as THREE from '../threejs/Three.js';
 import {PLYLoader} from './PLYLoader.js';
 import {OrbitControls} from './OrbitControls.js';
 import {LogisticsMap} from '../map/LogisticsMap.js';
