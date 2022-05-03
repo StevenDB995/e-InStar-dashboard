@@ -52,29 +52,34 @@ function init() {
 
     const PLY_TOTAL = 60; // total number of .ply files to be loaded
     let plySuccess = 0, plyError = 0; // number of successful and failed loads
-    let renderedTotal; // total number of PLY to be rendered
-    let rendered = 0; // number of rendered PLY
+    let geometryProcessedTotal; // total number of geometries to be processed
+    let geometryProcessed = 0; // number of geometries processed
 
     // store all geometry objects on load
     let groundGeometry;
     let standardGeometry = {}; // map (key: .ply file name; value: geometry object)
     let roofGeometry;
 
-    // load ground
-    loadPLY('/newmodel/ground.ply', 'ground');
-    // load standard
-    loadPLY(`/newmodel/standard/A-TR.ply`, 'standard', `A-TR`);
-    loadPLY(`/newmodel/standard/B-TR.ply`, 'standard', `B-TR`);
-    for (let i = 1; i <= 14; ++i) {
-        // Tower A
-        loadPLY(`/newmodel/standard/A-N-${i}.ply`, 'standard', `A-N-${i}`);
-        loadPLY(`/newmodel/standard/A-S-${i}.ply`, 'standard', `A-S-${i}`);
-        // Tower B
-        loadPLY(`/newmodel/standard/B-N-${i}.ply`, 'standard', `B-N-${i}`);
-        loadPLY(`/newmodel/standard/B-S-${i}.ply`, 'standard', `B-S-${i}`);
-    }
-    // load roof
-    loadPLY('/newmodel/roof.ply', 'roof');
+    $('#three-model > .hint').click(function () {
+        $('.loading').removeClass('hide');
+        $('#three-model > .hint').addClass('hide');
+
+        // load ground
+        loadPLY('/newmodel/ground.ply', 'ground');
+        // load standard
+        loadPLY(`/newmodel/standard/A-TR.ply`, 'standard', `A-TR`);
+        loadPLY(`/newmodel/standard/B-TR.ply`, 'standard', `B-TR`);
+        for (let i = 1; i <= 14; ++i) {
+            // Tower A
+            loadPLY(`/newmodel/standard/A-N-${i}.ply`, 'standard', `A-N-${i}`);
+            loadPLY(`/newmodel/standard/A-S-${i}.ply`, 'standard', `A-S-${i}`);
+            // Tower B
+            loadPLY(`/newmodel/standard/B-N-${i}.ply`, 'standard', `B-N-${i}`);
+            loadPLY(`/newmodel/standard/B-S-${i}.ply`, 'standard', `B-S-${i}`);
+        }
+        // load roof
+        loadPLY('/newmodel/roof.ply', 'roof');
+    });
 
     // load a .ply file and obtain the corresponding geometry object
     function loadPLY(url, type, key) { // key: key for the standardGeometry map
@@ -102,53 +107,45 @@ function init() {
     }
 
     function onPLYLoadComplete() {
-        if (getOS() !== 'iOS') {
-            // hide the .loading div
-            let loadingDiv = document.querySelector('#three-model > .loading');
-            loadingDiv.classList.add('hide');
-        }
-
         // calculate total number of PLY to be rendered
-        renderedTotal = ( (groundGeometry !== undefined) ? 1 : 0 )
+        geometryProcessedTotal = ( (groundGeometry !== undefined) ? 1 : 0 )
             + Object.keys(standardGeometry).length * 17
             + ( (roofGeometry !== undefined) ? 1 : 0 );
 
         // ground
-        render(groundGeometry, 'ground', 'ground');
+        processGeometry(groundGeometry, 'ground', 'ground');
 
         // standard
         for (let floor = 3; floor <= 19; ++floor) {
             // Tower A, TR
-            render(standardGeometry[`A-TR`], 'standard', `A-${floor}-TR`, floor);
+            processGeometry(standardGeometry[`A-TR`], 'standard', `A-${floor}-TR`, floor);
             // Tower A, Wing N
             for (let i = 1; i <= 14; ++i) {
-                render(standardGeometry[`A-N-${i}`], 'standard', `A-${floor}-N-${i}`, floor);
+                processGeometry(standardGeometry[`A-N-${i}`], 'standard', `A-${floor}-N-${i}`, floor);
             }
             // Tower A, Wing S
             for (let i = 1; i <= 14; ++i) {
-                render(standardGeometry[`A-S-${i}`], 'standard', `A-${floor}-S-${i}`, floor);
+                processGeometry(standardGeometry[`A-S-${i}`], 'standard', `A-${floor}-S-${i}`, floor);
             }
             // Tower B, TR
-            render(standardGeometry[`B-TR`], 'standard', `B-${floor}-TR`, floor);
+            processGeometry(standardGeometry[`B-TR`], 'standard', `B-${floor}-TR`, floor);
             // Tower B, Wing N
             for (let i = 1; i <= 14; ++i) {
-                render(standardGeometry[`B-N-${i}`], 'standard', `B-${floor}-N-${i}`, floor);
+                processGeometry(standardGeometry[`B-N-${i}`], 'standard', `B-${floor}-N-${i}`, floor);
             }
             // Tower B, Wing S
             for (let i = 1; i <= 14; ++i) {
-                render(standardGeometry[`B-S-${i}`], 'standard', `B-${floor}-S-${i}`, floor);
+                processGeometry(standardGeometry[`B-S-${i}`], 'standard', `B-${floor}-S-${i}`, floor);
             }
         }
 
         // roof
-        render(roofGeometry, 'roof', 'roof');
+        processGeometry(roofGeometry, 'roof', 'roof');
     }
 
-    // render a geometry object on the canvas
-    function render(geometry, type, moduleName, floor) { // floor: 3-19
-        // wrap the code inside setTimeout to make each rendering asynchronous
-        // this will give better effect of animation
-        // not working properly in Chrome on iOS devices or Safari
+    // process a geometry (create meshes and lines)
+    function processGeometry(geometry, type, moduleName, floor) { // floor: 3-19
+        // make processing each geometry asynchronous
         setTimeout(function () {
             if (geometry === undefined) {
                 // handle undefined geometry caused by load error
@@ -258,18 +255,14 @@ function init() {
             meshes[moduleName] = mesh;
             lines[moduleName] = line;
 
-            if ((++rendered) === renderedTotal) {
-                onRenderComplete();
+            if ((++geometryProcessed) === geometryProcessedTotal) {
+                onGeometryProcessComplete();
             }
         });
     }
 
-    function onRenderComplete() {
-        if (getOS() === 'iOS') {
-            // hide the .loading div
-            let loadingDiv = document.querySelector('#three-model > .loading');
-            loadingDiv.classList.add('hide');
-        }
+    function onGeometryProcessComplete() {
+        $('.loading').addClass('hide');
     }
 
     function getOS() {
@@ -282,7 +275,7 @@ function init() {
         }
     }
 
-    //lights
+    // light
     // light = new THREE.AmbientLight('#404040');
     light = new THREE.AmbientLight('#FFF');
     scene.add(light);

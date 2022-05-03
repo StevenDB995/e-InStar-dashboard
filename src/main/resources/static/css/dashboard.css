@@ -33,6 +33,10 @@ body {
     align-items: baseline;
 }
 
+.hide {
+    display: none !important;
+}
+
 /*
 ------------------------------------------------------------------------------------------------------------------------
 header (with swiper)
@@ -484,28 +488,17 @@ installation page
     -moz-user-select: none;
 }
 
-.loading {
+#three-model > .hint {
     position: absolute;
-    z-index: 2;
-    top: 0;
-    width: 100%;
+    cursor: pointer;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.loading.hide {
-    display: none;
-}
-
-.loading .spinner-border {
-    width: 44px;
-    height: 44px;
-}
-
-.loading .caption {
-    margin-top: 8px;
+    width: 100%;
+    font-family: RobotoBold, system-ui;
+    font-size: 24px;
+    color: #0689D8;
+    text-align: center;
 }
 
 #canvas {
@@ -518,4 +511,29 @@ installation page
 
 #canvas.select {
     cursor: pointer;
+}
+
+.loading {
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.7);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.loading .spinner-border {
+    width: 60px;
+    height: 60px;
+}
+
+.loading .caption {
+    margin-top: 12px;
 }

@@ -12,6 +12,10 @@ public class StaticResourcesConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/js/threejs/**")
+                .addResourceLocations(CLASSPATH_RESOURCE_LOCATION + "js/threejs/")
+                .setCacheControl(CacheControl.noCache());
+
         registry.addResourceHandler("/js/3d-model/**")
                 .addResourceLocations(CLASSPATH_RESOURCE_LOCATION + "js/3d-model/")
                 .setCacheControl(CacheControl.noCache());

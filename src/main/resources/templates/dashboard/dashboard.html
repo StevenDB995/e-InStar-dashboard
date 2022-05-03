@@ -13,6 +13,15 @@
 
 <body>
 
+<div class="loading hide">
+    <div class="spinner-border text-primary" role="status"></div>
+    <div class="caption">
+        Loading 3D model
+        <br>
+        Please wait...
+    </div>
+</div>
+
 <div id="header">
     <div id="swiper" class="swiper">
         <div class="swiper-wrapper">
@@ -250,9 +259,10 @@
             </div>
         </div>
         <div class="content-card" id="three-model">
-            <div class="loading">
-                <div class="spinner-border text-primary" role="status"></div>
-                <div class="caption">Loading...</div>
+            <div class="hint">
+                Click to load
+                <br>
+                the 3D model
             </div>
             <div id="canvas-container">
                 <canvas id="canvas"></canvas>
