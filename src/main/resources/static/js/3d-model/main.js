@@ -249,8 +249,10 @@ function init() {
                 hoveredModuleName = moduleName;
             }
 
-            scene.add(mesh);
-            scene.add(line);
+            const group = new THREE.Group();
+            group.add(mesh);
+            group.add(line);
+            scene.add(group);
 
             meshes[moduleName] = mesh;
             lines[moduleName] = line;
