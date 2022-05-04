@@ -23,18 +23,22 @@ import fonts
 global properties
  */
 
-body {
+html, body {
+    height: 100%;
     font-family: Roboto, system-ui;
 }
 
 .flex-container {
+    min-height: 100%;
     display: flex;
     justify-content: center;
 }
 
-.flex-container > * {
+.flex-content {
     width: 100%;
     max-width: 480px;
+    display: flex;
+    flex-direction: column;
 }
 
 .data {
@@ -546,4 +550,14 @@ installation page
 
 .loading .caption {
     margin-top: 12px;
+}
+
+/*
+------------------------------------------------------------------------------------------------------------------------
+footer
+ */
+
+#footer {
+    flex: 1 0 auto;
+    background: #EEE;
 }
