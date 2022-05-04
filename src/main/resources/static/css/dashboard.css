@@ -125,6 +125,21 @@ header (with swiper)
 content (for exhibiting data)
  */
 
+.flex-container {
+    display: flex;
+    justify-content: center;
+}
+
+.flex-container > * {
+    width: 100%;
+}
+
+@media (min-width: 576px) {
+    .flex-container > * {
+        max-width: 480px;
+    }
+}
+
 #content {
     background: #0689D8;
     padding: 32px;
