@@ -18,18 +18,24 @@ html, body {
     font-family: Roboto, system-ui;
 }
 
-.home-page-container {
-    height: 100%;
+body {
     display: flex;
     flex-direction: column;
+}
+
+.home-page-container {
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 0 16px;
+    padding: 16px;
 }
 
 .home-card-container {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+    max-width: 480px;
 }
 
 .home-card {
