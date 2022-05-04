@@ -2,7 +2,9 @@ import * as THREE from '../threejs/Three.js';
 import {PLYLoader} from './PLYLoader.js';
 import {OrbitControls} from './OrbitControls.js';
 import {LogisticsMap} from '../map/LogisticsMap.js';
+import * as DB from '../installation-data.js';
 
+let installationData;
 let camera, scene, renderer, light, orbitControls;
 let canvasContainer = document.getElementById('canvas-container');
 let width = canvasContainer.clientWidth,
@@ -21,22 +23,36 @@ let selectedModuleName, hoveredModuleName;
 
 let logisticsMap; // logistics map for the selected module
 
-// const MESH_OPACITY_FOCUS = 1,
-//     LINE_OPACITY_FOCUS = 1;
-// const MESH_OPACITY_FADE = 0.3,
-//     LINE_OPACITY_FADE = 0.1;
-// const MESH_OPACITY_HOVER = 0.7,
-//     LINE_OPACITY_HOVER = 0.5;
-
-const MESH_COLOR_FOCUS = '#EEE',
-    MESH_OPACITY_FOCUS = 0.8,
+const MESH_OPACITY_FOCUS = 0.8,
     LINE_OPACITY_FOCUS = 1;
-const MESH_COLOR_FADE = '#AAA',
-    MESH_OPACITY_FADE = 0.3,
+const MESH_OPACITY_FADE = 0.1,
     LINE_OPACITY_FADE = 0.1;
-const MESH_COLOR_HOVER = '#EEE',
-    MESH_OPACITY_HOVER = 0.7,
+const MESH_OPACITY_HOVER = 0.5,
     LINE_OPACITY_HOVER = 0.5;
+
+const MESH_COLOR_GREY = '#C4C4C4',
+    MESH_COLOR_YELLOW = '#F7CD45',
+    MESH_COLOR_BLUE = '#3AA0DD',
+    MESH_COLOR_GREEN = '#30A14E';
+
+const LINE_COLOR_GREY = '#919191',
+    LINE_COLOR_YELLOW = '#E78C10',
+    LINE_COLOR_BLUE = '#246B8C',
+    LINE_COLOR_GREEN = '#10722F';
+
+const meshColorMap = {
+    0: MESH_COLOR_GREY,
+    1: MESH_COLOR_YELLOW,
+    2: MESH_COLOR_BLUE,
+    3: MESH_COLOR_GREEN
+};
+
+const lineColorMap = {
+    0: LINE_COLOR_GREY,
+    1: LINE_COLOR_YELLOW,
+    2: LINE_COLOR_BLUE,
+    3: LINE_COLOR_GREEN
+};
 
 function init() {
     camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
@@ -79,6 +95,12 @@ function init() {
         }
         // load roof
         loadPLY('/newmodel/roof.ply', 'roof');
+
+        // load installation data
+        setTimeout(function () {
+            installationData = DB.installationData;
+            checkLoadComplete();
+        }, 100);
     });
 
     // load a .ply file and obtain the corresponding geometry object
@@ -96,14 +118,21 @@ function init() {
                     break;
             }
 
-            if ((++plySuccess) + plyError === PLY_TOTAL) {
-                onPLYLoadComplete();
-            }
+            plySuccess++;
+            checkLoadComplete();
+
         }, undefined, function () {
-            if (plySuccess + (++plyError) === PLY_TOTAL) {
-                onPLYLoadComplete();
-            }
+            plyError++;
+            checkLoadComplete();
         });
+    }
+
+    function checkLoadComplete() {
+        // check whether both .ply files and
+        // installation data are completely loaded
+        if (plySuccess + plyError === PLY_TOTAL
+            && installationData !== undefined)
+            onPLYLoadComplete();
     }
 
     function onPLYLoadComplete() {
@@ -155,8 +184,9 @@ function init() {
             geometry.computeVertexNormals();
             // TODO: improve performance
             const material = new THREE.MeshLambertMaterial({
-                // color: '#62605F', // mesh color
-                color: selectedMode ? MESH_COLOR_FADE : MESH_COLOR_FOCUS, // mesh color
+                color: installationData.hasOwnProperty(moduleName)
+                    ? meshColorMap[installationData[moduleName]]
+                    : meshColorMap[0], // mesh color
                 // specular: '#111',
                 // shininess: 200,
                 transparent: true,
@@ -191,8 +221,9 @@ function init() {
             //为mesh添加轮廓线
             const edges = new THREE.EdgesGeometry(geometry);
             const edgesMaterial = new THREE.LineBasicMaterial({
-                // color: '#ECE32E', // line color
-                color: '#045996', // line color
+                color: installationData.hasOwnProperty(moduleName)
+                    ? lineColorMap[installationData[moduleName]]
+                    : lineColorMap[0], // line color
                 transparent: true,
                 opacity: selectedMode ? LINE_OPACITY_FADE : LINE_OPACITY_FOCUS
             });
@@ -380,19 +411,16 @@ function init() {
     }
 
     function setFocus(moduleName) {
-        meshes[moduleName].material.color.set(MESH_COLOR_FOCUS);
         meshes[moduleName].material.opacity = MESH_OPACITY_FOCUS;
         lines[moduleName].material.opacity = LINE_OPACITY_FOCUS;
     }
 
     function setFade(moduleName) {
-        meshes[moduleName].material.color.set(MESH_COLOR_FADE);
         meshes[moduleName].material.opacity = MESH_OPACITY_FADE;
         lines[moduleName].material.opacity = LINE_OPACITY_FADE;
     }
 
     function setHover(moduleName) {
-        meshes[moduleName].material.color.set(MESH_COLOR_HOVER);
         meshes[moduleName].material.opacity = MESH_OPACITY_HOVER;
         lines[moduleName].material.opacity = LINE_OPACITY_HOVER;
     }
