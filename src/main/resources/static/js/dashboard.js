@@ -239,7 +239,7 @@ initialize mapbox
 logisticsMap = new LogisticsMap('map', 7, true);
 logisticsMap.requestForAllModules(resetMap);
 
-$('#module-id').on('input', function () {
+$('#module-search-input').on('input', function () {
     // all input characters with be transformed to uppercase automatically and
     // space is disallowed in the search input field
     $(this).val($(this).val()
@@ -253,7 +253,7 @@ $('#module-id').on('input', function () {
 $('#module-search button.search').click(function (event) {
     event.preventDefault(); // prevent page reload
 
-    let inputValue = $('#module-id').val();
+    let inputValue = $('#module-search-input').val();
     if (inputValue !== '') {
         logisticsMap.requestForModuleDetail(
             {moduleid: inputValue, judgement: true},

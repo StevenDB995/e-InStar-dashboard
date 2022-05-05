@@ -194,8 +194,8 @@
 
             <div id="logistics" class="page">
                 <form id="module-search" autocomplete="off">
-                    <label for="module-id">Search Unit ID</label>
-                    <input id="module-id">
+                    <label for="module-search-input">Search Unit ID</label>
+                    <input id="module-search-input">
                     <button class="btn search">
                         <img src="/icons/search.svg"/>
                     </button>
@@ -265,6 +265,17 @@
                         Click to load
                         <br>
                         the 3D model
+                    </div>
+                    <div class="module-info hide">
+                        <div>
+                            <span class="attr-name">Unit ID:</span>
+                            <span class="module-id"></span>
+                        </div>
+                        <div>
+                            <span class="attr-name">Status:</span>
+                            <div class="status-label"></div>
+                            <span class="module-status"></span>
+                        </div>
                     </div>
                     <div id="canvas-container">
                         <canvas id="canvas"></canvas>

@@ -54,6 +54,19 @@ const lineColorMap = {
     3: LINE_COLOR_GREEN
 };
 
+const moduleStatusMap = {
+    0: 'Not in production yet',
+    1: 'Production in progress',
+    2: 'Production completed',
+    3: 'Installed'
+};
+
+const getMapValue = function (map, moduleName) {
+    return installationData.hasOwnProperty(moduleName)
+        ? map[installationData[moduleName]]
+        : map[0];
+};
+
 function init() {
     camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
     camera.position.set(300, 240, 300);
@@ -184,9 +197,7 @@ function init() {
             geometry.computeVertexNormals();
             // TODO: improve performance
             const material = new THREE.MeshLambertMaterial({
-                color: installationData.hasOwnProperty(moduleName)
-                    ? meshColorMap[installationData[moduleName]]
-                    : meshColorMap[0], // mesh color
+                color: getMapValue(meshColorMap, moduleName), // mesh color
                 // specular: '#111',
                 // shininess: 200,
                 transparent: true,
@@ -221,9 +232,7 @@ function init() {
             //为mesh添加轮廓线
             const edges = new THREE.EdgesGeometry(geometry);
             const edgesMaterial = new THREE.LineBasicMaterial({
-                color: installationData.hasOwnProperty(moduleName)
-                    ? lineColorMap[installationData[moduleName]]
-                    : lineColorMap[0], // line color
+                color: getMapValue(lineColorMap, moduleName), // line color
                 transparent: true,
                 opacity: selectedMode ? LINE_OPACITY_FADE : LINE_OPACITY_FOCUS
             });
@@ -252,6 +261,14 @@ function init() {
                 }
 
                 selectedModuleName = moduleName;
+
+                $('#three-model > .module-info .module-id').text(moduleName);
+                $('#three-model > .module-info .module-status').text(
+                    getMapValue(moduleStatusMap, moduleName)
+                );
+                $('#three-model > .module-info .status-label').css({
+                    'background': getMapValue(meshColorMap, moduleName)
+                });
                 // showLogisticsMap(moduleName);
             };
 
@@ -387,9 +404,11 @@ function init() {
         if (!drag) {
             intersect(event, function (intersects) {
                 intersects[0].object.onClick();
+                $('#three-model > .module-info').removeClass('hide');
                 selectedMode = true;
             }, function () {
                 for (let key in meshes) setFocus(key);
+                $('#three-model > .module-info').addClass('hide');
                 selectedMode = false;
             });
         }
