@@ -18,6 +18,7 @@ const mouse = new THREE.Vector2();
 const meshes = {};
 const lines = {};
 
+let geometryProcessComplete = false;
 let selectedMode = false; // indicate whether a module is selected (clicked)
 let selectedModuleName, hoveredModuleName;
 
@@ -313,6 +314,9 @@ function init() {
 
     function onGeometryProcessComplete() {
         $('.loading').addClass('hide');
+        setTimeout(function () {
+            geometryProcessComplete = true;
+        }, 100);
     }
 
     function getOS() {
@@ -397,7 +401,7 @@ function init() {
                 if (hoveredModuleName !== undefined)
                     setFocus(hoveredModuleName);
             }
-        })
+        });
     });
 
     renderer.domElement.addEventListener('mouseup', function (event) {
@@ -414,6 +418,15 @@ function init() {
         }
     });
 
+    renderer.domElement.addEventListener('wheel', function () {
+        render();
+    });
+
+    // for mobile touch move
+    renderer.domElement.addEventListener('touchmove', function () {
+        render();
+    });
+
     // handle cursor's intersection with meshes
     function intersect(event, onIntersect, noIntersect) {
         mouse.x = (event.offsetX / renderer.domElement.clientWidth) * 2 - 1;
@@ -427,6 +440,8 @@ function init() {
         } else {
             noIntersect();
         }
+
+        render();
     }
 
     function setFocus(moduleName) {
@@ -490,21 +505,25 @@ function init() {
     }
 }
 
-
 // TODO: improve performance
 let clock = new THREE.Clock();
 let delta = 0;
-// 30 fps
-let interval = 1 / 30;
+// interval = 1 / fps
+let interval = 1 / 25;
 
-function animate() {
-    requestAnimationFrame(animate);
+function render() {
     delta += clock.getDelta();
-
     if (delta  > interval) {
         // The draw or time dependent code are here
         renderer.render(scene, camera);
         delta = delta % interval;
+    }
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    if (!geometryProcessComplete) {
+        render();
     }
 }
 
