@@ -5,17 +5,17 @@ import fonts
 
 @font-face {
     font-family: Roboto;
-    src: url(/fonts/Roboto-Regular.ttf);
+    src: url(../fonts/Roboto-Regular.ttf);
 }
 
 @font-face {
     font-family: RobotoBold;
-    src: url(/fonts/Roboto-Bold.ttf);
+    src: url(../fonts/Roboto-Bold.ttf);
 }
 
 @font-face {
     font-family: RobotoSlab;
-    src: url(/fonts/RobotoSlab-Regular.ttf);
+    src: url(../fonts/RobotoSlab-Regular.ttf);
 }
 
 /*
