@@ -9,8 +9,8 @@ swiper and hash change event
  */
 
 const swiper = new Swiper('#swiper', {
-    //enable hash navigation
     hashNavigation: {
+        replaceState: true,
         watchState: true
     },
     pagination: {
@@ -26,13 +26,14 @@ function onHashChange() {
 
     if ($page.length === 0) {
         $('#production-progress').addClass('page-active');
-        swiper.slideTo(0);
+        // swiper.slideTo(0);
     } else {
         $page.addClass('page-active');
     }
 }
 
-window.addEventListener('hashchange', onHashChange);
+// hashSet: triggered when swiper updates the hash
+swiper.on('hashSet', onHashChange);
 onHashChange();
 
 /*
