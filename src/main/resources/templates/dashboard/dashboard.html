@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link th:href="@{/bootstrap-5.1.3/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/fontawesome/css/all.min.css}" rel="stylesheet">
     <link th:href="@{/css/dashboard.css}" rel="stylesheet">
     <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.6.0/mapbox-gl.css" rel="stylesheet">
@@ -25,6 +26,11 @@
     <div class="flex-content">
 
         <div id="header">
+            <div class="home-button">
+                <a th:href="@{/dashboard/home}">
+                    <i class="fas fa-house"></i>
+                </a>
+            </div>
             <div id="swiper" class="swiper">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide" data-hash="/production-progress">
