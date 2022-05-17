@@ -90,16 +90,24 @@ $('#production-factory-count').text(factoryStorageCount);
 let productionCompletedSquares = productionCompletedRate.toFixed(2) * 100;
 let productionProgressSquares = productionProgressRate.toFixed(2) * 100;
 
-for (let i = 1; i <= productionCompletedSquares; ++i) {
-    $('#pp-square-' + i).addClass('pp-square-blue');
-    $('#pc-square-' + i).addClass('pc-square-blue');
+// for (let i = 1; i <= productionCompletedSquares; ++i) {
+//     $('#pp-square-' + i).addClass('pp-square-blue');
+//     $('#pc-square-' + i).addClass('pc-square-blue');
+// }
+//
+// for (let i = productionCompletedSquares + 1;
+//      i <= productionCompletedSquares + productionProgressSquares;
+//      ++i) {
+//     $('#pp-square-' + i).addClass('pp-square-yellow');
+//     $('#pc-square-' + i).addClass('pc-square-yellow');
+// }
+
+for (let i = 1; i <= productionProgressSquares; ++i) {
+    $('#pp-square-' + i).addClass('pp-square-yellow');
 }
 
-for (let i = productionCompletedSquares + 1;
-     i <= productionCompletedSquares + productionProgressSquares;
-     ++i) {
-    $('#pp-square-' + i).addClass('pp-square-yellow');
-    $('#pc-square-' + i).addClass('pc-square-yellow');
+for (let i = 1; i <= productionCompletedSquares; ++i) {
+    $('#pc-square-' + i).addClass('pc-square-blue');
 }
 
 /*

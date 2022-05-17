@@ -177,6 +177,7 @@ content (for exhibiting data)
 }
 
 .content-card .annotation {
+    font-family: RobotoBold, system-ui;
     font-size: 21px;
 }
 
@@ -256,6 +257,11 @@ customization of content card
 
 .progress-diagram > .content-card-footer {
     margin-top: 12px;
+}
+
+#production-progress  > .progress-diagram > .content-card-footer,
+#production-completed > .progress-diagram > .content-card-footer {
+    display: none !important;
 }
 
 .progress-diagram .legend {
