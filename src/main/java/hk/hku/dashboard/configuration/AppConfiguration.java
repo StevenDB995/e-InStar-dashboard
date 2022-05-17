@@ -2,14 +2,22 @@ package hk.hku.dashboard.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.CacheControl;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class StaticResourcesConfiguration implements WebMvcConfigurer {
+public class AppConfiguration implements WebMvcConfigurer {
 
     private static final String CLASSPATH_RESOURCE_LOCATION = "classpath:/static/";
 
+    /* disable trailing slash match */
+    @Override
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        configurer.setUseTrailingSlashMatch(false);
+    }
+
+    /* static resources configuration */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/js/threejs/**")
