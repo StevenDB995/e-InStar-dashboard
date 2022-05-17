@@ -82,6 +82,7 @@ body {
 }
 
 .annotation {
+    display: none !important;
     color: white;
     font-size: 14px;
 }
