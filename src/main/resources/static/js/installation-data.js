@@ -3,7 +3,6 @@
 // 2: production completed
 // 3: installed
 export const installationData = {
-    'ground': 3,
 
     'A-3-N-1': 3,
     'A-3-N-2': 3,
@@ -476,4 +475,4 @@ export const installationData = {
     'B-10-S-12': 1,
     'B-10-S-13': 1,
     'B-10-S-14': 1
-}
+};

@@ -34,25 +34,29 @@ const MESH_OPACITY_HOVER = 0.5,
 const MESH_COLOR_GREY = '#C4C4C4',
     MESH_COLOR_YELLOW = '#F7CD45',
     MESH_COLOR_BLUE = '#3AA0DD',
-    MESH_COLOR_GREEN = '#30A14E';
+    MESH_COLOR_GREEN = '#30A14E',
+    MESH_COLOR_DISABLED = '#777';
 
 const LINE_COLOR_GREY = '#919191',
     LINE_COLOR_YELLOW = '#E78C10',
     LINE_COLOR_BLUE = '#246B8C',
-    LINE_COLOR_GREEN = '#10722F';
+    LINE_COLOR_GREEN = '#10722F',
+    LINE_COLOR_DISABLED = '#444';
 
 const meshColorMap = {
     0: MESH_COLOR_GREY,
     1: MESH_COLOR_YELLOW,
     2: MESH_COLOR_BLUE,
-    3: MESH_COLOR_GREEN
+    3: MESH_COLOR_GREEN,
+    'disabled': MESH_COLOR_DISABLED
 };
 
 const lineColorMap = {
     0: LINE_COLOR_GREY,
     1: LINE_COLOR_YELLOW,
     2: LINE_COLOR_BLUE,
-    3: LINE_COLOR_GREEN
+    3: LINE_COLOR_GREEN,
+    'disabled': LINE_COLOR_DISABLED
 };
 
 const moduleStatusMap = {
@@ -61,6 +65,15 @@ const moduleStatusMap = {
     2: 'Production completed',
     3: 'Installed'
 };
+
+// set color for meshes and lines
+const setColor = function (colorMap, moduleName) {
+    if (['ground'].includes(moduleName)) {
+        return colorMap['disabled'];
+    } else {
+        return getMapValue(colorMap, moduleName);
+    }
+}
 
 const getMapValue = function (map, moduleName) {
     return installationData.hasOwnProperty(moduleName)
@@ -198,7 +211,7 @@ function init() {
             geometry.computeVertexNormals();
             // TODO: improve performance
             const material = new THREE.MeshLambertMaterial({
-                color: getMapValue(meshColorMap, moduleName), // mesh color
+                color: setColor(meshColorMap, moduleName), // mesh color
                 // specular: '#111',
                 // shininess: 200,
                 transparent: true,
@@ -233,7 +246,7 @@ function init() {
             //为mesh添加轮廓线
             const edges = new THREE.EdgesGeometry(geometry);
             const edgesMaterial = new THREE.LineBasicMaterial({
-                color: getMapValue(lineColorMap, moduleName), // line color
+                color: setColor(lineColorMap, moduleName), // line color
                 transparent: true,
                 opacity: selectedMode ? LINE_OPACITY_FADE : LINE_OPACITY_FOCUS
             });
@@ -267,9 +280,11 @@ function init() {
                 $('#three-model > .module-info .module-status').text(
                     getMapValue(moduleStatusMap, moduleName)
                 );
+
                 $('#three-model > .module-info .status-label').css({
-                    'background': getMapValue(meshColorMap, moduleName)
+                    'background': setColor(meshColorMap, moduleName)
                 });
+
                 // showLogisticsMap(moduleName);
             };
 
@@ -410,7 +425,14 @@ function init() {
                 intersects[0].object.onClick();
                 $('#three-model > .module-info').removeClass('hide');
                 selectedMode = true;
-            }, function () {
+            }, function (intersects) {
+                if (intersects.length > 0
+                    && ['ground', 'roof'].includes(intersects[0].object.name)) {
+                    // do nothing if ground or roof is clicked
+                    // specifically for selected mode
+                    return;
+                }
+
                 for (let key in meshes) setFocus(key);
                 $('#three-model > .module-info').addClass('hide');
                 selectedMode = false;
@@ -435,10 +457,12 @@ function init() {
         raycaster.setFromCamera(mouse, camera);
         let intersects = raycaster.intersectObjects(Object.values(meshes));
 
-        if (intersects.length > 0) {
+        // clicking on ground or roof is treated as no intersection
+        if (intersects.length > 0
+            && !['ground', 'roof'].includes(intersects[0].object.name)) {
             onIntersect(intersects);
         } else {
-            noIntersect();
+            noIntersect(intersects);
         }
 
         render();
