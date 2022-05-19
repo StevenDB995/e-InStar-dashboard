@@ -52,15 +52,34 @@ export class LogisticsMap {
 
     requestForModuleDetail(requestData, successHandler, failHandler) {
         console.log(`sent request for module ${requestData.moduleid}`);
-        setTimeout(() => {
-            if (allModulesDetail.hasOwnProperty(requestData.moduleid)) {
-                this._trackedModule = allModulesDetail[requestData.moduleid].data;
-                this._trackedModule.moduleId = requestData.moduleid;
-                successHandler();
-            } else {
+
+        // setTimeout(() => {
+        //     if (allModulesDetail.hasOwnProperty(requestData.moduleid)) {
+        //         this._trackedModule = allModulesDetail[requestData.moduleid].data;
+        //         this._trackedModule.moduleId = requestData.moduleid;
+        //         successHandler();
+        //     } else {
+        //         failHandler();
+        //     }
+        // }, 100);
+
+        $.ajax({
+            url: 'http://147.8.139.123/api/icore/getlocationList',
+            method: 'post',
+            data: requestData,
+            success: (res) => {
+                if (res.respCode.toUpperCase() === 'SUCCESS') {
+                    this._trackedModule = res.data;
+                    this._trackedModule.moduleId = requestData.moduleid;
+                    successHandler();
+                } else {
+                    failHandler();
+                }
+            },
+            error: () => {
                 failHandler();
             }
-        }, 100);
+        });
     }
 
     /**
@@ -81,30 +100,37 @@ export class LogisticsMap {
         // remove all existing markers and route
         this.clearMap();
 
-        let trail = [];
-        this._trackedModule.trail.forEach((lngLat) => {
-            // add marker point on map
-            this.addMarker(lngLat, this._trackedModule.moduleId,
-                {color: 'red', scale: markerSize},
-                detailedGeoInfo);
+        let trail = this._trackedModule.trail;
+        let convertedTrail = [];
+        trail.forEach((lngLat) => {
             // convert the format of coordinates
-            trail.push(LogisticsMap.coordinatesConverter(lngLat));
+            convertedTrail.push(LogisticsMap.coordinatesConverter(lngLat));
         });
+
+        // add the marker of source
+        this.addMarker(trail[0], this._trackedModule.moduleId,
+            {color: 'red', scale: markerSize},
+            detailedGeoInfo);
+
+        // add the marker of current location
+        this.addMarker(trail[trail.length - 1], this._trackedModule.moduleId,
+            {color: 'red', scale: markerSize},
+            detailedGeoInfo);
 
         // check whether the style of the map is done loading
         if (this._map.isStyleLoaded()) {
             // show lines of route on map load
-            this._addLines(trail, lineWidth);
+            this._addLines(convertedTrail, lineWidth);
         } else {
             // if the map is not done loading yet,
             // wait until it is fully loaded to add the lines
             this._map.on('load', () => {
-                this._addLines(trail, lineWidth);
+                this._addLines(convertedTrail, lineWidth);
             });
         }
 
         this._map.flyTo({
-            center: this._trackedModule.trail[this._trackedModule.trail.length - 1],
+            center: trail[trail.length - 1],
             zoom: 10,
             speed: flyToSpeed,
             essential: true
