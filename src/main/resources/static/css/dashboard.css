@@ -61,6 +61,7 @@ header (with swiper)
 }
 
 .home-button {
+    display: none !important;
     z-index: 99;
     position: absolute;
     left: 12px;
