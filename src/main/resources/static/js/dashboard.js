@@ -290,7 +290,7 @@ function renderTraceGraph() {
     $('#trace-graph *').removeAttr('style'); // clear the style
     $('#trace-graph').removeClass('hide');
 
-    let status = getStatus(logisticsMap.trackedModule.latest);
+    let status = getStatus( Object.values(logisticsMap.trackedModule.latest)[0] );
     let lineFillWidth;
 
     if (status === 0) {

@@ -30,9 +30,11 @@ const allModulesDetail = {
     "A-3-N-5": {
         "data": {
             "latest": {
-                "lng": 113.161265,
-                "lat": 23.062559,
-                "status": 0
+                "A-11F-09-M-M2-MU": {
+                    "lng": 113.161265,
+                    "lat": 23.062559,
+                    "status": 0
+                }
             },
             "trail": [
                 {
@@ -45,9 +47,11 @@ const allModulesDetail = {
     "A-3-N-4": {
         "data": {
             "latest": {
-                "lng": 113.896176,
-                "lat": 22.457184,
-                "status": 1
+                "A-11F-09-M-M2-MU": {
+                    "lng": 113.896176,
+                    "lat": 22.457184,
+                    "status": 1
+                }
             },
             "trail": [
                 {
@@ -80,9 +84,11 @@ const allModulesDetail = {
     "A-3-N-3": {
         "data": {
             "latest": {
-                "lng": 114.117742,
-                "lat": 22.337009,
-                "status": 2
+                "A-11F-09-M-M2-MU": {
+                    "lng": 114.117742,
+                    "lat": 22.337009,
+                    "status": 2
+                }
             },
             "trail": [
                 {
@@ -123,9 +129,11 @@ const allModulesDetail = {
     "A-3-N-2": {
         "data": {
             "latest": {
-                "lng": 114.162116,
-                "lat": 22.299075,
-                "status": 3
+                "A-11F-09-M-M2-MU": {
+                    "lng": 114.162116,
+                    "lat": 22.299075,
+                    "status": 3
+                }
             },
             "trail": [
                 {
@@ -174,9 +182,11 @@ const allModulesDetail = {
     "A-3-N-1": {
         "data": {
             "latest": {
-                "lng": 114.174038,
-                "lat": 22.244645,
-                "status": 4
+                "A-11F-09-M-M2-MU": {
+                    "lng": 114.174038,
+                    "lat": 22.244645,
+                    "status": 4
+                }
             },
             "trail": [
                 {
