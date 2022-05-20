@@ -108,9 +108,14 @@ export class LogisticsMap {
         });
 
         // add the marker of source
+        const markerElement = document.createElement('div');
+        markerElement.className = 'marker-source';
+        $(markerElement).css({
+            'background': '#4285f4'
+        });
+
         this.addMarker(trail[0], this._trackedModule.moduleId,
-            {color: 'red', scale: markerSize},
-            detailedGeoInfo);
+            markerElement, detailedGeoInfo);
 
         // add the marker of current location
         this.addMarker(trail[trail.length - 1], this._trackedModule.moduleId,
@@ -214,6 +219,7 @@ export class LogisticsMap {
                 'line-cap': 'round'
             },
             'paint': {
+                // 'line-color': '#3e93ff',
                 'line-color': 'red',
                 'line-width': lineWidth
             }

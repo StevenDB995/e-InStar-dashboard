@@ -521,6 +521,15 @@ logistics page
     padding: 5px 10px !important;
 }
 
+.marker-source {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #4285f4;
+    border: 2px solid white;
+    box-shadow: 2px 2px 2px grey;
+}
+
 /*
 installation page
  */
