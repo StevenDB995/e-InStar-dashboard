@@ -521,13 +521,36 @@ logistics page
     padding: 5px 10px !important;
 }
 
-.marker-source {
-    width: 18px;
-    height: 18px;
+.custom-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.custom-marker > .marker-body {
+    z-index: 1;
     border-radius: 50%;
-    background: #4285f4;
-    border: 2px solid white;
-    box-shadow: 2px 2px 2px grey;
+    border: 4px solid #4285f4;
+    background: white;
+    box-shadow: 2px 0 2px rgba(128, 128, 128, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-marker > .marker-body > img {
+    width: 70%;
+    height: 70%;
+}
+
+.custom-marker > .marker-tip {
+    position: absolute;
+    border-left-style: solid;
+    border-left-color: transparent;
+    border-right-style: solid;
+    border-right-color: transparent;
+    border-top-style: solid;
+    border-top-color: #4285f4;
 }
 
 /*

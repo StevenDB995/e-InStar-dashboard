@@ -7,6 +7,10 @@ export class LogisticsMap {
     _trackedModule; // currently tracked module returned from search result
     _markers = []; // record all current markers on map
 
+    /* parameters for custom markers */
+    _markerRadius = 24;
+    _tipAngle = 120 / 180 * Math.PI;
+
     constructor(containerId, zoom, control) {
         mapboxgl.accessToken = 'pk.eyJ1Ijoic3RldmVuZGI5OTUiLCJhIjoiY2t3YmlyeWE4MWNhdjJvcW1ibW5vd2JtcyJ9.tGHXa1ClOlu6cVe-RSiH2Q';
         this._map = new mapboxgl.Map({
@@ -53,33 +57,33 @@ export class LogisticsMap {
     requestForModuleDetail(requestData, successHandler, failHandler) {
         console.log(`sent request for module ${requestData.moduleid}`);
 
-        // setTimeout(() => {
-        //     if (allModulesDetail.hasOwnProperty(requestData.moduleid)) {
-        //         this._trackedModule = allModulesDetail[requestData.moduleid].data;
-        //         this._trackedModule.moduleId = requestData.moduleid;
-        //         successHandler();
-        //     } else {
-        //         failHandler();
-        //     }
-        // }, 100);
-
-        $.ajax({
-            url: 'http://147.8.139.123/api/icore/getlocationList',
-            method: 'post',
-            data: requestData,
-            success: (res) => {
-                if (res.respCode.toUpperCase() === 'SUCCESS') {
-                    this._trackedModule = res.data;
-                    this._trackedModule.moduleId = requestData.moduleid;
-                    successHandler();
-                } else {
-                    failHandler();
-                }
-            },
-            error: () => {
+        setTimeout(() => {
+            if (allModulesDetail.hasOwnProperty(requestData.moduleid)) {
+                this._trackedModule = allModulesDetail[requestData.moduleid].data;
+                this._trackedModule.moduleId = requestData.moduleid;
+                successHandler();
+            } else {
                 failHandler();
             }
-        });
+        }, 100);
+
+        // $.ajax({
+        //     url: 'http://147.8.139.123/api/icore/getlocationList',
+        //     method: 'post',
+        //     data: requestData,
+        //     success: (res) => {
+        //         if (res.respCode.toUpperCase() === 'SUCCESS') {
+        //             this._trackedModule = res.data;
+        //             this._trackedModule.moduleId = requestData.moduleid;
+        //             successHandler();
+        //         } else {
+        //             failHandler();
+        //         }
+        //     },
+        //     error: () => {
+        //         failHandler();
+        //     }
+        // });
     }
 
     /**
@@ -108,19 +112,14 @@ export class LogisticsMap {
         });
 
         // add the marker of source
-        const markerElement = document.createElement('div');
-        markerElement.className = 'marker-source';
-        $(markerElement).css({
-            'background': '#4285f4'
-        });
-
-        this.addMarker(trail[0], this._trackedModule.moduleId,
-            markerElement, detailedGeoInfo);
+        const markerElSrc = this._createMarkerElement('marker-factory.png', '#f8c012');
+        this.addCustomMarker(trail[0], this._trackedModule.moduleId,
+            markerElSrc, detailedGeoInfo);
 
         // add the marker of current location
-        this.addMarker(trail[trail.length - 1], this._trackedModule.moduleId,
-            {color: 'red', scale: markerSize},
-            detailedGeoInfo);
+        const markerElCurrent = this._createMarkerElement('marker-truck.png');
+        this.addCustomMarker(trail[trail.length - 1], this._trackedModule.moduleId,
+            markerElCurrent, detailedGeoInfo);
 
         // check whether the style of the map is done loading
         if (this._map.isStyleLoaded()) {
@@ -143,7 +142,7 @@ export class LogisticsMap {
     }
 
     addMarker(lngLat, moduleId, options, detailedGeoInfo = true) {
-        let divs = [];
+        const divs = [];
         divs.push(
             //language=HTML
             `<div>
@@ -157,9 +156,9 @@ export class LogisticsMap {
             </div>`
         );
 
-        let popup = new mapboxgl.Popup()
+        const popup = new mapboxgl.Popup()
             .setHTML(divs.join(''));
-        let marker = new mapboxgl.Marker(options)
+        const marker = new mapboxgl.Marker(options)
             .setLngLat(lngLat)
             .setPopup(popup)
             .addTo(this._map);
@@ -172,9 +171,6 @@ export class LogisticsMap {
             const linearOffset = markerRadius / Math.sqrt(2);
 
             popup.setOffset({
-                'top': [0, 0],
-                'top-left': [0, 0],
-                'top-right': [0, 0],
                 'bottom': [0, -markerHeight],
                 'bottom-left': [linearOffset, -(markerHeight - markerRadius + linearOffset)],
                 'bottom-right': [-linearOffset, -(markerHeight - markerRadius + linearOffset)],
@@ -195,6 +191,65 @@ export class LogisticsMap {
                 popup.setHTML(divs.join(''));
             });
         });
+
+        return marker;
+    }
+
+    addCustomMarker(lngLat, moduleId, el, detailedGeoInfo = true) {
+        const marker = this.addMarker(lngLat, moduleId, el, detailedGeoInfo);
+
+        const markerHeight = this._markerRadius * (1 + 1 / Math.sin(this._tipAngle / 2));
+        const markerRadius = this._markerRadius;
+        const linearOffset = markerRadius / Math.sqrt(2);
+
+        marker.getPopup().setOffset({
+            'bottom': [0, -markerHeight],
+            'bottom-left': [linearOffset, -(markerHeight - markerRadius + linearOffset)],
+            'bottom-right': [-linearOffset, -(markerHeight - markerRadius + linearOffset)],
+            'left': [markerRadius, -(markerHeight - markerRadius)],
+            'right': [-markerRadius, -(markerHeight - markerRadius)]
+        });
+    }
+
+    _createMarkerElement(imgName, color) {
+        const markerElement = document.createElement('div');
+        $(markerElement).addClass('custom-marker');
+
+        //language=HTML
+        $(markerElement).html(`
+            <div class="marker-body">
+                <img src="../../images/logistics/markers/${imgName}"/>
+            </div>
+            <div class="marker-tip"></div>
+        `);
+
+        $(markerElement).css({
+            'top': -this._markerRadius / Math.sin(this._tipAngle / 2)
+        });
+
+        $(markerElement).find('.marker-body').css({
+            'width': this._markerRadius * 2,
+            'height': this._markerRadius * 2
+        });
+
+        $(markerElement).find('.marker-tip').css({
+            'top': this._markerRadius * (1 + Math.sin(this._tipAngle / 2)),
+            'border-left-width': this._markerRadius * Math.cos(this._tipAngle / 2),
+            'border-right-width': this._markerRadius * Math.cos(this._tipAngle / 2),
+            'border-top-width': this._markerRadius * Math.cos(this._tipAngle / 2) / Math.tan(this._tipAngle / 2)
+        });
+
+        if (color !== undefined) {
+            $(markerElement).find('.marker-body').css({
+                'border-color': color
+            });
+
+            $(markerElement).find('.marker-tip').css({
+                'border-top-color': color
+            });
+        }
+
+        return markerElement;
     }
 
     _addLines(coordinates, lineWidth) {
