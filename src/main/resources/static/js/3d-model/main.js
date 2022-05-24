@@ -482,51 +482,6 @@ function init() {
         meshes[moduleName].material.opacity = MESH_OPACITY_HOVER;
         lines[moduleName].material.opacity = LINE_OPACITY_HOVER;
     }
-
-    function showLogisticsMap(moduleName) {
-        $('#selected-module > .unselected').hide();
-        $('#selected-module > .selected').show();
-
-        $('#logistics-info > .module-id > .data').text(moduleName);
-        let $status = $('#logistics-info > .status > .data');
-
-        if (logisticsMap === undefined) {
-            logisticsMap = new LogisticsMap('map', 6, false);
-        }
-
-        logisticsMap.requestForModuleDetail({
-            moduleid: moduleName,
-            judgement: true
-        }, () => {
-            switch (logisticsMap.trackedModule.latest.status) {
-                case 0:
-                    $status.text('In factory');
-                    break;
-                case 1:
-                    $status.text('Mainland transportation');
-                    break;
-                case 2:
-                    $status.text('Sea transportation');
-                    break;
-                case 3:
-                    $status.text('HK transportation');
-                    break;
-                case 4:
-                    $status.text('Arrived');
-                    break;
-            }
-
-            logisticsMap.showLogisticsRoute({
-                markerSize: 0.5,
-                lineWidth: 2,
-                detailedGeoInfo: false,
-                flyToSpeed: 1
-            });
-        }, () => {
-            $status.text('No data');
-            logisticsMap.clearMap();
-        });
-    }
 }
 
 // TODO: improve performance
