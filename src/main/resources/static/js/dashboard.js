@@ -290,7 +290,7 @@ function renderTraceGraph() {
     $('#trace-graph *').removeAttr('style'); // clear the style
     $('#trace-graph').removeClass('hide');
 
-    let status = getStatus( Object.values(logisticsMap.trackedModule.latest)[0] );
+    let status = logisticsMap.trackedModule.status;
     let lineFillWidth;
 
     if (status === 0) {
@@ -319,7 +319,7 @@ function resetMap() {
     for (let moduleId in logisticsMap.modules) {
         let color;
 
-        switch (getStatus(logisticsMap.modules[moduleId])) {
+        switch (LogisticsMap.getStatus(logisticsMap.modules[moduleId])) {
             case 1:
                 color = '#d1452d';
                 break;
@@ -333,29 +333,6 @@ function resetMap() {
 
         logisticsMap.addMarker(logisticsMap.modules[moduleId], moduleId, {color: color});
     }
-}
-
-// get the transportation status of a unit
-// according to its current coordinates
-function getStatus(lngLat) {
-    let status;
-    LogisticsMap.reverseGeocoder(lngLat, function (data) {
-        let features = data.features;
-
-        if (features.length > 2) {
-            let placeName = features[features.length - 1].place_name;
-            if (placeName === 'China') {
-                status = 1; // mainland transportation
-            } else if (placeName === 'Hong Kong') {
-                status = 3; // hk transportation
-            }
-
-        } else {
-            status = 2; // sea transportation
-        }
-    }, false);
-
-    return status;
 }
 
 /*

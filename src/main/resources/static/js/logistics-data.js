@@ -1,28 +1,23 @@
 const allModules = { // all modules with modules ids and their current locations
     "A-3-N-5": {
         "lng": 113.161265,
-        "lat": 23.062559,
-        "status": 0
+        "lat": 23.062559
     },
     "A-3-N-4": {
         "lng": 113.896176,
-        "lat": 22.457184,
-        "status": 1
+        "lat": 22.457184
     },
     "A-3-N-3": {
         "lng": 114.117742,
-        "lat": 22.337009,
-        "status": 2
+        "lat": 22.337009
     },
     "A-3-N-2": {
         "lng": 114.162116,
-        "lat": 22.299075,
-        "status": 3
+        "lat": 22.299075
     },
     "A-3-N-1": {
         "lng": 114.174038,
-        "lat": 22.244645,
-        "status": 4
+        "lat": 22.244645
     }
 };
 
@@ -32,8 +27,7 @@ const allModulesDetail = {
             "latest": {
                 "A-11F-09-M-M2-MU": {
                     "lng": 113.161265,
-                    "lat": 23.062559,
-                    "status": 0
+                    "lat": 23.062559
                 }
             },
             "trail": [
@@ -49,8 +43,7 @@ const allModulesDetail = {
             "latest": {
                 "A-11F-09-M-M2-MU": {
                     "lng": 113.896176,
-                    "lat": 22.457184,
-                    "status": 1
+                    "lat": 22.457184
                 }
             },
             "trail": [
@@ -86,8 +79,7 @@ const allModulesDetail = {
             "latest": {
                 "A-11F-09-M-M2-MU": {
                     "lng": 114.117742,
-                    "lat": 22.337009,
-                    "status": 2
+                    "lat": 22.337009
                 }
             },
             "trail": [
@@ -131,8 +123,7 @@ const allModulesDetail = {
             "latest": {
                 "A-11F-09-M-M2-MU": {
                     "lng": 114.162116,
-                    "lat": 22.299075,
-                    "status": 3
+                    "lat": 22.299075
                 }
             },
             "trail": [
@@ -184,8 +175,7 @@ const allModulesDetail = {
             "latest": {
                 "A-11F-09-M-M2-MU": {
                     "lng": 114.174038,
-                    "lat": 22.244645,
-                    "status": 4
+                    "lat": 22.244645
                 }
             },
             "trail": [

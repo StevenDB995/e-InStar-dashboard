@@ -61,6 +61,7 @@ export class LogisticsMap {
             if (allModulesDetail.hasOwnProperty(requestData.moduleid)) {
                 this._trackedModule = allModulesDetail[requestData.moduleid].data;
                 this._trackedModule.moduleId = requestData.moduleid;
+                this._trackedModule.status = LogisticsMap.getStatus( Object.values(this._trackedModule.latest)[0] );
                 successHandler();
             } else {
                 failHandler();
@@ -75,6 +76,7 @@ export class LogisticsMap {
         //         if (res.respCode.toUpperCase() === 'SUCCESS') {
         //             this._trackedModule = res.data;
         //             this._trackedModule.moduleId = requestData.moduleid;
+        //             this._trackedModule.status = LogisticsMap.getStatus( Object.values(this._trackedModule.latest)[0] );
         //             successHandler();
         //         } else {
         //             failHandler();
@@ -112,12 +114,16 @@ export class LogisticsMap {
         });
 
         // add the marker of source
-        const markerElSrc = this._createMarkerElement('marker-factory.png', '#f8c012');
+        const markerElSrc = this._createMarkerElement('marker-factory.png', '#e78c10');
         this.addCustomMarker(trail[0], this._trackedModule.moduleId,
             markerElSrc, detailedGeoInfo);
 
         // add the marker of current location
-        const markerElCurrent = this._createMarkerElement('marker-truck.png');
+        const markerElCurrent = this._createMarkerElement(
+            (this._trackedModule.status === 2)
+                ? 'marker-ferry.png'
+                : 'marker-truck.png',
+            '#23b3fd');
         this.addCustomMarker(trail[trail.length - 1], this._trackedModule.moduleId,
             markerElCurrent, detailedGeoInfo);
 
@@ -221,6 +227,7 @@ export class LogisticsMap {
                 <img src="../../images/logistics/markers/${imgName}"/>
             </div>
             <div class="marker-tip"></div>
+            <div class="marker-shade"></div>
         `);
 
         $(markerElement).css({
@@ -237,6 +244,15 @@ export class LogisticsMap {
             'border-left-width': this._markerRadius * Math.cos(this._tipAngle / 2),
             'border-right-width': this._markerRadius * Math.cos(this._tipAngle / 2),
             'border-top-width': this._markerRadius * Math.cos(this._tipAngle / 2) / Math.tan(this._tipAngle / 2)
+        });
+
+        let markerHeight = this._markerRadius * (1 + 1 / Math.sin(this._tipAngle / 2));
+        let markerShadeWidth = 40;
+        let markerShadeHeight = 20;
+        $(markerElement).find('.marker-shade').css({
+            'width': markerShadeWidth,
+            'height': markerShadeHeight,
+            'top': markerHeight - markerShadeHeight / 2
         });
 
         if (color !== undefined) {
@@ -317,6 +333,29 @@ export class LogisticsMap {
                 console.error('Fail to retrieve geographic information');
             }
         });
+    }
+
+    // get the transportation status of a unit
+    // according to its current coordinates
+    static getStatus(lngLat) {
+        let status;
+        LogisticsMap.reverseGeocoder(lngLat, (data) => {
+            let features = data.features;
+
+            if (features.length > 2) {
+                let placeName = features[features.length - 1].place_name;
+                if (placeName === 'China') {
+                    status = 1; // mainland transportation
+                } else if (placeName === 'Hong Kong') {
+                    status = 3; // hk transportation
+                }
+
+            } else {
+                status = 2; // sea transportation
+            }
+        }, false);
+
+        return status;
     }
 
 }
