@@ -1,7 +1,6 @@
 import * as THREE from '../threejs/Three.js';
 import {PLYLoader} from './PLYLoader.js';
 import {OrbitControls} from './OrbitControls.js';
-import {LogisticsMap} from '../map/LogisticsMap.js';
 import * as DB from '../installation-data.js';
 
 let installationData;
@@ -21,8 +20,6 @@ const lines = {};
 let geometryProcessComplete = false;
 let selectedMode = false; // indicate whether a module is selected (clicked)
 let selectedModuleName, hoveredModuleName;
-
-let logisticsMap; // logistics map for the selected module
 
 const MESH_OPACITY_FOCUS = 0.8,
     LINE_OPACITY_FOCUS = 1;
@@ -284,8 +281,6 @@ function init() {
                 $('#three-model > .module-info .status-label').css({
                     'background': setColor(meshColorMap, moduleName)
                 });
-
-                // showLogisticsMap(moduleName);
             };
 
             mesh.onHover = function () {
