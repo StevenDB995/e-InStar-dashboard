@@ -16,7 +16,7 @@
             <div class="home-card-title">Production</div>
             <div class="home-card-body">
                 <div class="data">
-                    <div class="data-body" id="production-progress-percentage"></div>
+                    <div class="data-body" id="production-progress-percentage">0%</div>
                 </div>
                 <div class="annotation">in Progress</div>
             </div>
@@ -30,7 +30,7 @@
             <div class="home-card-title">Completed</div>
             <div class="home-card-body">
                 <div class="data">
-                    <div class="data-body" id="production-completed-percentage"></div>
+                    <div class="data-body" id="production-completed-percentage">0%</div>
                 </div>
                 <div class="annotation">Completed</div>
             </div>
@@ -44,7 +44,7 @@
             <div class="home-card-title">Logistics</div>
             <div class="home-card-body">
                 <div class="data">
-                    <div class="data-body" id="logistics-count"></div>
+                    <div class="data-body" id="logistics-count">0</div>
                     <div class="data-sub">Units</div>
                 </div>
                 <div class="annotation">in Transit</div>
@@ -59,7 +59,7 @@
             <div class="home-card-title">Installation</div>
             <div class="home-card-body">
                 <div class="data">
-                    <div class="data-body" id="installation-percentage"></div>
+                    <div class="data-body" id="installation-percentage">0%</div>
                 </div>
                 <div class="annotation">Installed</div>
             </div>
@@ -79,32 +79,39 @@
             window.location.href = './#/' + $(this).attr('id');
         });
 
-        let productionTotal = 952;
-        let productionProgressCount = 142;
-        let productionCompletedCount = 285;
-        let logisticsCount = 86;
-        let installationCount = 72;
+        let productionTotal = 0;
+        let productionProgressCount = 0;
+        let productionCompletedCount = 0;
+        let logisticsCount = 0;
+        let installationCount = 0;
 
-        let productionProgressRate = productionProgressCount / productionTotal;
-        let productionCompletedRate = productionCompletedCount / productionTotal;
-        let installationRate = installationCount / productionTotal;
+        let productionProgressRate;
+        let productionCompletedRate;
+        let installationRate;
 
-        $('#production-progress-percentage').text(
-            productionProgressRate.toFixed(2)
-            * 100 + '%'
-        );
+        $.ajax({
+            url: 'http://147.8.139.123/api/statTask/getTask',
+            method: 'get',
+            success: (data) => {
+                productionTotal = data['total_module'];
+                productionProgressCount = data['in_progress_module'];
+                productionCompletedCount = data['completed_module'];
 
-        $('#production-completed-percentage').text(
-            productionCompletedRate.toFixed(2)
-            * 100 + '%'
-        );
+                productionProgressRate = productionProgressCount / productionTotal;
+                productionCompletedRate = productionCompletedCount / productionTotal;
+                installationRate = installationCount / productionTotal;
 
-        $('#logistics-count').text(logisticsCount);
+                $('#production-progress-percentage').text(
+                    productionProgressRate.toFixed(2)
+                    * 100 + '%'
+                );
 
-        $('#installation-percentage').text(
-            installationRate.toFixed(2)
-            * 100 + '%'
-        );
+                $('#production-completed-percentage').text(
+                    productionCompletedRate.toFixed(2)
+                    * 100 + '%'
+                );
+            }
+        });
     });
 </script>
 
