@@ -71,11 +71,11 @@ $.ajax({
         installationRate = installationCount / productionTotal;
 
         $('#production-progress-percentage').text(
-            (productionProgressRate * 100).toFixed(0) + '%'
+            Math.round(productionProgressRate * 100) + '%'
         );
 
         $('#production-completed-percentage').text(
-            (productionCompletedRate * 100).toFixed(0) + '%'
+            Math.round(productionCompletedRate * 100) + '%'
         );
 
         $('#production-progress-count').text(productionProgressCount);
@@ -83,9 +83,9 @@ $.ajax({
         $('#production-total').text(productionTotal);
 
         // render the diagrams
-        let productionCompletedSquares = (productionCompletedRate * 100).toFixed(0);
-        let productionProgressSquares = (productionProgressRate * 100).toFixed(0);
-        let installationSquares = (installationRate * 100).toFixed(0);
+        let productionCompletedSquares = Math.round(productionCompletedRate * 100);
+        let productionProgressSquares = Math.round(productionProgressRate * 100);
+        let installationSquares = Math.round(installationRate * 100);
 
         // for (let i = 1; i <= productionCompletedSquares; ++i) {
         //     $('#pp-square-' + i).addClass('pp-square-blue');
