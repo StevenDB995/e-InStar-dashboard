@@ -88,6 +88,7 @@ $.ajax({
         let installationSquares = Math.round(installationRate * 100);
 
         // for (let i = 1; i <= productionCompletedSquares; ++i) {
+
         //     $('#pp-square-' + i).addClass('pp-square-blue');
         //     $('#pc-square-' + i).addClass('pc-square-blue');
         // }
@@ -195,7 +196,7 @@ monthly stat (bar chart)
 
 // emulate async
 setTimeout(function () {
-    renderBarChart(barChartData.xAxis, barChartData.yAxis);
+    renderBarChart(barChartData.defaultXAxis, barChartData.defaultYAxis);
 }, 10);
 
 function renderBarChart(xAxisData, yAxisData) {

@@ -1,6 +1,3 @@
-const xAxis = ['Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-const yAxis = [0, 0, 0, 0, 1, 1, 0];
-
 const defaultXAxis = [];
 const defaultYAxis = [0, 0, 0, 0, 0, 0, 0];
 
@@ -25,4 +22,4 @@ for (let i = startMonth; i <= currentMonth; ++i) {
     defaultXAxis.push(monthMap[(i < 0) ? (i + 12) : i]);
 }
 
-export {xAxis, yAxis, defaultXAxis, defaultYAxis};
+export {defaultXAxis, defaultYAxis};
