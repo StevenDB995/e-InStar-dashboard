@@ -102,13 +102,11 @@
                 installationRate = installationCount / productionTotal;
 
                 $('#production-progress-percentage').text(
-                    productionProgressRate.toFixed(2)
-                    * 100 + '%'
+                    (productionProgressRate * 100).toFixed(0) + '%'
                 );
 
                 $('#production-completed-percentage').text(
-                    productionCompletedRate.toFixed(2)
-                    * 100 + '%'
+                    (productionCompletedRate * 100).toFixed(0) + '%'
                 );
             }
         });
