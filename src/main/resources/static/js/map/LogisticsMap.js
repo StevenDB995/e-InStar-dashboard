@@ -19,7 +19,7 @@ export class LogisticsMap {
                 mapboxgl.accessToken = token;
             }
         });
-        
+
         this._map = new mapboxgl.Map({
             container: containerId, // container ID
             style: 'mapbox://styles/mapbox/streets-v11', // style URL
