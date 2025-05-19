@@ -12,7 +12,14 @@ export class LogisticsMap {
     _tipAngle = 120 / 180 * Math.PI;
 
     constructor(containerId, zoom, control) {
-        mapboxgl.accessToken = 'pk.eyJ1Ijoic3RldmVuZGI5OTUiLCJhIjoiY2t3YmlyeWE4MWNhdjJvcW1ibW5vd2JtcyJ9.tGHXa1ClOlu6cVe-RSiH2Q';
+        $.ajax({
+            url: '/dashboard/mapbox-token',
+            async: false,
+            success: (token) => {
+                mapboxgl.accessToken = token;
+            }
+        });
+
         this._map = new mapboxgl.Map({
             container: containerId, // container ID
             style: 'mapbox://styles/mapbox/streets-v11', // style URL
@@ -61,7 +68,7 @@ export class LogisticsMap {
             if (allModulesDetail.hasOwnProperty(requestData.moduleid)) {
                 this._trackedModule = allModulesDetail[requestData.moduleid].data;
                 this._trackedModule.moduleId = requestData.moduleid;
-                this._trackedModule.status = LogisticsMap.getStatus( Object.values(this._trackedModule.latest)[0] );
+                this._trackedModule.status = LogisticsMap.getStatus(Object.values(this._trackedModule.latest)[0]);
                 successHandler();
             } else {
                 failHandler();
@@ -151,15 +158,17 @@ export class LogisticsMap {
         const divs = [];
         divs.push(
             //language=HTML
-            `<div>
-                <strong>Module ID:</strong> ${moduleId}
-            </div>`
+            `
+                <div>
+                    <strong>Module ID:</strong> ${moduleId}
+                </div>`
         );
         divs.push(
             //language=HTML
-            `<div>
-                ${lngLat.lng.toFixed(2)}, ${lngLat.lat.toFixed(2)}
-            </div>`
+            `
+                <div>
+                    ${lngLat.lng.toFixed(2)}, ${lngLat.lat.toFixed(2)}
+                </div>`
         );
 
         const popup = new mapboxgl.Popup()

@@ -10,9 +10,9 @@
     </parent>
     <groupId>hk.hku</groupId>
     <artifactId>dashboard</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>1.0.3</version>
     <name>dashboard</name>
-    <description>dashboard</description>
+    <description>Dashboard application for e-InStar project</description>
     <properties>
         <java.version>11</java.version>
     </properties>

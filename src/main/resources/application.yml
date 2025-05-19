@@ -3,3 +3,6 @@ server:
 logging:
   file:
     name: ./log/dashboard.log
+app:
+  secrets:
+    mapboxAccessToken: ${MAPBOX_ACCESS_TOKEN}
