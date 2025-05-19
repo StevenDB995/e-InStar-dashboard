@@ -1,4 +1,4 @@
-import {allModules, allModulesDetail} from '../logistics-data.js';
+import {allModules, allModulesDetail} from '../demo-data/logistics-data.js';
 
 export class LogisticsMap {
 
@@ -12,7 +12,14 @@ export class LogisticsMap {
     _tipAngle = 120 / 180 * Math.PI;
 
     constructor(containerId, zoom, control) {
-        mapboxgl.accessToken = 'pk.eyJ1Ijoic3RldmVuZGI5OTUiLCJhIjoiY2t3YmlyeWE4MWNhdjJvcW1ibW5vd2JtcyJ9.tGHXa1ClOlu6cVe-RSiH2Q';
+        $.ajax({
+            url: '/dashboard/mapbox-token',
+            async: false,
+            success: (token) => {
+                mapboxgl.accessToken = token;
+            }
+        });
+        
         this._map = new mapboxgl.Map({
             container: containerId, // container ID
             style: 'mapbox://styles/mapbox/streets-v11', // style URL

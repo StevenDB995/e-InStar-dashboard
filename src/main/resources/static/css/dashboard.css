@@ -514,11 +514,15 @@ logistics page
 }
 
 #map {
-    height: 360px;
+    height: 480px;
 }
 
 .mapboxgl-popup-content {
     padding: 5px 10px !important;
+}
+
+.mapboxgl-popup-close-button {
+    display: none;
 }
 
 .custom-marker {

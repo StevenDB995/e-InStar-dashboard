@@ -1,6 +1,11 @@
-import * as barChartData from './monthly-stat-data.js';
+import * as moduleStatusStat from './demo-data/module-status-stat-data.js';
+import {workStageData} from "./demo-data/work-stage-data.js";
+import * as monthlyStatData from './demo-data/monthly-stat-data.js';
+import {allModules} from "./demo-data/logistics-data.js";
 import {LogisticsMap} from './map/LogisticsMap.js';
 import BIM from './3d-model/main.js';
+
+const apiUrlPrefix = 'http://147.8.139.123/api';
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
@@ -21,7 +26,7 @@ const swiper = new Swiper('#swiper', {
 function onHashChange() {
     $('.page').removeClass('page-active');
     // slice off the '#/' at the beginning of the hash
-    let $page = $( document.getElementById(window.location.hash.substring(2)) );
+    let $page = $(document.getElementById(window.location.hash.substring(2)));
 
     if ($page.length === 0) {
         $('#production-progress').addClass('page-active');
@@ -37,101 +42,87 @@ onHashChange();
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
-dashboard data & global variables
- */
-
-let productionTotal = 0;
-let productionProgressCount = 0;
-let productionCompletedCount = 0;
-let logisticsCount = 0;
-let installationCount = 0;
-
-let productionProgressRate;
-let productionCompletedRate;
-let installationRate;
-
-const apiUrlPrefix = 'http://147.8.139.123/api';
-
-/*
-------------------------------------------------------------------------------------------------------------------------
 fill data
  */
 
-$.ajax({
-    url: `${apiUrlPrefix}/statTask/getTask`,
-    method: 'get',
-    cache: false,
-    success: function (data) {
-        productionTotal = data['total_module'];
-        productionProgressCount = data['in_progress_module'];
-        productionCompletedCount = data['completed_module'];
+function fillDashboardData(data) {
+    const productionTotal = data['totalModules'];
+    const productionProgressCount = data['inProgressModules'];
+    const productionCompletedCount = data['completedModules'];
+    const productionFactoryCount = data['inFactoryModules'];
+    const installationCount = data['installedModules'];
+    const logisticsCount = Object.keys(allModules).length;
 
-        productionProgressRate = productionProgressCount / productionTotal;
-        productionCompletedRate = productionCompletedCount / productionTotal;
-        installationRate = installationCount / productionTotal;
+    const productionProgressRate = productionProgressCount / productionTotal;
+    const productionCompletedRate = productionCompletedCount / productionTotal;
+    const installationRate = installationCount / productionTotal;
 
-        $('#production-progress-percentage').text(
-            (productionProgressRate * 100).toFixed(0) + '%'
-        );
+    $('#production-progress-percentage').text(
+        (productionProgressRate * 100).toFixed(0) + '%'
+    );
 
-        $('#production-completed-percentage').text(
-            (productionCompletedRate * 100).toFixed(0) + '%'
-        );
+    $('#production-completed-percentage').text(
+        (productionCompletedRate * 100).toFixed(0) + '%'
+    );
 
-        $('#production-progress-count').text(productionProgressCount);
-        $('#production-completed-count').text(productionCompletedCount);
-        $('#production-total').text(productionTotal);
+    $('#logistics-count').text(logisticsCount);
 
-        // render the diagrams
-        let productionCompletedSquares = (productionCompletedRate * 100).toFixed(0);
-        let productionProgressSquares = (productionProgressRate * 100).toFixed(0);
-        let installationSquares = (installationRate * 100).toFixed(0);
+    $('#installation-percentage').text(
+        (installationRate * 100).toFixed(0) + '%'
+    );
 
-        // for (let i = 1; i <= productionCompletedSquares; ++i) {
-        //     $('#pp-square-' + i).addClass('pp-square-blue');
-        //     $('#pc-square-' + i).addClass('pc-square-blue');
-        // }
-        //
-        // for (let i = productionCompletedSquares + 1;
-        //      i <= productionCompletedSquares + productionProgressSquares;
-        //      ++i) {
-        //     $('#pp-square-' + i).addClass('pp-square-yellow');
-        //     $('#pc-square-' + i).addClass('pc-square-yellow');
-        // }
+    $('#production-progress-count').text(productionProgressCount);
+    $('#production-completed-count').text(productionCompletedCount);
+    $('#production-total').text(productionTotal);
+    $('#production-factory-count').text(productionFactoryCount);
+    $('#installation-count').text(installationCount);
 
-        for (let i = 1; i <= productionProgressSquares; ++i) {
-            $('#pp-square-' + i).addClass('pp-square-yellow');
-        }
+    // render the diagrams
+    let productionCompletedSquares = Math.round(productionCompletedRate * 100);
+    let productionProgressSquares = Math.round(productionProgressRate * 100);
+    let installationSquares = Math.round(installationRate * 100);
 
-        for (let i = 1; i <= productionCompletedSquares; ++i) {
-            $('#pc-square-' + i).addClass('pc-square-blue');
-        }
-
-        for (let i = 1; i <= installationSquares; ++i) {
-            $('#in-square-' + i).addClass('in-square-green');
-        }
-
-        for (let i = installationSquares + 1;
-             i <= productionCompletedSquares;
-             ++i) {
-            $('#in-square-' + i).addClass('in-square-blue');
-        }
-
-        for (let i = productionCompletedSquares + 1;
-             i <= productionCompletedSquares + productionProgressSquares;
-             ++i) {
-            $('#in-square-' + i).addClass('in-square-yellow');
-        }
-    },
-
-    error: function (res) {
-        console.error(res);
+    for (let i = 1; i <= productionProgressSquares; ++i) {
+        $('#pp-square-' + i).addClass('pp-square-yellow');
     }
-});
+
+    for (let i = 1; i <= productionCompletedSquares; ++i) {
+        $('#pc-square-' + i).addClass('pc-square-blue');
+    }
+
+    for (let i = 1; i <= installationSquares; ++i) {
+        $('#in-square-' + i).addClass('in-square-green');
+    }
+
+    for (let i = installationSquares + 1;
+         i <= productionCompletedSquares;
+         ++i) {
+        $('#in-square-' + i).addClass('in-square-blue');
+    }
+
+    for (let i = productionCompletedSquares + 1;
+         i <= productionCompletedSquares + productionProgressSquares;
+         ++i) {
+        $('#in-square-' + i).addClass('in-square-yellow');
+    }
+}
+
+// $.ajax({
+//     url: `${apiUrlPrefix}/statTask/getTask`,
+//     method: 'get',
+//     cache: false,
+//     success: fillDashboardData,
+//     error: function (res) {
+//         console.error(res);
+//     }
+// });
+
+/* demo data */
+fillDashboardData(moduleStatusStat);
 
 /*
 ------------------------------------------------------------------------------------------------------------------------
-production pages (in progress and completed)
+production progress pages
  */
 
 /*
@@ -143,62 +134,66 @@ for (let i = 0; i < 100; ++i) {
     dots += '.';
 }
 
-$.ajax({
-    url: `${apiUrlPrefix}/statTask/getUnitsinProgress`,
-    method: 'get',
-    cache: false,
-    success: function (data) {
-        $('#work-stage-table > .table-body').empty();
-        data.forEach(function (elem) {
-            //language=HTML
-            $('#work-stage-table').append(`
-                <div class="table-row">
-                    <div class="table-cell work-stage-name">${elem.name + dots}</div>
-                    <div class="table-cell work-stage-count">${elem.count} Units</div>
-                </div>
-            `);
-        });
-    },
+function fillWorkStageData(data) {
+    $('#work-stage-table > .table-body').empty();
+    data.forEach(function (elem) {
+        //language=HTML
+        $('#work-stage-table').append(`
+            <div class="table-row">
+                <div class="table-cell work-stage-name">${elem.name + dots}</div>
+                <div class="table-cell work-stage-count">${elem.count} Units</div>
+            </div>
+        `);
+    });
+}
 
-    error: function (res) {
-        const workStages = [
-            'Structure',
-            'Concreting',
-            'Door/window',
-            'Wall',
-            'Painting',
-            'MEP',
-            'Floor',
-            'Furniture',
-            'Facade',
-            'Cleaning/protection',
-            'T&C Final Check'
-        ];
+// $.ajax({
+//     url: `${apiUrlPrefix}/statTask/getUnitsinProgress`,
+//     method: 'get',
+//     cache: false,
+//     success: fillWorkStageData,
+//     error: function (res) {
+//         const workStages = [
+//             'Structure',
+//             'Concreting',
+//             'Door/window',
+//             'Wall',
+//             'Painting',
+//             'MEP',
+//             'Floor',
+//             'Furniture',
+//             'Facade',
+//             'Cleaning/protection',
+//             'T&C Final Check'
+//         ];
+//
+//         workStages.forEach(function (elem) {
+//             //language=HTML
+//             $('#work-stage-table').append(`
+//                 <div class="table-row">
+//                     <div class="table-cell work-stage-name">${elem + dots}</div>
+//                     <div class="table-cell work-stage-count">0 Units</div>
+//                 </div>
+//             `);
+//         })
+//
+//         console.error(res);
+//     }
+// });
 
-        workStages.forEach(function (elem) {
-            //language=HTML
-            $('#work-stage-table').append(`
-                <div class="table-row">
-                    <div class="table-cell work-stage-name">${elem + dots}</div>
-                    <div class="table-cell work-stage-count">0 Units</div>
-                </div>
-            `);
-        })
+/* demo data */
+fillWorkStageData(workStageData);
 
-        console.error(res);
-    }
-});
+/*
+------------------------------------------------------------------------------------------------------------------------
+production completed pages
+ */
 
 /*
 monthly stat (bar chart)
  */
 
-// emulate async
-setTimeout(function () {
-    renderBarChart(barChartData.xAxis, barChartData.yAxis);
-}, 10);
-
-function renderBarChart(xAxisData, yAxisData) {
+function renderMonthlyStatChart(xAxisData, yAxisData) {
     for (let i = 0; i < xAxisData.length; ++i) {
         xAxisData[i] = xAxisData[i].toUpperCase();
     }
@@ -298,21 +293,19 @@ function renderBarChart(xAxisData, yAxisData) {
     }).observe(document.getElementById('bar-chart'));
 }
 
+renderMonthlyStatChart(monthlyStatData.months, monthlyStatData.numUnits);
+
 /*
 ------------------------------------------------------------------------------------------------------------------------
 logistics page
  */
 
-/*
-global variables
- */
-let logisticsMap;
 let searchStatus = false; // whether the search result of a particular module is currently displayed
 
 /*
 initialize mapbox
  */
-logisticsMap = new LogisticsMap('map', 7, true);
+const logisticsMap = new LogisticsMap('map', 7, true);
 logisticsMap.requestForAllModules(resetMap);
 
 $('#module-search-input').on('input', function () {
@@ -365,7 +358,7 @@ function renderTraceGraph() {
     } else if (status === 4) {
         lineFillWidth = '100%';
     } else {
-        lineFillWidth = ( (2*status - 1) / 6 * 100 ) + '%';
+        lineFillWidth = ((2 * status - 1) / 6 * 100) + '%';
     }
 
     $('#trace-graph > .line > .line-fill').css('width', lineFillWidth);

@@ -1,9 +1,9 @@
 import * as THREE from '../threejs/Three.js';
 import {PLYLoader} from './PLYLoader.js';
 import {OrbitControls} from './OrbitControls.js';
-import * as DB from '../installation-data.js';
+import * as DB from '../demo-data/module-status-data.js';
 
-let installationData;
+let moduleStatusData;
 let camera, scene, renderer, light, orbitControls;
 let canvasContainer = document.getElementById('canvas-container');
 let width = canvasContainer.clientWidth,
@@ -73,8 +73,8 @@ const setColor = function (colorMap, moduleName) {
 }
 
 const getMapValue = function (map, moduleName) {
-    return installationData.hasOwnProperty(moduleName)
-        ? map[installationData[moduleName]]
+    return moduleStatusData.hasOwnProperty(moduleName)
+        ? map[moduleStatusData[moduleName]]
         : map[0];
 };
 
@@ -122,7 +122,7 @@ function init() {
 
         // load installation data
         setTimeout(function () {
-            installationData = DB.installationData;
+            moduleStatusData = DB.moduleStatusData;
             checkLoadComplete();
         }, 100);
     });
@@ -155,7 +155,7 @@ function init() {
         // check whether both .ply files and
         // installation data are completely loaded
         if (plySuccess + plyError === PLY_TOTAL
-            && installationData !== undefined)
+            && moduleStatusData !== undefined)
             onPLYLoadComplete();
     }
 
@@ -340,7 +340,6 @@ function init() {
     }
 
     // light
-    // light = new THREE.AmbientLight('#404040');
     light = new THREE.AmbientLight('#FFF');
     scene.add(light);
 

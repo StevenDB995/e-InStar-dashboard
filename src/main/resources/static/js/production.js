@@ -4,7 +4,7 @@ import {animateNumberDisplay} from './Util.js';
  * ---------------------------------------------------------------------------------------------------------------------
  * block: completion rate
  */
-var completedModules = 532; // to be passed via model map from backend
+var completedModules = 285; // to be passed via model map from backend
 var totalModules = 952; // to be passed via model map from backend
 var completionRate = completedModules / totalModules;
 

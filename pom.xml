@@ -10,7 +10,7 @@
     </parent>
     <groupId>hk.hku</groupId>
     <artifactId>dashboard</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <name>dashboard</name>
     <description>dashboard</description>
     <properties>
