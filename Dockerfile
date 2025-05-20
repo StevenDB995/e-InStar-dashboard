@@ -3,12 +3,6 @@ FROM maven:3.9.5-eclipse-temurin-11 AS build
 
 WORKDIR /app
 
-# Copy only the build-related files first (for caching)
-COPY pom.xml .
-COPY .mvn/ .mvn/
-COPY mvnw mvnw
-RUN chmod +x mvnw && ./mvnw dependency:go-offline
-
 # Copy the full source and build the JAR
 COPY . .
 RUN ./mvnw clean package -DskipTests
