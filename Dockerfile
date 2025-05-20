@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Copy only the build-related files first (for caching)
 COPY pom.xml .
-COPY .mvn .mvn
+COPY .mvn/ .mvn/
 COPY mvnw mvnw
 RUN chmod +x mvnw && ./mvnw dependency:go-offline
 
