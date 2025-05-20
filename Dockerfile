@@ -1,5 +1,5 @@
 # ---- Step 1: Build stage with Java 11 and Maven ----
-FROM maven:3.6.3-eclipse-temurin-11 AS build
+FROM maven:3.9.5-eclipse-temurin-11 AS build
 
 WORKDIR /app
 
