@@ -5,7 +5,10 @@ WORKDIR /app
 
 # Copy the full source and build the JAR
 COPY . .
-RUN ./mvnw clean package -DskipTests
+
+# Go offline and build
+RUN mvn dependency:go-offline
+RUN mvn clean package -DskipTests
 
 # ---- Step 2: Runtime stage with Java 11 JDK only ----
 FROM eclipse-temurin:11-jdk-jammy
