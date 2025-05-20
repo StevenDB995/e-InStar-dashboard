@@ -2,6 +2,8 @@
 
 A web-based dashboard developed to track the **production**, **logistics**, and **installation** status of components in a BIM (Building Information Modelling) project for **iLab @ The University of Hong Kong (HKU)**.
 
+Demo link: https://e-instar-dashboard.onrender.com/dashboard
+
 ## 🛠️ Overview
 
 The dashboard provides a centralised interface for stakeholders to:
