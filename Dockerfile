@@ -7,7 +7,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY .mvn .mvn
 COPY mvnw mvnw
-RUN ./mvnw dependency:go-offline
+RUN chmod +x mvnw && ./mvnw dependency:go-offline
 
 # Copy the full source and build the JAR
 COPY . .
