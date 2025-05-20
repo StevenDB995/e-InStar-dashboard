@@ -13,11 +13,6 @@ public class DashboardController {
     @Value("${app.secrets.mapboxAccessToken}")
     private String mapboxToken;
 
-    @GetMapping("/home")
-    public String home() {
-        return "dashboard/home_new";
-    }
-
     @GetMapping({"", "/"})
     public String dashboard() {
         return "dashboard/index";

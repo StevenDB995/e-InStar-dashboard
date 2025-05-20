@@ -73,45 +73,7 @@
 </div>
 
 <script th:src="@{/jquery/3.6.0/jquery.min.js}"></script>
-<script>
-    $(function () {
-        $('.home-card').click(function () {
-            window.location.href = './#/' + $(this).attr('id');
-        });
-
-        let productionTotal = 0;
-        let productionProgressCount = 0;
-        let productionCompletedCount = 0;
-        let logisticsCount = 0;
-        let installationCount = 0;
-
-        let productionProgressRate;
-        let productionCompletedRate;
-        let installationRate;
-
-        $.ajax({
-            url: 'http://147.8.139.123/api/statTask/getTask',
-            method: 'get',
-            success: (data) => {
-                productionTotal = data['total_module'];
-                productionProgressCount = data['in_progress_module'];
-                productionCompletedCount = data['completed_module'];
-
-                productionProgressRate = productionProgressCount / productionTotal;
-                productionCompletedRate = productionCompletedCount / productionTotal;
-                installationRate = installationCount / productionTotal;
-
-                $('#production-progress-percentage').text(
-                    (productionProgressRate * 100).toFixed(0) + '%'
-                );
-
-                $('#production-completed-percentage').text(
-                    (productionCompletedRate * 100).toFixed(0) + '%'
-                );
-            }
-        });
-    });
-</script>
+<script type="module" th:src="@{/js/home_new.js}"></script>
 
 </body>
 </html>
